@@ -1,4 +1,4 @@
-package com.tobiasschuerg.fitted;
+package com.tobiasschuerg.fitted.sample;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
 
