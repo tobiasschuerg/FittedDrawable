@@ -113,11 +113,11 @@ public abstract class FittedDrawable extends Drawable {
 	}
 
 	int getWidth() {
-		return getBounds().width() - (2 * additionalPadding);
+		return getBounds().width();
 	}
 
 	int getHeight() {
-		return getBounds().height() - (2 * additionalPadding);
+		return getBounds().height();
 
 	}
 

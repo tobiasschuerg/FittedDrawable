@@ -95,7 +95,11 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				scaledBitmap = fitBitmapInCircle(radius);
 				break;
 			case RECTANGLE:
-				scaledBitmap = fitBitmapInRectangle(getWidth(), getHeight());
+				if (getWidth() > getHeight()) {
+					scaledBitmap = fitBitmapInRectangle(getWidth() - (2 * getAdditionalPadding()), getHeight());
+				} else {
+					scaledBitmap = fitBitmapInRectangle(getWidth(), getHeight() - (2 * getAdditionalPadding()));
+				}
 				break;
 			default:
 				// must not happen

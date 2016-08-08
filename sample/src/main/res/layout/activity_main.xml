@@ -29,8 +29,8 @@
 
                 <ImageView
                     android:id="@+id/image_l1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
                     android:src="@drawable/android"/>
