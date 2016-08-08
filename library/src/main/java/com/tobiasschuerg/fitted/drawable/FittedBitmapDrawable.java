@@ -152,12 +152,29 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 	@Override
 	public int getIntrinsicHeight() {
-		return bitmap.getHeight();
+		switch (getShape()) {
+			case ROUND:
+				return Math.max(bitmap.getHeight(), bitmap.getWidth());
+
+			case RECTANGLE:
+				return bitmap.getHeight();
+
+			default:
+				throw new IllegalStateException();
+		}
 	}
 
 	@Override
 	public int getIntrinsicWidth() {
-		return bitmap.getWidth();
-	}
+		switch (getShape()) {
+			case ROUND:
+				return Math.max(bitmap.getHeight(), bitmap.getWidth());
 
+			case RECTANGLE:
+				return bitmap.getWidth();
+
+			default:
+				throw new IllegalStateException();
+		}
+	}
 }
