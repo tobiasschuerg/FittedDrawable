@@ -77,16 +77,18 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			foregroundPaint().setColor(Color.RED);
 		}
 
-//		if (drawBorder) {
-//			switch (getShape()) {
-//				case ROUND:
-//					canvas.drawCircle(cx, cy, radius, paint);
-//					break;
-//				case RECTANGLE:
-//					canvas.drawColor(getFillColor());
-//					break;
-//			}
-//		}
+		if (drawBorder) {
+			switch (getShape()) {
+				case ROUND:
+					getFillPaint().setColor(Color.LTGRAY);
+					canvas.drawCircle(cx, cy, radius, getFillPaint());
+					getFillPaint().setColor(getFillColor());
+					break;
+				case RECTANGLE:
+					// not needed: canvas.drawColor(getFillColor());
+					break;
+			}
+		}
 
 		Bitmap scaledBitmap;
 		switch (getShape()) {
