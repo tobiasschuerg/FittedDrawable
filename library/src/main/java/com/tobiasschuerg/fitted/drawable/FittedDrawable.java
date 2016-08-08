@@ -33,6 +33,7 @@ public abstract class FittedDrawable extends Drawable {
 		fillPaint = new Paint();
 		fillPaint.setColor(fillColor);
 		fillPaint.setStyle(Paint.Style.FILL);
+		fillPaint.setAntiAlias(true);
 
 		foregroundPaint = new Paint();
 		foregroundPaint.setAntiAlias(true);
