@@ -129,6 +129,9 @@ public abstract class FittedDrawable extends Drawable {
 		return bitmap;
 	}
 
+	/**
+	 * Shortcut for {@link #toBitmap(int, int)} with intrinsic parameters.
+	 */
 	public Bitmap toBitmap() {
 		return toBitmap(getIntrinsicWidth(), getIntrinsicHeight());
 	}
