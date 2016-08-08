@@ -121,6 +121,8 @@ public abstract class FittedDrawable extends Drawable {
 	 *
 	 * @return bitmap from this drawable.
 	 */
+	public Bitmap toBitmap(int width, int height) {
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
 		draw(canvas);
