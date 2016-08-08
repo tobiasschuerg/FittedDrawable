@@ -18,8 +18,8 @@ import android.util.Log;
 
 public class FittedBitmapDrawable extends FittedDrawable {
 
-	private static final boolean DEBUG = false;
 	private static final String TAG = FittedBitmapDrawable.class.getSimpleName();
+
 	private final Bitmap bitmap;
 	private final float aspectRatio;
 	private boolean drawBorder = false;
@@ -30,6 +30,17 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 	public FittedBitmapDrawable(Bitmap bitmap, SHAPE SHAPE) {
 		this(bitmap, SHAPE, getFillColorFromBitmap(bitmap));
+	}
+
+	public FittedBitmapDrawable(Bitmap bitmap, SHAPE shape, int color) {
+		super(shape, color);
+		this.bitmap = bitmap;
+		aspectRatio = (float) bitmap.getHeight() / bitmap.getWidth();
+		Log.d(TAG, "Ratio: " + aspectRatio);
+	}
+
+	public FittedBitmapDrawable(Context context, int resource, SHAPE SHAPE, int color) {
+		this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE, color);
 	}
 
 	private static int getFillColorFromBitmap(Bitmap bitmap) {
@@ -47,17 +58,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				return tl; // (tl + tr + bl + br) / 4;
 			}
 		}
-	}
-
-	public FittedBitmapDrawable(Bitmap bitmap, SHAPE shape, int color) {
-		super(shape, color);
-		this.bitmap = bitmap;
-		aspectRatio = (float) bitmap.getHeight() / bitmap.getWidth();
-		Log.d(TAG, "Ratio: " + aspectRatio);
-	}
-
-	public FittedBitmapDrawable(Context context, int resource, SHAPE SHAPE, int color) {
-		this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE, color);
 	}
 
 	public void setDrawBorder(boolean drawBorder) {
@@ -120,21 +120,12 @@ public class FittedBitmapDrawable extends FittedDrawable {
 	 * @return fitted bitmap
 	 */
 	private Bitmap fitBitmapInCircle(int radius) {
-		Bitmap scaledBm;
-		//if (aspectRatio < 0) {
-
 		Double root = Math.sqrt(aspectRatio * aspectRatio + 1f);
-		Log.d(TAG, "Root: " + root);
 
 		Float bmWidth = (2 * radius) / root.floatValue();
-		Float bmHeigth = bmWidth * aspectRatio;
+		Float bmHeight = bmWidth * aspectRatio;
 
-		Log.d(TAG, "Radius * 2: " + 2 * radius);
-		Log.d(TAG, "Width: " + bmWidth);
-		Log.d(TAG, "Heigth: " + bmHeigth);
-
-		scaledBm = Bitmap.createScaledBitmap(bitmap, bmWidth.intValue(), bmHeigth.intValue(), true);
-		return scaledBm;
+		return Bitmap.createScaledBitmap(bitmap, bmWidth.intValue(), bmHeight.intValue(), true);
 	}
 
 	private Bitmap fitBitmapInRectangle(int width, int height) {
@@ -150,8 +141,23 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			scaleWidth = Math.round(height / aspectRatio);
 		}
 
+		if (DEBUG) {
+			Log.d(TAG, "Scaled rectangle width: " + scaleWidth);
+			Log.d(TAG, "Scaled rectangle height: " + scaleHeight);
+		}
+
 		scaledBm = Bitmap.createScaledBitmap(bitmap, scaleWidth, scaleHeight, true);
 		return scaledBm;
+	}
+
+	@Override
+	public int getIntrinsicHeight() {
+		return bitmap.getHeight();
+	}
+
+	@Override
+	public int getIntrinsicWidth() {
+		return bitmap.getWidth();
 	}
 
 }

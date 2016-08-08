@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 /**
  * Super class for fitted drawables which fit their content into a predefined shape.
@@ -14,6 +15,8 @@ import android.support.annotation.NonNull;
  */
 
 public abstract class FittedDrawable extends Drawable {
+
+	protected static final boolean DEBUG = true;
 
 	private final SHAPE shape;
 	private final int fillColor;
@@ -36,7 +39,7 @@ public abstract class FittedDrawable extends Drawable {
 		foregroundPaint.setStyle(Paint.Style.STROKE);
 	}
 
-	public Paint getFillPaint() {
+	Paint getFillPaint() {
 		return fillPaint;
 	}
 
@@ -69,7 +72,12 @@ public abstract class FittedDrawable extends Drawable {
 	int getInnerCircleRadius() {
 		int w = getWidth();
 		int h = getHeight();
-		return Math.min(w, h) / 2;
+		int radius = Math.min(w, h) / 2;
+		if (DEBUG) {
+			Log.d("FittedDrawable", "Width: " + w + ", height: " + h);
+			Log.d("FittedDrawable", "Radius: " + radius);
+		}
+		return radius;
 	}
 
 	int getCenterX() {
@@ -86,6 +94,7 @@ public abstract class FittedDrawable extends Drawable {
 
 	int getHeight() {
 		return getBounds().height();
+
 	}
 
 	@Override

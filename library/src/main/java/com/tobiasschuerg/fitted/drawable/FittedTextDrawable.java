@@ -13,6 +13,13 @@ import android.util.Log;
  */
 public class FittedTextDrawable extends FittedDrawable {
 
+	private static final String TAG = FittedTextDrawable.class.getSimpleName();
+	// Pick a reasonably large value for the test. Larger values produce
+	// more accurate results, but may cause problems with hardware
+	// acceleration. But there are workarounds for that, too; refer to
+	// http://stackoverflow.com/questions/6253528/font-size-too-large-to-fit-in-cache
+	private static final float DEFAULT_TEXT_SIZE = 48f;
+	@NonNull
 	private final String text;
 
 	public FittedTextDrawable(@NonNull String text, int textColor, int backgroundColor, SHAPE shape) {
@@ -44,7 +51,7 @@ public class FittedTextDrawable extends FittedDrawable {
 				break;
 		}
 
-		setTextSizeForWidthHeight(foregroundPaint(), textWidth, textHeight, text);
+		setTextSizeForWidthHeight(foregroundPaint(), textWidth, textHeight);
 
 		int xPos = getWidth() / 2;
 		int yPos = (int) ((getHeight() / 2) - ((foregroundPaint().descent() + foregroundPaint().ascent()) / 2));
@@ -77,29 +84,56 @@ public class FittedTextDrawable extends FittedDrawable {
 	 *
 	 * @param paint        the Paint to set the text size for
 	 * @param desiredWidth the desired width
-	 * @param text         the text that should be that width
 	 */
-	private static void setTextSizeForWidthHeight(Paint paint, float desiredWidth, float desiredHeight, String text) {
-
-		// Pick a reasonably large value for the test. Larger values produce
-		// more accurate results, but may cause problems with hardware
-		// acceleration. But there are workarounds for that, too; refer to
-		// http://stackoverflow.com/questions/6253528/font-size-too-large-to-fit-in-cache
-		final float testTextSize = 48f;
-
-		// Get the bounds of the text, using our testTextSize.
-		paint.setTextSize(testTextSize);
-		Rect bounds = new Rect();
-		paint.getTextBounds(text, 0, text.length(), bounds);
+	private void setTextSizeForWidthHeight(Paint paint, float desiredWidth, float desiredHeight) {
+		Rect bounds = getDefaultTextBounds(paint);
 
 		// Calculate the desired size as a proportion of our testTextSize.
-		float textSizeWidth = testTextSize * desiredWidth / bounds.width();
-		float textSizeHeight = testTextSize * desiredHeight / bounds.height();
+		float textSizeWidth = DEFAULT_TEXT_SIZE * desiredWidth / bounds.width();
+		float textSizeHeight = DEFAULT_TEXT_SIZE * desiredHeight / bounds.height();
 
 		float textSize = Math.min(textSizeWidth, textSizeHeight);
 		Log.d("Fitted text size", "size: " + textSize);
 
 		// Set the paint for that size.
 		paint.setTextSize(textSize);
+	}
+
+	/**
+	 * Get the bounds of the text, using our testTextSize.
+	 */
+	@NonNull
+	private Rect getDefaultTextBounds(Paint paint) {
+		Log.d(TAG, "Getting bounds for >" + text + "<");
+		paint.setTextSize(DEFAULT_TEXT_SIZE);
+		Rect bounds = new Rect();
+		paint.getTextBounds(text, 0, text.length(), bounds);
+		return bounds;
+	}
+
+	@Override
+	public int getIntrinsicWidth() {
+		int width = getWidth();
+		Log.d("FittedTextDrawable", "Width: " + width);
+		if (width <= 1) {
+			width = Math.max(getDefaultTextBounds().width(), getDefaultTextBounds().height());
+		}
+		Log.d("FittedTextDrawable", "Width after: " + width);
+		return width;
+	}
+
+	@Override
+	public int getIntrinsicHeight() {
+		int height = getHeight();
+		Log.d("FittedTextDrawable", "Height: " + height);
+		if (height <= 1) {
+			height = Math.max(getDefaultTextBounds().width(), getDefaultTextBounds().height());
+		}
+		Log.d("FittedTextDrawable", "Height after: " + height);
+		return height;
+	}
+
+	private Rect getDefaultTextBounds() {
+		return getDefaultTextBounds(new Paint());
 	}
 }
