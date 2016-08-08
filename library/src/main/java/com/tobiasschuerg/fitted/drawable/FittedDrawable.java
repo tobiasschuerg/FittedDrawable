@@ -1,5 +1,6 @@
 package com.tobiasschuerg.fitted.drawable;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
@@ -112,6 +113,18 @@ public abstract class FittedDrawable extends Drawable {
 	@Override
 	public void setColorFilter(ColorFilter cf) {
 		foregroundPaint().setColorFilter(cf);
+	}
+
+
+	/**
+	 * Based on http://stackoverflow.com/a/10600736
+	 *
+	 * @return bitmap from this drawable.
+	 */
+		Canvas canvas = new Canvas(bitmap);
+		setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+		draw(canvas);
+		return bitmap;
 	}
 
 }

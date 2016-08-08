@@ -61,24 +61,6 @@ public class FittedTextDrawable extends FittedDrawable {
 	}
 
 	/**
-	 * Based on http://stackoverflow.com/a/10600736
-	 */
-	public Bitmap toBitmap() {
-		Bitmap bitmap;
-
-		if (getIntrinsicWidth() <= 0 || getIntrinsicHeight() <= 0) {
-			bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-		} else {
-			bitmap = Bitmap.createBitmap(getIntrinsicWidth(), getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-		}
-
-		Canvas canvas = new Canvas(bitmap);
-		setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-		draw(canvas);
-		return bitmap;
-	}
-
-	/**
 	 * Sets the text size for a Paint object so a given string of text will be a
 	 * given width. http://stackoverflow.com/a/21895626/570168
 	 *
