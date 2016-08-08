@@ -129,4 +129,7 @@ public abstract class FittedDrawable extends Drawable {
 		return bitmap;
 	}
 
+	public Bitmap toBitmap() {
+		return toBitmap(getIntrinsicWidth(), getIntrinsicHeight());
+	}
 }
