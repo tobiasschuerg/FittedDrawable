@@ -110,6 +110,11 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			foregroundPaint().setColor(Color.RED);
 			foregroundPaint().setStyle(Paint.Style.STROKE);
 			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), foregroundPaint());
+
+			foregroundPaint().setColor(Color.YELLOW);
+			int cx2 = cx - getIntrinsicWidth() / 2;
+			int cy2 = cy - getIntrinsicHeight() / 2;
+			canvas.drawRect(cx2, cy2, cx2 + getIntrinsicWidth(), cy2 + getIntrinsicHeight(), foregroundPaint());
 		}
 	}
 
