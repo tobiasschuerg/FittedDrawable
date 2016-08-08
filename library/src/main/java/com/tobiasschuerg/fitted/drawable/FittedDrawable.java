@@ -1,5 +1,6 @@
 package com.tobiasschuerg.fitted.drawable;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -7,7 +8,9 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 
 /**
  * Super class for fitted drawables which fit their content into a predefined shape.
@@ -24,6 +27,15 @@ public abstract class FittedDrawable extends Drawable {
 	private final Paint fillPaint;
 	private final Paint foregroundPaint;
 
+	public int getAdditionalPadding() {
+		if (DEBUG) {
+			Log.d("FittedDrawable", "Padding is " + additionalPadding);
+		}
+		return additionalPadding;
+	}
+
+	private int additionalPadding = 0;
+
 	FittedDrawable(SHAPE shape, int backgroundColor) {
 		this.shape = shape;
 		this.fillColor = backgroundColor;
@@ -38,6 +50,17 @@ public abstract class FittedDrawable extends Drawable {
 		foregroundPaint.setFilterBitmap(true);
 		foregroundPaint.setDither(true);
 		foregroundPaint.setStyle(Paint.Style.STROKE);
+	}
+
+	/**
+	 * Expects dp!
+	 *
+	 * @param padding padding in dp
+	 */
+	public void setAdditionalPadding(int padding) {
+		Log.d("FittedDrawable", "Setting additionalPadding " + padding);
+		DisplayMetrics displaymetrics = Resources.getSystem().getDisplayMetrics();
+		this.additionalPadding = (int) (padding * displaymetrics.density);
 	}
 
 	Paint getFillPaint() {
@@ -90,11 +113,11 @@ public abstract class FittedDrawable extends Drawable {
 	}
 
 	int getWidth() {
-		return getBounds().width();
+		return getBounds().width() - (2 * additionalPadding);
 	}
 
 	int getHeight() {
-		return getBounds().height();
+		return getBounds().height() - (2 * additionalPadding);
 
 	}
 

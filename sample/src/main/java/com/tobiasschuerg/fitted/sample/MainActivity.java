@@ -25,22 +25,23 @@ public class MainActivity extends AppCompatActivity {
 		int color2 = ContextCompat.getColor(getApplicationContext(), R.color.colorAccent);
 
 		// ### left
-//
-//		ImageView image11 = (ImageView) findViewById(R.id.image_l1);
-//		FittedBitmapDrawable fd1 = new FittedBitmapDrawable(this, R.drawable.android, ROUND, color1);
-//		fd1.setColorFilter(color2, PorterDuff.Mode.SRC_ATOP);
-//		image11.setImageDrawable(fd1);
-//
-//		ImageView image12 = (ImageView) findViewById(R.id.image_l2);
-//		image12.setImageDrawable(new FittedBitmapDrawable(this, R.drawable.android, RECTANGLE, color1));
-//
-//		ImageView image13 = (ImageView) findViewById(R.id.image_l3);
-//		image13.setImageDrawable(new FittedBitmapDrawable(this, R.drawable.android, RECTANGLE, color1));
-//
-//		ImageView image14 = (ImageView) findViewById(R.id.image_l4);
-//		image14.setImageDrawable(new FittedBitmapDrawable(this, R.drawable.android, RECTANGLE, color1));
-//
-//
+
+		ImageView image11 = (ImageView) findViewById(R.id.image_l1);
+		FittedBitmapDrawable fd1 = new FittedBitmapDrawable(this, R.drawable.android, RECTANGLE, color1);
+		fd1.setColorFilter(color2, PorterDuff.Mode.SRC_ATOP);
+		fd1.setAdditionalPadding(8);
+		image11.setImageDrawable(fd1);
+
+		ImageView image12 = (ImageView) findViewById(R.id.image_l2);
+		image12.setImageDrawable(new FittedBitmapDrawable(this, R.drawable.android, ROUND, color1));
+
+		ImageView image13 = (ImageView) findViewById(R.id.image_l3);
+		image13.setImageDrawable(new FittedBitmapDrawable(this, R.drawable.android, RECTANGLE, color1));
+
+		ImageView image14 = (ImageView) findViewById(R.id.image_l4);
+		image14.setImageDrawable(new FittedBitmapDrawable(this, R.drawable.android, RECTANGLE, color1));
+
+
 		// ### right
 
 		final ImageView image2 = (ImageView) findViewById(R.id.image_r1);
