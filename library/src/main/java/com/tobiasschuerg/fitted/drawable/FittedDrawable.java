@@ -23,7 +23,7 @@ public abstract class FittedDrawable extends Drawable {
 	private final int fillColor;
 	private final Paint fillPaint;
 	private final Paint foregroundPaint;
-	protected boolean debug = false;
+	protected static boolean debug = false;
 	private int additionalPadding = 0;
 
 	FittedDrawable(SHAPE shape, int backgroundColor) {
