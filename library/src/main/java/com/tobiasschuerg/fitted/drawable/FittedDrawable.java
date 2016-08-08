@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 
 /**
  * Super class for fitted drawables which fit their content into a predefined shape.
@@ -20,20 +19,11 @@ import android.util.TypedValue;
 
 public abstract class FittedDrawable extends Drawable {
 
-	protected static final boolean DEBUG = true;
-
 	private final SHAPE shape;
 	private final int fillColor;
 	private final Paint fillPaint;
 	private final Paint foregroundPaint;
-
-	public int getAdditionalPadding() {
-		if (DEBUG) {
-			Log.d("FittedDrawable", "Padding is " + additionalPadding);
-		}
-		return additionalPadding;
-	}
-
+	protected boolean debug = false;
 	private int additionalPadding = 0;
 
 	FittedDrawable(SHAPE shape, int backgroundColor) {
@@ -52,6 +42,17 @@ public abstract class FittedDrawable extends Drawable {
 		foregroundPaint.setStyle(Paint.Style.STROKE);
 	}
 
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
+
+	public int getAdditionalPadding() {
+		if (debug) {
+			Log.d("FittedDrawable", "Padding is " + additionalPadding);
+		}
+		return additionalPadding;
+	}
+
 	/**
 	 * Expects dp!
 	 *
@@ -63,12 +64,24 @@ public abstract class FittedDrawable extends Drawable {
 		this.additionalPadding = (int) (padding * displaymetrics.density);
 	}
 
-	Paint getFillPaint() {
-		return fillPaint;
+	/**
+	 * Shortcut for {@link #toBitmap(int, int)} with intrinsic parameters.
+	 */
+	public Bitmap toBitmap() {
+		return toBitmap(getIntrinsicWidth(), getIntrinsicHeight());
 	}
 
-	public Paint foregroundPaint() {
-		return foregroundPaint;
+	/**
+	 * Based on http://stackoverflow.com/a/10600736
+	 *
+	 * @return bitmap from this drawable.
+	 */
+	public Bitmap toBitmap(int width, int height) {
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+		draw(canvas);
+		return bitmap;
 	}
 
 	@Override
@@ -97,7 +110,7 @@ public abstract class FittedDrawable extends Drawable {
 		int w = getWidth();
 		int h = getHeight();
 		int radius = Math.min(w, h) / 2;
-		if (DEBUG) {
+		if (debug) {
 			Log.d("FittedDrawable", "Width: " + w + ", height: " + h);
 			Log.d("FittedDrawable", "Radius: " + radius);
 		}
@@ -122,15 +135,12 @@ public abstract class FittedDrawable extends Drawable {
 	}
 
 	@Override
-	public int getOpacity() {
-		return PixelFormat.TRANSLUCENT;
-	}
-
-	public enum SHAPE {ROUND, RECTANGLE}
-
-	@Override
 	public void setAlpha(int alpha) {
 		foregroundPaint().setAlpha(alpha);
+	}
+
+	public Paint foregroundPaint() {
+		return foregroundPaint;
 	}
 
 	@Override
@@ -138,24 +148,14 @@ public abstract class FittedDrawable extends Drawable {
 		foregroundPaint().setColorFilter(cf);
 	}
 
-
-	/**
-	 * Based on http://stackoverflow.com/a/10600736
-	 *
-	 * @return bitmap from this drawable.
-	 */
-	public Bitmap toBitmap(int width, int height) {
-		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-		setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-		draw(canvas);
-		return bitmap;
+	@Override
+	public int getOpacity() {
+		return PixelFormat.TRANSLUCENT;
 	}
 
-	/**
-	 * Shortcut for {@link #toBitmap(int, int)} with intrinsic parameters.
-	 */
-	public Bitmap toBitmap() {
-		return toBitmap(getIntrinsicWidth(), getIntrinsicHeight());
+	Paint getFillPaint() {
+		return fillPaint;
 	}
+
+	public enum SHAPE {ROUND, RECTANGLE}
 }

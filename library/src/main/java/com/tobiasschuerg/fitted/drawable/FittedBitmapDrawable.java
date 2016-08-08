@@ -52,7 +52,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			return tl;
 		} else {
 			Log.e("FillColor", "Bitmap has no monochrome border!");
-			if (DEBUG) {
+			if (debug) {
 				throw new IllegalArgumentException();
 			} else {
 				return tl; // (tl + tr + bl + br) / 4;
@@ -72,7 +72,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		int cx = getCenterX();
 		int cy = getCenterY();
 
-		if (DEBUG) {
+		if (debug) {
 			drawBorder = true;
 			foregroundPaint().setColor(Color.RED);
 		}
@@ -110,7 +110,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		float vOff = cy - scaledBitmap.getHeight() / 2;
 		canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
 
-		if (DEBUG || (getShape() == SHAPE.RECTANGLE && drawBorder)) {
+		if (debug || (getShape() == SHAPE.RECTANGLE && drawBorder)) {
 			foregroundPaint().setColor(Color.RED);
 			foregroundPaint().setStyle(Paint.Style.STROKE);
 			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), foregroundPaint());
@@ -150,7 +150,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			scaleWidth = Math.round(height / aspectRatio);
 		}
 
-		if (DEBUG) {
+		if (debug) {
 			Log.d(TAG, "Scaled rectangle width: " + scaleWidth);
 			Log.d(TAG, "Scaled rectangle height: " + scaleHeight);
 		}
