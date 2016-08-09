@@ -20,13 +20,13 @@ import android.util.Log;
 public abstract class FittedDrawable extends Drawable {
 
 	final static String LOG_TAG = FittedDrawable.class.getSimpleName();
+	static boolean debug = false;
 	private final SHAPE shape;
 	private final int fillColor;
 	private final Paint fillPaint;
 	private final Paint foregroundPaint;
-	static boolean debug = false;
-	private int additionalPadding = 0;
 	boolean isAlphaEnabled;
+	private int additionalPadding = 0;
 
 	FittedDrawable(SHAPE shape, int backgroundColor) {
 		this.shape = shape;
@@ -47,7 +47,7 @@ public abstract class FittedDrawable extends Drawable {
 	}
 
 	public void setDebug(boolean debug) {
-		this.debug = debug;
+		FittedDrawable.debug = debug;
 	}
 
 	public int getAdditionalPadding() {
@@ -143,15 +143,7 @@ public abstract class FittedDrawable extends Drawable {
 		Log.d(LOG_TAG, "setAlpha(" + alpha + ")");
 		foregroundPaint.setAlpha(alpha);
 		fillPaint.setAlpha(alpha);
-		if (alpha == 255) {
-			isAlphaEnabled = false;
-		} else {
-			isAlphaEnabled = true;
-		}
-	}
-
-	public Paint foregroundPaint() {
-		return foregroundPaint;
+		isAlphaEnabled = alpha != 255;
 	}
 
 	@Override
@@ -164,6 +156,10 @@ public abstract class FittedDrawable extends Drawable {
 	@Override
 	public int getOpacity() {
 		return PixelFormat.TRANSLUCENT;
+	}
+
+	public Paint foregroundPaint() {
+		return foregroundPaint;
 	}
 
 	Paint getFillPaint() {
