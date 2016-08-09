@@ -113,6 +113,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 		Paint clearPaint = new Paint();
 		clearPaint.setColor(Color.WHITE);
+		clearPaint.setStyle(Paint.Style.FILL);
 
 		canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
 		canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
