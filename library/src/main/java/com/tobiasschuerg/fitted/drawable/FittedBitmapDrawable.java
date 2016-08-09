@@ -120,7 +120,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
 		}
 
-		canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
+		// canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
 
 		if (debug || (getShape() == SHAPE.RECTANGLE && drawBorder)) {
 			foregroundPaint().setColor(Color.RED);

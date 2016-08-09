@@ -24,7 +24,7 @@ public abstract class FittedDrawable extends Drawable {
 	private final int fillColor;
 	private final Paint fillPaint;
 	private final Paint foregroundPaint;
-	protected static boolean debug = false;
+	boolean debug = false;
 	private int additionalPadding = 0;
 	boolean isAlphaEnabled;
 
@@ -36,6 +36,7 @@ public abstract class FittedDrawable extends Drawable {
 		fillPaint.setColor(fillColor);
 		fillPaint.setStyle(Paint.Style.FILL);
 		fillPaint.setAntiAlias(true);
+		fillPaint.setDither(true);
 
 		foregroundPaint = new Paint();
 		foregroundPaint.setAntiAlias(true);
@@ -140,7 +141,7 @@ public abstract class FittedDrawable extends Drawable {
 	@Override
 	public void setAlpha(int alpha) {
 		Log.d(LOG_TAG, "setAlpha(" + alpha + ")");
-		foregroundPaint().setAlpha(alpha);
+		foregroundPaint.setAlpha(alpha);
 		fillPaint.setAlpha(alpha);
 		if (alpha == 255) {
 			isAlphaEnabled = false;
@@ -155,7 +156,9 @@ public abstract class FittedDrawable extends Drawable {
 
 	@Override
 	public void setColorFilter(ColorFilter cf) {
-		foregroundPaint().setColorFilter(cf);
+		Log.d(LOG_TAG, "color filter set");
+		foregroundPaint.setColorFilter(cf);
+		fillPaint.setColorFilter(cf);
 	}
 
 	@Override
