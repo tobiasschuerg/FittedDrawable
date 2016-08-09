@@ -26,6 +26,7 @@ public abstract class FittedDrawable extends Drawable {
 	private final Paint foregroundPaint;
 	protected static boolean debug = false;
 	private int additionalPadding = 0;
+	boolean isAlphaEnabled;
 
 	FittedDrawable(SHAPE shape, int backgroundColor) {
 		this.shape = shape;
@@ -141,6 +142,11 @@ public abstract class FittedDrawable extends Drawable {
 		Log.d(LOG_TAG, "setAlpha(" + alpha + ")");
 		foregroundPaint().setAlpha(alpha);
 		fillPaint.setAlpha(alpha);
+		if (alpha == 255) {
+			isAlphaEnabled = false;
+		} else {
+			isAlphaEnabled = true;
+		}
 	}
 
 	public Paint foregroundPaint() {
