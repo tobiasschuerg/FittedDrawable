@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -110,6 +112,14 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 		float hOff = cx - scaledBitmap.getWidth() / 2;
 		float vOff = cy - scaledBitmap.getHeight() / 2;
+
+		if (isAlphaEnabled) {
+			// clear background behind image
+			Paint clearPaint = new Paint();
+			clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
+		}
+
 		canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
 
 		if (debug || (getShape() == SHAPE.RECTANGLE && drawBorder)) {
