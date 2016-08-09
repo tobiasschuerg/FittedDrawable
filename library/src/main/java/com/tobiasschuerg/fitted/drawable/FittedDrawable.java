@@ -19,6 +19,7 @@ import android.util.Log;
 
 public abstract class FittedDrawable extends Drawable {
 
+	final static String LOG_TAG = FittedDrawable.class.getSimpleName();
 	private final SHAPE shape;
 	private final int fillColor;
 	private final Paint fillPaint;
@@ -112,8 +113,8 @@ public abstract class FittedDrawable extends Drawable {
 		int h = getHeight();
 		int radius = Math.min(w, h) / 2;
 		if (debug) {
-			Log.d("FittedDrawable", "Width: " + w + ", height: " + h);
-			Log.d("FittedDrawable", "Radius: " + radius);
+			Log.d(LOG_TAG, "Width: " + w + ", height: " + h);
+			Log.d(LOG_TAG, "Radius: " + radius);
 		}
 		return radius;
 	}
@@ -137,7 +138,9 @@ public abstract class FittedDrawable extends Drawable {
 
 	@Override
 	public void setAlpha(int alpha) {
+		Log.d(LOG_TAG, "setAlpha(" + alpha + ")");
 		foregroundPaint().setAlpha(alpha);
+		fillPaint.setAlpha(alpha);
 	}
 
 	public Paint foregroundPaint() {
