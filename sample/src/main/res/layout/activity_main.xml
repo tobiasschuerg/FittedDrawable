@@ -16,24 +16,20 @@
         <ImageView
             android:id="@+id/image_l1"
             style="@style/image_preview"
-            android:padding="16dp"
-            android:src="@drawable/android"/>
+            android:padding="16dp"/>
 
         <ImageView
             android:id="@+id/image_l2"
-            style="@style/image_preview"
-            android:src="@drawable/android"/>
+            style="@style/image_preview"/>
 
         <ImageView
             android:id="@+id/image_l3"
             style="@style/image_preview"
-            android:padding="16dp"
-            android:src="@drawable/android"/>
+            android:padding="16dp"/>
 
         <ImageView
             android:id="@+id/image_l4"
-            style="@style/image_preview"
-            android:src="@drawable/android"/>
+            style="@style/image_preview"/>
 
 
     </LinearLayout>

@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 		int color1 = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
 		int color2 = ContextCompat.getColor(getApplicationContext(), R.color.colorAccent);
 
-		int src = R.drawable.android;
+		int src = R.drawable.andfoo2;
 
 		// ### left
 
@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 		ImageView image12 = (ImageView) findViewById(R.id.image_l2);
 		final FittedBitmapDrawable fd2 = new FittedBitmapDrawable(this, src, ROUND);
 		image12.setImageDrawable(fd2);
+
+		src = R.drawable.andfoo;
 
 		ImageView image13 = (ImageView) findViewById(R.id.image_l3);
 		final FittedBitmapDrawable fd3 = new FittedBitmapDrawable(this, src, RECTANGLE);
