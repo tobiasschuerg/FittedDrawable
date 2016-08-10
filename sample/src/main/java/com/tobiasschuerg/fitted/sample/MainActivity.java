@@ -26,28 +26,31 @@ public class MainActivity extends AppCompatActivity {
 		int color1 = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
 		int color2 = ContextCompat.getColor(getApplicationContext(), R.color.colorAccent);
 
+		int src = R.drawable.android;
+
 		// ### left
 
 		ImageView image11 = (ImageView) findViewById(R.id.image_l1);
-		FittedBitmapDrawable fd1 = new FittedBitmapDrawable(this, R.drawable.logobahnbonus, RECTANGLE);
-		fd1.debug = true;
-		fd1.setAdditionalPadding(50);
+		FittedBitmapDrawable fd1 = new FittedBitmapDrawable(this, src, RECTANGLE);
+//		fd1.debug = true;
+//		fd1.setAdditionalPadding(50);
 		image11.setImageDrawable(fd1);
 
 		ImageView image12 = (ImageView) findViewById(R.id.image_l2);
-		final FittedBitmapDrawable fd2 = new FittedBitmapDrawable(this, R.drawable.logobahnbonus, ROUND);
+		final FittedBitmapDrawable fd2 = new FittedBitmapDrawable(this, src, ROUND);
 		image12.setImageDrawable(fd2);
 
 		ImageView image13 = (ImageView) findViewById(R.id.image_l3);
-		final FittedBitmapDrawable fd3 = new FittedBitmapDrawable(this, R.drawable.logobahnbonus, RECTANGLE);
+		final FittedBitmapDrawable fd3 = new FittedBitmapDrawable(this, src, RECTANGLE);
 		fd3.setTileMode(Shader.TileMode.CLAMP);
-		fd3.setDebug(true);
-		fd3.setAdditionalPadding(50);
+//		fd3.setDebug(true);
+//		fd3.setAdditionalPadding(50);
 		image13.setImageDrawable(fd3);
 
 		ImageView image14 = (ImageView) findViewById(R.id.image_l4);
-		final FittedBitmapDrawable fd4 = new FittedBitmapDrawable(this, R.drawable.logobahnbonus, ROUND);
+		final FittedBitmapDrawable fd4 = new FittedBitmapDrawable(this, src, ROUND);
 		fd4.setTileMode(Shader.TileMode.CLAMP);
+		fd4.setAdditionalPadding(2);
 		image14.setImageDrawable(fd4);
 
 

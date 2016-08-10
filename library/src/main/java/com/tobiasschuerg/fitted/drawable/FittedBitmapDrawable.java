@@ -131,8 +131,17 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			case ROUND:
 				if (tileMode != null) {
-					RectF logoBounds = new RectF(getBounds());
-					canvas.drawCircle(targetRect.width() / 2f, targetRect.height() / 2f, radius, getShaderPaint(scaledBitmap, logoBounds));
+					int offLeft = radius - (scaledBitmap.getWidth() / 2) + getAdditionalPadding();
+					int offTop = radius - (scaledBitmap.getHeight() / 2) + getAdditionalPadding();
+
+					RectF inRect = new RectF(0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight());
+					RectF outRect = new RectF(
+							offLeft, offTop,
+							radius * 2 - offLeft,
+							radius * 2 - offTop);
+
+					Paint shaderPaint = getShaderPaint(scaledBitmap, inRect, outRect);
+					canvas.drawCircle(cx, cy, radius, shaderPaint);
 				} else {
 					canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
 				}
@@ -140,8 +149,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			case RECTANGLE:
 				if (tileMode != null) {
-					Paint sp = getShaderPaint(scaledBitmap, targetRect);
-					sp.setColor(Color.YELLOW);
+					Paint sp = getShaderPaint(scaledBitmap, targetRect, targetRect);
 					// canvas.drawRect(targetRect, sp);
 					canvas.drawPaint(sp);
 				} else {
@@ -166,13 +174,11 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		}
 	}
 
-	private Paint getShaderPaint(Bitmap bitmap, RectF targetBounds) {
-		RectF bitmapRect = new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
+	private Paint getShaderPaint(Bitmap bm, RectF bitmapBoudns, RectF targetBounds) {
 		Matrix shaderMatrix = new Matrix();
-		shaderMatrix.setRectToRect(bitmapRect, targetBounds, Matrix.ScaleToFit.CENTER);
+		shaderMatrix.setRectToRect(bitmapBoudns, targetBounds, Matrix.ScaleToFit.CENTER);
 
-		BitmapShader shader = new BitmapShader(bitmap, tileMode, tileMode);
+		BitmapShader shader = new BitmapShader(bm, tileMode, tileMode);
 		shader.setLocalMatrix(shaderMatrix);
 
 		Paint p = new Paint();
