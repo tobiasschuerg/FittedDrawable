@@ -3,9 +3,11 @@ package com.tobiasschuerg.fitted.drawable;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
@@ -20,7 +22,7 @@ import android.util.Log;
 public abstract class FittedDrawable extends Drawable {
 
 	final static String LOG_TAG = FittedDrawable.class.getSimpleName();
-	static boolean debug = false;
+	public boolean debug = false;
 	private final SHAPE shape;
 	private final int fillColor;
 	private final Paint fillPaint;
@@ -47,7 +49,7 @@ public abstract class FittedDrawable extends Drawable {
 	}
 
 	public void setDebug(boolean debug) {
-		FittedDrawable.debug = debug;
+		this.debug = debug;
 	}
 
 	public int getAdditionalPadding() {
@@ -90,10 +92,16 @@ public abstract class FittedDrawable extends Drawable {
 
 	@Override
 	public void draw(@NonNull Canvas canvas) {
+		if (debug) {
+			canvas.drawColor(Color.YELLOW);
+			Log.d(LOG_TAG, "canvas width: " + getWidth() + " height: " + getHeight());
+		}
+
 		// draw the background for the selected shape
 		switch (getShape()) {
 			case RECTANGLE:
-				canvas.drawColor(getFillColor());
+				// canvas.drawColor(getFillColor());
+
 				break;
 			case ROUND:
 				int radius = getInnerCircleRadius();

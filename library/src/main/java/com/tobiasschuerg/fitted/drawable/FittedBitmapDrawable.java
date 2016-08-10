@@ -3,12 +3,18 @@ package com.tobiasschuerg.fitted.drawable;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.BuildConfig;
 import android.util.Log;
 
 /**
@@ -25,6 +31,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 	private final Bitmap bitmap;
 	private final float aspectRatio;
 	private boolean drawBorder = false;
+	@Nullable
+	private Shader.TileMode tileMode;
 
 	public FittedBitmapDrawable(Context context, int resource, SHAPE SHAPE) {
 		this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE);
@@ -53,12 +61,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		if (tl == tr && tl == bl && tl == br) {
 			return tl;
 		} else {
-			Log.e("FillColor", "Bitmap has no monochrome border!");
-			if (debug) {
-				throw new IllegalArgumentException();
-			} else {
-				return tl; // (tl + tr + bl + br) / 4;
-			}
+			Log.w("FillColor", "Bitmap has no monochrome border! Taking (1, 1)");
+			return tl; // (tl + tr + bl + br) / 4;
 		}
 	}
 
@@ -87,7 +91,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 					getFillPaint().setColor(getFillColor());
 					break;
 				case RECTANGLE:
-					// not needed: canvas.drawColor(getFillColor());
+					// not needed:
+					// canvas.drawColor(getFillColor());
 					break;
 			}
 		}
@@ -120,18 +125,61 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
 		}
 
-		canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
+		RectF targetRect = new RectF(0f, 0f, getWidth(), getHeight());
+
+		switch (getShape()) {
+
+			case ROUND:
+				if (tileMode != null) {
+					RectF logoBounds = new RectF(getBounds());
+					canvas.drawCircle(targetRect.width() / 2f, targetRect.height() / 2f, radius, getShaderPaint(scaledBitmap, logoBounds));
+				} else {
+					canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
+				}
+				break;
+
+			case RECTANGLE:
+				if (tileMode != null) {
+					Paint sp = getShaderPaint(scaledBitmap, targetRect);
+					sp.setColor(Color.YELLOW);
+					// canvas.drawRect(targetRect, sp);
+					canvas.drawPaint(sp);
+				} else {
+					canvas.drawColor(getFillColor());
+					canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
+				}
+				break;
+		}
+
 
 		if (debug || (getShape() == SHAPE.RECTANGLE && drawBorder)) {
-			foregroundPaint().setColor(Color.RED);
+			// Bitmap borders
+			foregroundPaint().setColor(Color.BLUE);
 			foregroundPaint().setStyle(Paint.Style.STROKE);
 			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), foregroundPaint());
 
-			foregroundPaint().setColor(Color.YELLOW);
+			// intrinsic borders
+			foregroundPaint().setColor(Color.RED);
 			int cx2 = cx - getIntrinsicWidth() / 2;
 			int cy2 = cy - getIntrinsicHeight() / 2;
 			canvas.drawRect(cx2, cy2, cx2 + getIntrinsicWidth(), cy2 + getIntrinsicHeight(), foregroundPaint());
 		}
+	}
+
+	private Paint getShaderPaint(Bitmap bitmap, RectF targetBounds) {
+		RectF bitmapRect = new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+		Matrix shaderMatrix = new Matrix();
+		shaderMatrix.setRectToRect(bitmapRect, targetBounds, Matrix.ScaleToFit.CENTER);
+
+		BitmapShader shader = new BitmapShader(bitmap, tileMode, tileMode);
+		shader.setLocalMatrix(shaderMatrix);
+
+		Paint p = new Paint();
+		p.setAntiAlias(true);
+		p.setShader(shader);
+
+		return p;
 	}
 
 	/**
@@ -150,6 +198,10 @@ public class FittedBitmapDrawable extends FittedDrawable {
 	}
 
 	private Bitmap fitBitmapInRectangle(int width, int height) {
+		if (debug) {
+			Log.d(TAG, "Rectangle width: " + width);
+			Log.d(TAG, "Rectangle height: " + height);
+		}
 		Bitmap scaledBm;
 		int scaleWidth;
 		int scaleHeight;
@@ -197,5 +249,9 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			default:
 				throw new IllegalStateException();
 		}
+	}
+
+	public void setTileMode(@Nullable Shader.TileMode tileMode) {
+		this.tileMode = tileMode;
 	}
 }
