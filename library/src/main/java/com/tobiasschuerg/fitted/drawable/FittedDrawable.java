@@ -45,7 +45,7 @@ public abstract class FittedDrawable extends Drawable {
 		foregroundPaint.setTextAlign(Paint.Align.CENTER);
 		foregroundPaint.setFilterBitmap(true);
 		foregroundPaint.setDither(true);
-		foregroundPaint.setStyle(Paint.Style.STROKE);
+		foregroundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 	}
 
 	public void setDebug(boolean debug) {
@@ -100,7 +100,7 @@ public abstract class FittedDrawable extends Drawable {
 		// draw the background for the selected shape
 		switch (getShape()) {
 			case RECTANGLE:
-				// canvas.drawColor(getFillColor());
+				canvas.drawColor(getFillColor());
 
 				break;
 			case ROUND:

@@ -29,6 +29,9 @@
 
         <ImageView
             android:id="@+id/image_l4"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="0"
             style="@style/image_preview"/>
 
 

@@ -50,9 +50,13 @@ public class MainActivity extends AppCompatActivity {
 		image13.setImageDrawable(fd3);
 
 		ImageView image14 = (ImageView) findViewById(R.id.image_l4);
-		final FittedBitmapDrawable fd4 = new FittedBitmapDrawable(this, src, ROUND);
-		fd4.setTileMode(Shader.TileMode.CLAMP);
-		fd4.setAdditionalPadding(2);
+//		final FittedBitmapDrawable fd4 = new FittedBitmapDrawable(this, src, ROUND);
+//		fd4.setTileMode(Shader.TileMode.CLAMP);
+//		fd4.setAdditionalPadding(2);
+//		image14.setImageDrawable(fd4);
+
+		final FittedTextDrawable fd4 = new FittedTextDrawable("Android", Color.BLUE, Color.MAGENTA, RECTANGLE);
+		// fd4.setAdditionalPadding(2);
 		image14.setImageDrawable(fd4);
 
 
