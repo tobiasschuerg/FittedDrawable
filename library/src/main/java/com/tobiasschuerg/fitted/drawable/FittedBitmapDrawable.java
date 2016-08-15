@@ -15,7 +15,6 @@ import android.graphics.Shader;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.BuildConfig;
 import android.util.Log;
 
 /**
@@ -99,13 +98,13 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		switch (getShape()) {
 			case ROUND:
 				canvas.drawCircle(cx, cy, --radius, getFillPaint());
-				scaledBitmap = fitBitmapInCircle(radius - getAdditionalPadding());
+				scaledBitmap = fitBitmapInCircle(radius - getAdditionalPaddingPX());
 				break;
 			case RECTANGLE:
 				if (getWidth() > getHeight()) {
-					scaledBitmap = fitBitmapInRectangle(getWidth() - (2 * getAdditionalPadding()), getHeight());
+					scaledBitmap = fitBitmapInRectangle(getWidth() - (2 * getAdditionalPaddingPX()), getHeight());
 				} else {
-					scaledBitmap = fitBitmapInRectangle(getWidth(), getHeight() - (2 * getAdditionalPadding()));
+					scaledBitmap = fitBitmapInRectangle(getWidth(), getHeight() - (2 * getAdditionalPaddingPX()));
 				}
 				break;
 			default:
@@ -128,8 +127,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			case ROUND:
 				if (tileMode != null) {
-					int offLeft = radius - (scaledBitmap.getWidth() / 2) + getAdditionalPadding();
-					int offTop = radius - (scaledBitmap.getHeight() / 2) + getAdditionalPadding();
+					int offLeft = radius - (scaledBitmap.getWidth() / 2) + getAdditionalPaddingPX();
+					int offTop = radius - (scaledBitmap.getHeight() / 2) + getAdditionalPaddingPX();
 
 					RectF inRect = new RectF(0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight());
 					RectF outRect = new RectF(
@@ -149,10 +148,10 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 					RectF sourceRect = new RectF(0f, 0f, getWidth(), getHeight());
 					RectF targetRect = new RectF(
-							getAdditionalPadding(),
-							getAdditionalPadding(),
-							getWidth() - getAdditionalPadding(),
-							getHeight() - getAdditionalPadding());
+							getAdditionalPaddingPX(),
+							getAdditionalPaddingPX(),
+							getWidth() - getAdditionalPaddingPX(),
+							getHeight() - getAdditionalPaddingPX());
 
 
 					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
@@ -160,12 +159,14 @@ public class FittedBitmapDrawable extends FittedDrawable {
 					//canvas.drawPaint(sp);
 					// TODO: add parameter for round corners
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(0, 0, getWidth(), getHeight(), 80, 80, sp);
+						canvas.drawRoundRect(0, 0, getWidth(), getHeight(), borderRadiusPx, borderRadiusPx, sp);
 					} else {
 						canvas.drawRect(0, 0, getWidth(), getHeight(), sp);
 					}
 
-					canvas.drawRect(targetRect, debugPaint);
+					if (debug) {
+						canvas.drawRect(targetRect, debugPaint);
+					}
 				} else {
 					canvas.drawColor(getFillColor());
 					canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
@@ -174,8 +175,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				if (drawBorder) {
 					// TODO: add parameter for round corners
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(0, 0, getWidth(), getHeight(), 80, 80, borderPaint);
-					}else {
+						canvas.drawRoundRect(0, 0, getWidth(), getHeight(), borderRadiusPx, borderRadiusPx, borderPaint);
+					} else {
 						canvas.drawRect(0, 0, getWidth(), getHeight(), borderPaint);
 					}
 				}
@@ -184,7 +185,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		}
 
 
-		if (false && debug || (getShape() == SHAPE.RECTANGLE && drawBorder)) {
+		if (false && debug && (getShape() == SHAPE.RECTANGLE)) {
 			// Bitmap borders
 			foregroundPaint().setColor(Color.GREEN);
 			foregroundPaint().setStyle(Paint.Style.STROKE);

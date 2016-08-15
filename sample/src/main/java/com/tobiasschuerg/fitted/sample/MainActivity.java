@@ -1,7 +1,6 @@
 package com.tobiasschuerg.fitted.sample;
 
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 
 import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
-import com.tobiasschuerg.fitted.drawable.FittedDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
@@ -32,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
 		ImageView image11 = (ImageView) findViewById(R.id.image_l1);
 		FittedBitmapDrawable fd1 = new FittedBitmapDrawable(this, src, RECTANGLE);
-		fd1.debug = true;
-		fd1.setAdditionalPadding(16);
+		// fd1.debug = true;
+		fd1.setAdditionalPaddingPX(16);
+		fd1.setBorderRadiusDp(16);
 		fd1.setTileMode(Shader.TileMode.CLAMP);
 		image11.setImageDrawable(fd1);
 
@@ -47,17 +46,17 @@ public class MainActivity extends AppCompatActivity {
 		final FittedBitmapDrawable fd3 = new FittedBitmapDrawable(this, src, RECTANGLE);
 		fd3.setTileMode(Shader.TileMode.CLAMP);
 //		fd3.setDebug(true);
-//		fd3.setAdditionalPadding(50);
+//		fd3.setAdditionalPaddingPX(50);
 		image13.setImageDrawable(fd3);
 
 		ImageView image14 = (ImageView) findViewById(R.id.image_l4);
 //		final FittedBitmapDrawable fd4 = new FittedBitmapDrawable(this, src, ROUND);
 //		fd4.setTileMode(Shader.TileMode.CLAMP);
-//		fd4.setAdditionalPadding(2);
+//		fd4.setAdditionalPaddingPX(2);
 //		image14.setImageDrawable(fd4);
 
 		final FittedTextDrawable fd4 = new FittedTextDrawable("Android", Color.BLUE, Color.MAGENTA, RECTANGLE);
-		// fd4.setAdditionalPadding(2);
+		// fd4.setAdditionalPaddingPX(2);
 		image14.setImageDrawable(fd4);
 
 

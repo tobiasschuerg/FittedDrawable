@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
@@ -24,15 +23,18 @@ public abstract class FittedDrawable extends Drawable {
 	final static String LOG_TAG = FittedDrawable.class.getSimpleName();
 	protected final Paint debugPaint;
 	protected final Paint borderPaint;
+	private final DisplayMetrics displaymetrics;
 	public boolean debug = false;
 	private final SHAPE shape;
 	private final int fillColor;
 	private final Paint fillPaint;
 	private final Paint foregroundPaint;
 	boolean isAlphaEnabled;
-	private int additionalPadding = 0;
+	private int additionalPaddingPX = 0;
+	protected int borderRadiusPx = 0;
 
 	FittedDrawable(SHAPE shape, int backgroundColor) {
+		displaymetrics = Resources.getSystem().getDisplayMetrics();
 		this.shape = shape;
 		this.fillColor = backgroundColor;
 
@@ -67,11 +69,11 @@ public abstract class FittedDrawable extends Drawable {
 		this.debug = debug;
 	}
 
-	public int getAdditionalPadding() {
+	public int getAdditionalPaddingPX() {
 		if (debug) {
-			Log.d("FittedDrawable", "Padding is " + additionalPadding);
+			Log.d("FittedDrawable", "Padding is " + additionalPaddingPX);
 		}
-		return additionalPadding;
+		return additionalPaddingPX;
 	}
 
 	/**
@@ -79,10 +81,9 @@ public abstract class FittedDrawable extends Drawable {
 	 *
 	 * @param padding padding in dp
 	 */
-	public void setAdditionalPadding(int padding) {
-		Log.d("FittedDrawable", "Setting additionalPadding " + padding);
-		DisplayMetrics displaymetrics = Resources.getSystem().getDisplayMetrics();
-		this.additionalPadding = (int) (padding * displaymetrics.density);
+	public void setAdditionalPaddingPX(int padding) {
+		Log.d("FittedDrawable", "Setting additionalPaddingPX " + padding);
+		this.additionalPaddingPX = (int) (padding * displaymetrics.density);
 	}
 
 	/**
@@ -132,6 +133,11 @@ public abstract class FittedDrawable extends Drawable {
 
 	public int getFillColor() {
 		return fillColor;
+	}
+
+	public void setBorderRadiusDp(int radius) {
+		borderRadiusPx =  (int) (radius * displaymetrics.density);
+		setDrawBorder(true);
 	}
 
 	int getInnerCircleRadius() {

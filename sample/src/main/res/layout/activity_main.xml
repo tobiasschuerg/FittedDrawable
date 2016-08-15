@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/image_l1"
-            style="@style/image_preview"
-            android:scaleType="fitXY"/>
+            android:layout_width="150dp"
+            android:layout_height="100dp"/>
 
         <ImageView
             android:id="@+id/image_l2"
