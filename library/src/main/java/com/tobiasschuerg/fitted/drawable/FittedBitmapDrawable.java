@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.BuildConfig;
@@ -30,7 +31,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 	private final Bitmap bitmap;
 	private final float aspectRatio;
-	private boolean drawBorder = false;
+
+
 	@Nullable
 	private Shader.TileMode tileMode;
 
@@ -64,10 +66,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			Log.w("FillColor", "Bitmap has no monochrome border! Taking (1, 1)");
 			return tl; // (tl + tr + bl + br) / 4;
 		}
-	}
-
-	public void setDrawBorder(boolean drawBorder) {
-		this.drawBorder = drawBorder;
 	}
 
 	@Override
@@ -125,7 +123,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
 		}
 
-		RectF targetRect = new RectF(0f, 0f, getWidth(), getHeight());
 
 		switch (getShape()) {
 
@@ -149,25 +146,52 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			case RECTANGLE:
 				if (tileMode != null) {
-					Paint sp = getShaderPaint(scaledBitmap, targetRect, targetRect);
+
+					RectF sourceRect = new RectF(0f, 0f, getWidth(), getHeight());
+					RectF targetRect = new RectF(
+							getAdditionalPadding(),
+							getAdditionalPadding(),
+							getWidth() - getAdditionalPadding(),
+							getHeight() - getAdditionalPadding());
+
+
+					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
 					// canvas.drawRect(targetRect, sp);
-					canvas.drawPaint(sp);
+					//canvas.drawPaint(sp);
+					// TODO: add parameter for round corners
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+						canvas.drawRoundRect(0, 0, getWidth(), getHeight(), 80, 80, sp);
+					} else {
+						canvas.drawRect(0, 0, getWidth(), getHeight(), sp);
+					}
+
+					canvas.drawRect(targetRect, debugPaint);
 				} else {
 					canvas.drawColor(getFillColor());
 					canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
 				}
+
+				if (drawBorder) {
+					// TODO: add parameter for round corners
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+						canvas.drawRoundRect(0, 0, getWidth(), getHeight(), 80, 80, borderPaint);
+					}else {
+						canvas.drawRect(0, 0, getWidth(), getHeight(), borderPaint);
+					}
+				}
+
 				break;
 		}
 
 
-		if (debug || (getShape() == SHAPE.RECTANGLE && drawBorder)) {
+		if (false && debug || (getShape() == SHAPE.RECTANGLE && drawBorder)) {
 			// Bitmap borders
-			foregroundPaint().setColor(Color.BLUE);
+			foregroundPaint().setColor(Color.GREEN);
 			foregroundPaint().setStyle(Paint.Style.STROKE);
 			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), foregroundPaint());
 
 			// intrinsic borders
-			foregroundPaint().setColor(Color.RED);
+			foregroundPaint().setColor(Color.YELLOW);
 			int cx2 = cx - getIntrinsicWidth() / 2;
 			int cy2 = cy - getIntrinsicHeight() / 2;
 			canvas.drawRect(cx2, cy2, cx2 + getIntrinsicWidth(), cy2 + getIntrinsicHeight(), foregroundPaint());

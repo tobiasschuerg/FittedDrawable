@@ -32,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
 		ImageView image11 = (ImageView) findViewById(R.id.image_l1);
 		FittedBitmapDrawable fd1 = new FittedBitmapDrawable(this, src, RECTANGLE);
-//		fd1.debug = true;
-//		fd1.setAdditionalPadding(50);
+		fd1.debug = true;
+		fd1.setAdditionalPadding(16);
+		fd1.setTileMode(Shader.TileMode.CLAMP);
 		image11.setImageDrawable(fd1);
 
 		ImageView image12 = (ImageView) findViewById(R.id.image_l2);

@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/image_l1"
             style="@style/image_preview"
-            android:padding="16dp"/>
+            android:scaleType="fitXY"/>
 
         <ImageView
             android:id="@+id/image_l2"

@@ -22,6 +22,8 @@ import android.util.Log;
 public abstract class FittedDrawable extends Drawable {
 
 	final static String LOG_TAG = FittedDrawable.class.getSimpleName();
+	protected final Paint debugPaint;
+	protected final Paint borderPaint;
 	public boolean debug = false;
 	private final SHAPE shape;
 	private final int fillColor;
@@ -46,6 +48,19 @@ public abstract class FittedDrawable extends Drawable {
 		foregroundPaint.setFilterBitmap(true);
 		foregroundPaint.setDither(true);
 		foregroundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+
+		debugPaint = new Paint();
+		debugPaint.setColor(Color.CYAN);
+		debugPaint.setStyle(Paint.Style.STROKE);
+		debugPaint.setAntiAlias(true);
+		debugPaint.setDither(true);
+
+		// TODO: set when border is actually set as enabled
+		borderPaint = new Paint();
+		borderPaint.setColor(Color.LTGRAY);
+		borderPaint.setStyle(Paint.Style.STROKE);
+		borderPaint.setAntiAlias(true);
+		borderPaint.setDither(true);
 	}
 
 	public void setDebug(boolean debug) {
@@ -93,14 +108,15 @@ public abstract class FittedDrawable extends Drawable {
 	@Override
 	public void draw(@NonNull Canvas canvas) {
 		if (debug) {
-			canvas.drawColor(Color.YELLOW);
 			Log.d(LOG_TAG, "canvas width: " + getWidth() + " height: " + getHeight());
 		}
 
 		// draw the background for the selected shape
 		switch (getShape()) {
 			case RECTANGLE:
-				canvas.drawColor(getFillColor());
+				if (!drawBorder) {
+					canvas.drawColor(getFillColor());
+				}
 
 				break;
 			case ROUND:
@@ -175,4 +191,10 @@ public abstract class FittedDrawable extends Drawable {
 	}
 
 	public enum SHAPE {ROUND, RECTANGLE}
+
+	protected boolean drawBorder = false;
+
+	public void setDrawBorder(boolean drawBorder) {
+		this.drawBorder = drawBorder;
+	}
 }
