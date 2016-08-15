@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
@@ -146,6 +147,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			case RECTANGLE:
 				if (tileMode != null) {
 
+					canvas.drawColor(Color.WHITE);
+
 					RectF sourceRect = new RectF(0f, 0f, getWidth(), getHeight());
 					RectF targetRect = new RectF(
 							getAdditionalPaddingPX(),
@@ -153,15 +156,16 @@ public class FittedBitmapDrawable extends FittedDrawable {
 							getWidth() - getAdditionalPaddingPX(),
 							getHeight() - getAdditionalPaddingPX());
 
+					RectF clipBounds = new RectF(canvas.getClipBounds());
 
 					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
 					// canvas.drawRect(targetRect, sp);
 					//canvas.drawPaint(sp);
 					// TODO: add parameter for round corners
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(0, 0, getWidth(), getHeight(), borderRadiusPx, borderRadiusPx, sp);
+						canvas.drawRoundRect(clipBounds, borderRadiusPx, borderRadiusPx, sp);
 					} else {
-						canvas.drawRect(0, 0, getWidth(), getHeight(), sp);
+						canvas.drawRect(sourceRect, sp);
 					}
 
 					if (debug) {
@@ -185,7 +189,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		}
 
 
-		if (false && debug && (getShape() == SHAPE.RECTANGLE)) {
+		if (debug && (getShape() == SHAPE.RECTANGLE)) {
 			// Bitmap borders
 			foregroundPaint().setColor(Color.GREEN);
 			foregroundPaint().setStyle(Paint.Style.STROKE);
@@ -193,9 +197,20 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			// intrinsic borders
 			foregroundPaint().setColor(Color.YELLOW);
+			foregroundPaint().setStrokeWidth(5);
 			int cx2 = cx - getIntrinsicWidth() / 2;
 			int cy2 = cy - getIntrinsicHeight() / 2;
-			canvas.drawRect(cx2, cy2, cx2 + getIntrinsicWidth(), cy2 + getIntrinsicHeight(), foregroundPaint());
+			// canvas.drawRect(cx2, cy2, cx2 + getIntrinsicWidth(), cy2 + getIntrinsicHeight(), foregroundPaint());
+			canvas.drawRect(cx2, cy2, cx2 + getIntrinsicWidth(), 400, foregroundPaint());
+
+			Rect bounds = getBounds();
+			Log.d("Bounds", "Bounds Clip: " + canvas.getClipBounds().toString());
+			Log.d("Bounds", "Bounds density: " + canvas.getDensity());
+			Log.d("Bounds", "Bounds max height: " + canvas.getMaximumBitmapHeight());
+			Log.d("Bounds", "Bounds Dirty: " + getDirtyBounds().toString());
+
+			foregroundPaint().setColor(Color.RED);
+			canvas.drawRect(0, canvas.getClipBounds().top, getIntrinsicWidth(),canvas.getClipBounds().bottom, foregroundPaint());
 		}
 	}
 
