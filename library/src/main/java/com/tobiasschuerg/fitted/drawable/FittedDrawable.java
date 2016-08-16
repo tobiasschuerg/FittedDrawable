@@ -55,7 +55,6 @@ public abstract class FittedDrawable extends Drawable {
 		debugPaint.setColor(Color.CYAN);
 		debugPaint.setStyle(Paint.Style.STROKE);
 		debugPaint.setAntiAlias(true);
-		debugPaint.setDither(true);
 		debugPaint.setStrokeWidth(8);
 
 		// TODO: set when border is actually set as enabled
@@ -64,7 +63,7 @@ public abstract class FittedDrawable extends Drawable {
 		borderPaint.setStyle(Paint.Style.STROKE);
 		borderPaint.setAntiAlias(true);
 		borderPaint.setDither(true);
-		borderPaint.setStrokeWidth(2);
+		borderPaint.setStrokeWidth(1);
 	}
 
 	public void setDebug(boolean debug) {
