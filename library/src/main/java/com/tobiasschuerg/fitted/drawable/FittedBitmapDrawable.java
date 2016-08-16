@@ -161,6 +161,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+						canvas.drawRoundRect(new RectF(canvas.getClipBounds()), borderRadiusPx, borderRadiusPx, sp);
 					} else {
 						canvas.drawRect(sourceRect, sp);
 					}
