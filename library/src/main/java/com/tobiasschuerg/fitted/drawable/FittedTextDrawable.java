@@ -97,7 +97,6 @@ public class FittedTextDrawable extends FittedDrawable {
 	 */
 	@NonNull
 	private Rect getDefaultTextBounds(Paint paint) {
-		Log.d(TAG, "Getting bounds for >" + text + "<");
 		paint.setTextSize(DEFAULT_TEXT_SIZE);
 		Rect bounds = new Rect();
 		paint.getTextBounds(text, 0, text.length(), bounds);
