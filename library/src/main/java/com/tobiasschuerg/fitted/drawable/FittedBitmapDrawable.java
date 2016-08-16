@@ -155,8 +155,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 					RectF targetRect = new RectF(
 							getAdditionalPaddingPX(),
 							getAdditionalPaddingPX(),
-							getWidth() - getAdditionalPaddingPX(),
-							getHeight() - getAdditionalPaddingPX());
+							getWidth(),
+							getHeight());
 
 					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
