@@ -124,7 +124,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
 		}
 
-
+		RectF targetRect = null;
 		switch (getShape()) {
 
 			case ROUND:
@@ -151,12 +151,12 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 					canvas.drawColor(Color.WHITE);
 
-					RectF sourceRect = new RectF(0f, 0f, getWidth(), getHeight());
-					RectF targetRect = new RectF(
-							getAdditionalPaddingPX(),
-							getAdditionalPaddingPX(),
-							getWidth(),
-							getHeight());
+					RectF sourceRect = new RectF(0f, 0f, scaledBitmap.getWidth(), scaledBitmap.getHeight());
+					targetRect = new RectF(
+							clipBounds.left + getAdditionalPaddingPX(),
+							clipBounds.top + getAdditionalPaddingPX(),
+							clipBounds.right - getAdditionalPaddingPX(),
+							clipBounds.bottom - getAdditionalPaddingPX());
 
 					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -181,12 +181,12 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 
 		if (debug && (getShape() == SHAPE.RECTANGLE)) {
-			Log.d(TAG, "Green: bitmap border");
-			debugPaint.setColor(Color.GREEN);
-			debugPaint.setStyle(Paint.Style.STROKE);
-			canvas.drawRect(getAdditionalPaddingPX(), getAdditionalPaddingPX(),
-					getWidth() - getAdditionalPaddingPX(),
-					getHeight() - getAdditionalPaddingPX(), debugPaint);
+			if (targetRect != null) {
+				Log.d(TAG, "Green: bitmap border");
+				debugPaint.setColor(Color.GREEN);
+				debugPaint.setStyle(Paint.Style.STROKE);
+				canvas.drawRect(targetRect, debugPaint);
+			}
 
 			Log.d(TAG, "Yellow: intrinsic border");
 			debugPaint.setColor(Color.YELLOW);

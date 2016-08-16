@@ -83,7 +83,7 @@ public abstract class FittedDrawable extends Drawable {
 	 *
 	 * @param padding padding in dp
 	 */
-	public void setAdditionalPaddingPX(int padding) {
+	public void setAdditionalPaddingDp(int padding) {
 		Log.d("FittedDrawable", "Setting additionalPaddingPX " + padding);
 		this.additionalPaddingPX = (int) (padding * displaymetrics.density);
 	}

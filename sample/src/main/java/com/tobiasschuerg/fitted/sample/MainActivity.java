@@ -24,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
 		int color1 = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
 		int color2 = ContextCompat.getColor(getApplicationContext(), R.color.colorAccent);
 
-		int src = R.drawable.andfoo2;
+		int src = R.drawable.logoacmoore;
 
 		// ### left
 
 		ImageView image11 = (ImageView) findViewById(R.id.image_l1);
 		FittedBitmapDrawable fd1 = new FittedBitmapDrawable(this, src, RECTANGLE);
 		fd1.debug = true;
-		fd1.setAdditionalPaddingPX(16);
+		fd1.setAdditionalPaddingDp(16);
 		fd1.setBorderRadiusDp(16);
 		fd1.setTileMode(Shader.TileMode.CLAMP);
 		image11.setImageDrawable(fd1);
