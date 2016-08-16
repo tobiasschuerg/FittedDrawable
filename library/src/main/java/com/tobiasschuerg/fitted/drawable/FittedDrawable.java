@@ -31,7 +31,7 @@ public abstract class FittedDrawable extends Drawable {
 	private final Paint foregroundPaint;
 	boolean isAlphaEnabled;
 	private int additionalPaddingPX = 0;
-	protected int borderRadiusPx = 0;
+	int borderRadiusPx = 0;
 
 	FittedDrawable(SHAPE shape, int backgroundColor) {
 		displaymetrics = Resources.getSystem().getDisplayMetrics();
@@ -64,6 +64,7 @@ public abstract class FittedDrawable extends Drawable {
 		borderPaint.setStyle(Paint.Style.STROKE);
 		borderPaint.setAntiAlias(true);
 		borderPaint.setDither(true);
+		borderPaint.setStrokeWidth(2);
 	}
 
 	public void setDebug(boolean debug) {

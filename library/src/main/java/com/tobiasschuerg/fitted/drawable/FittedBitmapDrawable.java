@@ -185,8 +185,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			debugPaint.setColor(Color.GREEN);
 			debugPaint.setStyle(Paint.Style.STROKE);
 			canvas.drawRect(getAdditionalPaddingPX(), getAdditionalPaddingPX(),
-					scaledBitmap.getWidth(),
-					scaledBitmap.getHeight(), debugPaint);
+					getWidth() - getAdditionalPaddingPX(),
+					getHeight() - getAdditionalPaddingPX(), debugPaint);
 
 			Log.d(TAG, "Yellow: intrinsic border");
 			debugPaint.setColor(Color.YELLOW);
