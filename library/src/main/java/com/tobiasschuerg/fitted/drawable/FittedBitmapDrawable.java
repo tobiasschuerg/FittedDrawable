@@ -72,6 +72,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 	public void draw(@NonNull Canvas canvas) {
 		super.draw(canvas);
 
+		final RectF clipBounds = new RectF(canvas.getClipBounds());
 		int radius = getInnerCircleRadius();
 		int cx = getCenterX();
 		int cy = getCenterY();
@@ -145,6 +146,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				break;
 
 			case RECTANGLE:
+
 				if (tileMode != null) {
 
 					canvas.drawColor(Color.WHITE);
@@ -156,20 +158,11 @@ public class FittedBitmapDrawable extends FittedDrawable {
 							getWidth() - getAdditionalPaddingPX(),
 							getHeight() - getAdditionalPaddingPX());
 
-					RectF clipBounds = new RectF(canvas.getClipBounds());
-
 					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
-					// canvas.drawRect(targetRect, sp);
-					//canvas.drawPaint(sp);
-					// TODO: add parameter for round corners
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 						canvas.drawRoundRect(clipBounds, borderRadiusPx, borderRadiusPx, sp);
 					} else {
 						canvas.drawRect(sourceRect, sp);
-					}
-
-					if (debug) {
-						canvas.drawRect(targetRect, debugPaint);
 					}
 				} else {
 					canvas.drawColor(getFillColor());
@@ -177,40 +170,31 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				}
 
 				if (drawBorder) {
-					// TODO: add parameter for round corners
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(0, 0, getWidth(), getHeight(), borderRadiusPx, borderRadiusPx, borderPaint);
+						canvas.drawRoundRect(clipBounds, borderRadiusPx, borderRadiusPx, borderPaint);
 					} else {
-						canvas.drawRect(0, 0, getWidth(), getHeight(), borderPaint);
+						canvas.drawRect(clipBounds, borderPaint);
 					}
 				}
-
 				break;
 		}
 
 
 		if (debug && (getShape() == SHAPE.RECTANGLE)) {
-			// Bitmap borders
-			foregroundPaint().setColor(Color.GREEN);
-			foregroundPaint().setStyle(Paint.Style.STROKE);
-			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), foregroundPaint());
+			Log.d(TAG, "Green: bitmap border");
+			debugPaint.setColor(Color.GREEN);
+			debugPaint.setStyle(Paint.Style.STROKE);
+			canvas.drawRect(getAdditionalPaddingPX(), getAdditionalPaddingPX(),
+					scaledBitmap.getWidth(),
+					scaledBitmap.getHeight(), debugPaint);
 
-			// intrinsic borders
-			foregroundPaint().setColor(Color.YELLOW);
-			foregroundPaint().setStrokeWidth(5);
-			int cx2 = cx - getIntrinsicWidth() / 2;
-			int cy2 = cy - getIntrinsicHeight() / 2;
-			// canvas.drawRect(cx2, cy2, cx2 + getIntrinsicWidth(), cy2 + getIntrinsicHeight(), foregroundPaint());
-			canvas.drawRect(cx2, cy2, cx2 + getIntrinsicWidth(), 400, foregroundPaint());
+			Log.d(TAG, "Yellow: intrinsic border");
+			debugPaint.setColor(Color.YELLOW);
+			canvas.drawRect(0, 0, getIntrinsicWidth(), getIntrinsicHeight(), debugPaint);
 
-			Rect bounds = getBounds();
-			Log.d("Bounds", "Bounds Clip: " + canvas.getClipBounds().toString());
-			Log.d("Bounds", "Bounds density: " + canvas.getDensity());
-			Log.d("Bounds", "Bounds max height: " + canvas.getMaximumBitmapHeight());
-			Log.d("Bounds", "Bounds Dirty: " + getDirtyBounds().toString());
-
-			foregroundPaint().setColor(Color.RED);
-			canvas.drawRect(0, canvas.getClipBounds().top, getIntrinsicWidth(),canvas.getClipBounds().bottom, foregroundPaint());
+			Log.d(TAG, "RED: outer border");
+			debugPaint.setColor(Color.RED);
+			canvas.drawRect(clipBounds, debugPaint);
 		}
 	}
 

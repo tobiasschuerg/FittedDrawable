@@ -21,7 +21,7 @@ import android.util.Log;
 public abstract class FittedDrawable extends Drawable {
 
 	final static String LOG_TAG = FittedDrawable.class.getSimpleName();
-	protected final Paint debugPaint;
+	final Paint debugPaint;
 	protected final Paint borderPaint;
 	private final DisplayMetrics displaymetrics;
 	public boolean debug = false;
@@ -56,6 +56,7 @@ public abstract class FittedDrawable extends Drawable {
 		debugPaint.setStyle(Paint.Style.STROKE);
 		debugPaint.setAntiAlias(true);
 		debugPaint.setDither(true);
+		debugPaint.setStrokeWidth(8);
 
 		// TODO: set when border is actually set as enabled
 		borderPaint = new Paint();
