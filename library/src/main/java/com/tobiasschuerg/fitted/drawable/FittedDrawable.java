@@ -7,7 +7,10 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,6 +35,7 @@ public abstract class FittedDrawable extends Drawable {
 	boolean isAlphaEnabled;
 	private int additionalPaddingPX = 0;
 	int borderRadiusPx = 0;
+	private Rect clipBounds;
 
 	FittedDrawable(SHAPE shape, int backgroundColor) {
 		displaymetrics = Resources.getSystem().getDisplayMetrics();
@@ -112,14 +116,20 @@ public abstract class FittedDrawable extends Drawable {
 		if (debug) {
 			Log.d(LOG_TAG, "canvas width: " + getWidth() + " height: " + getHeight());
 		}
+		clipBounds = canvas.getClipBounds();
 
 		// draw the background for the selected shape
 		switch (getShape()) {
 			case RECTANGLE:
-				if (!drawBorder) {
-					canvas.drawColor(getFillColor());
+				canvas.drawColor(getFillColor());
+				break;
+			case ROUND_RECTANGLE:
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+					canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1,
+							borderRadiusPx, borderRadiusPx, getFillPaint());
+				} else {
+					canvas.drawRect(getClipBounds(), getFillPaint());
 				}
-
 				break;
 			case ROUND:
 				int radius = getInnerCircleRadius();
@@ -137,7 +147,7 @@ public abstract class FittedDrawable extends Drawable {
 	}
 
 	public void setBorderRadiusDp(int radius) {
-		borderRadiusPx =  (int) (radius * displaymetrics.density);
+		borderRadiusPx = (int) (radius * displaymetrics.density);
 		setDrawBorder(true);
 	}
 
@@ -197,11 +207,19 @@ public abstract class FittedDrawable extends Drawable {
 		return fillPaint;
 	}
 
-	public enum SHAPE {ROUND, RECTANGLE}
+	public enum SHAPE {ROUND, ROUND_RECTANGLE, RECTANGLE}
 
 	protected boolean drawBorder = false;
 
 	public void setDrawBorder(boolean drawBorder) {
 		this.drawBorder = drawBorder;
 	}
+
+	protected Rect getClipBounds() {
+		if (clipBounds == null) {
+			throw new IllegalStateException("getClipBounds must only be called in onDraw()");
+		}
+		return clipBounds;
+	}
+
 }

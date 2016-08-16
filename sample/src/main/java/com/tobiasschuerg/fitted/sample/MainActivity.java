@@ -13,6 +13,7 @@ import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND;
+import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTANGLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,15 +27,24 @@ public class MainActivity extends AppCompatActivity {
 
 		int src = R.drawable.logoacmoore;
 
-		// ### left
+		// ### first
 
 		ImageView image11 = (ImageView) findViewById(R.id.image_l1);
-		FittedBitmapDrawable fd1 = new FittedBitmapDrawable(this, src, RECTANGLE);
-		fd1.debug = true;
-		fd1.setAdditionalPaddingDp(16);
-		fd1.setBorderRadiusDp(16);
-		fd1.setTileMode(Shader.TileMode.CLAMP);
-		image11.setImageDrawable(fd1);
+
+		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(this, src, RECTANGLE);
+		bitmapDrawable.debug = true;
+		bitmapDrawable.setAdditionalPaddingDp(16);
+		bitmapDrawable.setBorderRadiusDp(16);
+		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
+
+		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
+		textDrawable.debug = true;
+		textDrawable.setAdditionalPaddingDp(16);
+		textDrawable.setBorderRadiusDp(16);
+		image11.setImageDrawable(textDrawable);
+
+
+		// ...
 
 		ImageView image12 = (ImageView) findViewById(R.id.image_l2);
 		final FittedBitmapDrawable fd2 = new FittedBitmapDrawable(this, src, ROUND);

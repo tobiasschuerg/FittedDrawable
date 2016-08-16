@@ -10,7 +10,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
@@ -72,7 +71,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 	public void draw(@NonNull Canvas canvas) {
 		super.draw(canvas);
 
-		final RectF clipBounds = new RectF(canvas.getClipBounds());
 		int radius = getInnerCircleRadius();
 		int cx = getCenterX();
 		int cy = getCenterY();
@@ -153,14 +151,14 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 					RectF sourceRect = new RectF(0f, 0f, scaledBitmap.getWidth(), scaledBitmap.getHeight());
 					targetRect = new RectF(
-							clipBounds.left + getAdditionalPaddingPX(),
-							clipBounds.top + getAdditionalPaddingPX(),
-							clipBounds.right - getAdditionalPaddingPX(),
-							clipBounds.bottom - getAdditionalPaddingPX());
+							getClipBounds().left + getAdditionalPaddingPX(),
+							getClipBounds().top + getAdditionalPaddingPX(),
+							getClipBounds().right - getAdditionalPaddingPX(),
+							getClipBounds().bottom - getAdditionalPaddingPX());
 
 					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(clipBounds, borderRadiusPx, borderRadiusPx, sp);
+						canvas.drawRoundRect(targetRect, borderRadiusPx, borderRadiusPx, sp);
 					} else {
 						canvas.drawRect(sourceRect, sp);
 					}
@@ -171,10 +169,10 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 				if (drawBorder) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(clipBounds.left + 1, clipBounds.top + 1, clipBounds.right -1, clipBounds.bottom-1,
+						canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1,
 								borderRadiusPx, borderRadiusPx, borderPaint);
 					} else {
-						canvas.drawRect(clipBounds, borderPaint);
+						canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1, borderPaint);
 					}
 				}
 				break;
@@ -195,7 +193,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			Log.d(TAG, "RED: outer border");
 			debugPaint.setColor(Color.RED);
-			canvas.drawRect(clipBounds, debugPaint);
+			canvas.drawRect(getClipBounds(), debugPaint);
 		}
 	}
 

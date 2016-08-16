@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -39,6 +40,7 @@ public class FittedTextDrawable extends FittedDrawable {
 		float textHeight = 0;
 
 		switch (getShape()) {
+			case ROUND_RECTANGLE:
 			case RECTANGLE:
 				float textPercentage = 0.75f;
 				textWidth = getWidth() * textPercentage;
@@ -58,6 +60,15 @@ public class FittedTextDrawable extends FittedDrawable {
 		//((textPaint.descent() + textPaint.ascent()) / 2) is the distance from the baseline to the center.
 
 		canvas.drawText(text, xPos, yPos, foregroundPaint());
+
+		if (drawBorder) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1,
+						borderRadiusPx, borderRadiusPx, borderPaint);
+			} else {
+				canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1, borderPaint);
+			}
+		}
 	}
 
 	/**
