@@ -258,6 +258,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			case ROUND:
 				return Math.max(bitmap.getHeight(), bitmap.getWidth());
 
+			case ROUND_RECTANGLE:
 			case RECTANGLE:
 				return bitmap.getHeight();
 
