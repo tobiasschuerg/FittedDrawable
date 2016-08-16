@@ -171,7 +171,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 				if (drawBorder) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(clipBounds.left - 1, clipBounds.top - 1, clipBounds.right -1, clipBounds.bottom-1,
+						canvas.drawRoundRect(clipBounds.left + 1, clipBounds.top + 1, clipBounds.right -1, clipBounds.bottom-1,
 								borderRadiusPx, borderRadiusPx, borderPaint);
 					} else {
 						canvas.drawRect(clipBounds, borderPaint);
