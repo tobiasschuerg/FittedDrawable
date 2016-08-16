@@ -63,11 +63,15 @@ public abstract class FittedDrawable extends Drawable {
 
 		// TODO: set when border is actually set as enabled
 		borderPaint = new Paint();
-		borderPaint.setColor(Color.LTGRAY);
+		setBorderColor(Color.LTGRAY);
 		borderPaint.setStyle(Paint.Style.STROKE);
 		borderPaint.setAntiAlias(true);
 		borderPaint.setDither(true);
 		borderPaint.setStrokeWidth(1);
+	}
+
+	public void setBorderColor(int color) {
+		borderPaint.setColor(color);
 	}
 
 	public void setDebug(boolean debug) {

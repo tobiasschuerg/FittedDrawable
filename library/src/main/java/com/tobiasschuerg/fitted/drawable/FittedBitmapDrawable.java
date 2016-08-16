@@ -149,9 +149,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			case RECTANGLE:
 
 				if (tileMode != null) {
-
-					canvas.drawColor(Color.WHITE);
-
 					RectF sourceRect = new RectF(0f, 0f, scaledBitmap.getWidth(), scaledBitmap.getHeight());
 					targetRect = new RectF(
 							getClipBounds().left + getAdditionalPaddingPX(),
@@ -161,7 +158,11 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(new RectF(canvas.getClipBounds()), borderRadiusPx, borderRadiusPx, sp);
+						if (drawBorder) {
+							canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, borderRadiusPx, borderRadiusPx, sp);
+						} else {
+							canvas.drawRoundRect(new RectF(canvas.getClipBounds()), borderRadiusPx, borderRadiusPx, sp);
+						}
 					} else {
 						canvas.drawRect(sourceRect, sp);
 					}
@@ -172,10 +173,10 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 				if (drawBorder) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1,
+						canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1,
 								borderRadiusPx, borderRadiusPx, borderPaint);
 					} else {
-						canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1, borderPaint);
+						canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, borderPaint);
 					}
 				}
 				break;

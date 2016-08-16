@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 		int color1 = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
 		int color2 = ContextCompat.getColor(getApplicationContext(), R.color.colorAccent);
 
-		int src = R.drawable.logoacmoore;
+		int src = R.drawable.andfoo2;
 
 		// ### first
 
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 		bitmapDrawable.setAdditionalPaddingDp(16);
 		bitmapDrawable.setBorderRadiusDp(16);
 		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
+		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
 		imageR.setImageDrawable(bitmapDrawable);
 
 		ImageView imageRT = (ImageView) findViewById(R.id.image_rect_text);
