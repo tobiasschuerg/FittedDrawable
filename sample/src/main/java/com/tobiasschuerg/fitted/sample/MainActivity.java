@@ -29,45 +29,46 @@ public class MainActivity extends AppCompatActivity {
 
 		// ### first
 
-		ImageView image11 = (ImageView) findViewById(R.id.image_l1);
-
-		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(this, src, RECTANGLE);
+		ImageView imageR = (ImageView) findViewById(R.id.image_rect_bitmap);
+		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(this, src, ROUND_RECTANGLE);
 		bitmapDrawable.debug = true;
 		bitmapDrawable.setAdditionalPaddingDp(16);
 		bitmapDrawable.setBorderRadiusDp(16);
 		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
+		imageR.setImageDrawable(bitmapDrawable);
 
+		ImageView imageRT = (ImageView) findViewById(R.id.image_rect_text);
 		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
 		textDrawable.debug = true;
 		textDrawable.setAdditionalPaddingDp(16);
-		textDrawable.setBorderRadiusDp(16);
-		image11.setImageDrawable(textDrawable);
+		textDrawable.setBorderRadiusDp(8);
+		imageRT.setImageDrawable(textDrawable);
 
 
 		// ...
 
-		ImageView image12 = (ImageView) findViewById(R.id.image_l2);
-		final FittedBitmapDrawable fd2 = new FittedBitmapDrawable(this, src, ROUND);
-		image12.setImageDrawable(fd2);
+//		ImageView image12 = (ImageView) findViewById(R.id.image_l2);
+//		final FittedBitmapDrawable fd2 = new FittedBitmapDrawable(this, src, ROUND);
+//		image12.setImageDrawable(fd2);
+//
+//		src = R.drawable.andfoo;
+//
+//		ImageView image13 = (ImageView) findViewById(R.id.image_l3);
+//		final FittedBitmapDrawable fd3 = new FittedBitmapDrawable(this, src, RECTANGLE);
+//		fd3.setTileMode(Shader.TileMode.CLAMP);
+////		fd3.setDebug(true);
+////		fd3.setAdditionalPaddingPX(50);
+//		image13.setImageDrawable(fd3);
+//
+//		ImageView image14 = (ImageView) findViewById(R.id.image_l4);
+////		final FittedBitmapDrawable fd4 = new FittedBitmapDrawable(this, src, ROUND);
+////		fd4.setTileMode(Shader.TileMode.CLAMP);
+////		fd4.setAdditionalPaddingPX(2);
+////		image14.setImageDrawable(fd4);
 
-		src = R.drawable.andfoo;
-
-		ImageView image13 = (ImageView) findViewById(R.id.image_l3);
-		final FittedBitmapDrawable fd3 = new FittedBitmapDrawable(this, src, RECTANGLE);
-		fd3.setTileMode(Shader.TileMode.CLAMP);
-//		fd3.setDebug(true);
-//		fd3.setAdditionalPaddingPX(50);
-		image13.setImageDrawable(fd3);
-
-		ImageView image14 = (ImageView) findViewById(R.id.image_l4);
-//		final FittedBitmapDrawable fd4 = new FittedBitmapDrawable(this, src, ROUND);
-//		fd4.setTileMode(Shader.TileMode.CLAMP);
-//		fd4.setAdditionalPaddingPX(2);
+//		final FittedTextDrawable fd4 = new FittedTextDrawable("Android", Color.BLUE, Color.MAGENTA, RECTANGLE);
+//		// fd4.setAdditionalPaddingPX(2);
 //		image14.setImageDrawable(fd4);
-
-		final FittedTextDrawable fd4 = new FittedTextDrawable("Android", Color.BLUE, Color.MAGENTA, RECTANGLE);
-		// fd4.setAdditionalPaddingPX(2);
-		image14.setImageDrawable(fd4);
 
 
 		// ### right

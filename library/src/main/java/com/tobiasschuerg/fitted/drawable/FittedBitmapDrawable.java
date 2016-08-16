@@ -88,6 +88,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 					getFillPaint().setColor(getFillColor());
 					break;
 				case RECTANGLE:
+				case ROUND_RECTANGLE:
 					// not needed:
 					// canvas.drawColor(getFillColor());
 					break;
@@ -100,6 +101,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				canvas.drawCircle(cx, cy, --radius, getFillPaint());
 				scaledBitmap = fitBitmapInCircle(radius - getAdditionalPaddingPX());
 				break;
+			case ROUND_RECTANGLE:
 			case RECTANGLE:
 				if (getWidth() > getHeight()) {
 					scaledBitmap = fitBitmapInRectangle(getWidth() - (2 * getAdditionalPaddingPX()), getHeight());
@@ -143,6 +145,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				}
 				break;
 
+			case ROUND_RECTANGLE:
 			case RECTANGLE:
 
 				if (tileMode != null) {
@@ -158,7 +161,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(targetRect, borderRadiusPx, borderRadiusPx, sp);
 					} else {
 						canvas.drawRect(sourceRect, sp);
 					}
