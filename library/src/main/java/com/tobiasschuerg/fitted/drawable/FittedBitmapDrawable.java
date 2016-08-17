@@ -125,14 +125,14 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			case ROUND_RECTANGLE:
 				if (tileMode != null) {
-					RectF sourceRect = new RectF(0f, 0f, bitmap.getWidth(), bitmap.getHeight());
+					RectF sourceRect = new RectF(0f, 0f, scaledBitmap.getWidth(), scaledBitmap.getHeight());
 					targetRect = new RectF(
 							getClipBounds().left + getAdditionalPaddingPX(),
 							getClipBounds().top + getAdditionalPaddingPX(),
 							getClipBounds().right - getAdditionalPaddingPX(),
 							getClipBounds().bottom - getAdditionalPaddingPX());
 
-					Paint sp = getShaderPaint(bitmap, sourceRect, targetRect);
+					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 						if (drawBorder) {
 							canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, getBorderRadiusPx(), getBorderRadiusPx(), sp);
@@ -288,6 +288,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				scaledBitmap = fitBitmapInCircle(radius - getAdditionalPaddingPX());
 				break;
 
+			case ROUND_RECTANGLE:
 			case RECTANGLE:
 				if (getWidth() > getHeight()) {
 					scaledBitmap = fitBitmapInRectangle(getWidth() - (2 * getAdditionalPaddingPX()), getHeight());
@@ -296,9 +297,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				}
 				break;
 
-			case ROUND_RECTANGLE:
-				// we don't scale now, this will be done by the shader paint.
-				return bitmap;
 			default:
 				throw new IllegalStateException();
 		}
