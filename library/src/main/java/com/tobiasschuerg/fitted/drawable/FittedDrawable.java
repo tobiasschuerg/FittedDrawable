@@ -34,8 +34,10 @@ public abstract class FittedDrawable extends Drawable {
 	private final Paint foregroundPaint;
 	boolean isAlphaEnabled;
 	private int additionalPaddingPX = 0;
-	int borderRadiusPx = 0;
+	private float borderRadiusPx = 0;
 	private Rect clipBounds;
+	private int width = Integer.MIN_VALUE;
+	private int heigth = Integer.MIN_VALUE;
 
 	FittedDrawable(SHAPE shape, int backgroundColor) {
 		displaymetrics = Resources.getSystem().getDisplayMetrics();
@@ -117,6 +119,8 @@ public abstract class FittedDrawable extends Drawable {
 
 	@Override
 	public void draw(@NonNull Canvas canvas) {
+		width = canvas.getWidth();
+		heigth = canvas.getHeight();
 		clipBounds = canvas.getClipBounds();
 
 		if (debug) {
@@ -153,8 +157,8 @@ public abstract class FittedDrawable extends Drawable {
 		return fillColor;
 	}
 
-	public void setBorderRadiusDp(int radius) {
-		borderRadiusPx = (int) (radius * displaymetrics.density);
+	public void setBorderRadiusDp(float radius) {
+		borderRadiusPx = radius * displaymetrics.density;
 		setDrawBorder(true);
 	}
 
@@ -177,14 +181,18 @@ public abstract class FittedDrawable extends Drawable {
 		return getBounds().centerY();
 	}
 
-	@Deprecated
-	int getWidth() {
-		return getBounds().width();
+	protected int getWidth() {
+		if (width < 0) {
+			throw new IllegalStateException("width is " + width);
+		}
+		return width;
 	}
 
-	@Deprecated
-	int getHeight() {
-		return getBounds().height();
+	protected int getHeight() {
+		if (heigth < 0) {
+			throw new IllegalStateException("width is " + heigth);
+		}
+		return heigth;
 
 	}
 
@@ -229,6 +237,10 @@ public abstract class FittedDrawable extends Drawable {
 			throw new IllegalStateException("getClipBounds must only be called in onDraw()");
 		}
 		return clipBounds;
+	}
+
+	public float getBorderRadiusPx() {
+		return borderRadiusPx;
 	}
 
 }

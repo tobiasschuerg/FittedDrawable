@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 		// ### first
 
 		ImageView imageR = (ImageView) findViewById(R.id.image_rect_bitmap);
-		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(this, src, ROUND_RECTANGLE);
+		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(this, src, RECTANGLE);
 		bitmapDrawable.debug = true;
 		bitmapDrawable.setAdditionalPaddingDp(16);
 		bitmapDrawable.setBorderRadiusDp(16);
@@ -41,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 		// Draw the drawable on a bitmap first and then attach that bitmap to the ImageView
-//		Bitmap bitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
-//		Canvas canvas = new Canvas(bitmap);
-//		bitmapDrawable.draw(canvas);
-//		imageR.setImageBitmap(bitmap);
+		Bitmap bitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		bitmapDrawable.draw(canvas);
+		imageR.setImageBitmap(bitmap);
 
-		imageR.setImageDrawable(bitmapDrawable);
+		//imageR.setImageDrawable(bitmapDrawable);
 
 
 		ImageView imageRT = (ImageView) findViewById(R.id.image_rect_text);

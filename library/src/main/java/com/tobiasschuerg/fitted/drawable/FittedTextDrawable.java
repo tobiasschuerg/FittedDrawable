@@ -64,7 +64,7 @@ public class FittedTextDrawable extends FittedDrawable {
 		if (drawBorder) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 				canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1,
-						borderRadiusPx, borderRadiusPx, borderPaint);
+						getBorderRadiusPx(), getBorderRadiusPx(), borderPaint);
 			} else {
 				canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1, borderPaint);
 			}
@@ -105,7 +105,7 @@ public class FittedTextDrawable extends FittedDrawable {
 
 	@Override
 	public int getIntrinsicWidth() {
-		int width = getWidth();
+		int width = getBounds().width();
 		Log.d("FittedTextDrawable", "Width: " + width);
 		if (width <= 1) {
 			width = Math.max(getDefaultTextBounds().width(), getDefaultTextBounds().height());
@@ -116,7 +116,7 @@ public class FittedTextDrawable extends FittedDrawable {
 
 	@Override
 	public int getIntrinsicHeight() {
-		int height = getHeight();
+		int height = getBounds().height();
 		Log.d("FittedTextDrawable", "Height: " + height);
 		if (height <= 1) {
 			height = Math.max(getDefaultTextBounds().width(), getDefaultTextBounds().height());
@@ -128,4 +128,5 @@ public class FittedTextDrawable extends FittedDrawable {
 	private Rect getDefaultTextBounds() {
 		return getDefaultTextBounds(new Paint());
 	}
+
 }
