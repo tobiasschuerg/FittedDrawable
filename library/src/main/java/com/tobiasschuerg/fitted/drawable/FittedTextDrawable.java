@@ -2,6 +2,7 @@ package com.tobiasschuerg.fitted.drawable;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
@@ -59,14 +60,16 @@ public class FittedTextDrawable extends FittedDrawable {
 		int yPos = (int) ((getHeight() / 2) - ((foregroundPaint().descent() + foregroundPaint().ascent()) / 2));
 		//((textPaint.descent() + textPaint.ascent()) / 2) is the distance from the baseline to the center.
 
+		Log.d(TAG, "Drawing text at " + xPos + ", " + yPos);
+		foregroundPaint().setColor(Color.WHITE);
 		canvas.drawText(text, xPos, yPos, foregroundPaint());
 
 		if (drawBorder) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-				canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1,
+				canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1,
 						getBorderRadiusPx(), getBorderRadiusPx(), borderPaint);
 			} else {
-				canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right -1, getClipBounds().bottom-1, borderPaint);
+				canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, borderPaint);
 			}
 		}
 	}
@@ -101,32 +104,6 @@ public class FittedTextDrawable extends FittedDrawable {
 		Rect bounds = new Rect();
 		paint.getTextBounds(text, 0, text.length(), bounds);
 		return bounds;
-	}
-
-	@Override
-	public int getIntrinsicWidth() {
-		int width = getBounds().width();
-		Log.d("FittedTextDrawable", "Width: " + width);
-		if (width <= 1) {
-			width = Math.max(getDefaultTextBounds().width(), getDefaultTextBounds().height());
-		}
-		Log.d("FittedTextDrawable", "Width after: " + width);
-		return width;
-	}
-
-	@Override
-	public int getIntrinsicHeight() {
-		int height = getBounds().height();
-		Log.d("FittedTextDrawable", "Height: " + height);
-		if (height <= 1) {
-			height = Math.max(getDefaultTextBounds().width(), getDefaultTextBounds().height());
-		}
-		Log.d("FittedTextDrawable", "Height after: " + height);
-		return height;
-	}
-
-	private Rect getDefaultTextBounds() {
-		return getDefaultTextBounds(new Paint());
 	}
 
 }

@@ -14,17 +14,18 @@ import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
+import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTANGLE;
 
-public class SampleFragment extends Fragment {
+public class FrRectangleSample extends Fragment {
 
 	private static final String ARG_SECTION_NUMBER = "section_number";
 
-	public SampleFragment() {
+	public FrRectangleSample() {
 	}
 
-	public static SampleFragment newInstance(int sectionNumber) {
-		SampleFragment fragment = new SampleFragment();
+	public static FrRectangleSample newInstance(int sectionNumber) {
+		FrRectangleSample fragment = new FrRectangleSample();
 		Bundle args = new Bundle();
 		args.putInt(ARG_SECTION_NUMBER, sectionNumber);
 		fragment.setArguments(args);
@@ -41,8 +42,7 @@ public class SampleFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
-		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
-		bitmapDrawable.debug = true;
+		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, RECTANGLE);
 		bitmapDrawable.setAdditionalPaddingDp(16);
 		bitmapDrawable.setBorderRadiusDp(16);
 		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
@@ -50,10 +50,8 @@ public class SampleFragment extends Fragment {
 		imageR.setImageDrawable(bitmapDrawable);
 
 		ImageView imageRT = (ImageView) view.findViewById(R.id.iv_bottom);
-		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
+		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, RECTANGLE);
 		textDrawable.debug = true;
-		textDrawable.setAdditionalPaddingDp(16);
-		textDrawable.setBorderRadiusDp(8);
 		imageRT.setImageDrawable(textDrawable);
 	}
 }

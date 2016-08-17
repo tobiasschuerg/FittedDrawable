@@ -108,14 +108,13 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			case ROUND:
 				if (tileMode != null) {
 					int radius = getInnerCircleRadius() - 1;
-					int offLeft = radius - (scaledBitmap.getWidth() / 2) + getAdditionalPaddingPX();
-					int offTop = radius - (scaledBitmap.getHeight() / 2) + getAdditionalPaddingPX();
 
 					RectF inRect = new RectF(0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight());
 					RectF outRect = new RectF(
-							offLeft, offTop,
-							radius * 2 - offLeft,
-							radius * 2 - offTop);
+							getCenterX() - scaledBitmap.getWidth() / 2,
+							getCenterY() - scaledBitmap.getHeight() / 2,
+							getCenterX() + scaledBitmap.getWidth() / 2,
+							getCenterY() + scaledBitmap.getHeight() / 2 );
 
 					Paint shaderPaint = getShaderPaint(scaledBitmap, inRect, outRect);
 					canvas.drawCircle(getCenterX(), getCenterY(), radius, shaderPaint);
@@ -284,7 +283,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		switch (getShape()) {
 
 			case ROUND:
-				int radius = getIntrinsicWidth();
+				int radius = getInnerCircleRadius();
 				canvas.drawCircle(getCenterX(), getCenterY(), --radius, getFillPaint());
 				scaledBitmap = fitBitmapInCircle(radius - getAdditionalPaddingPX());
 				break;
