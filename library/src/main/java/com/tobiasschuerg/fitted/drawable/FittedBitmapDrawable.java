@@ -71,6 +71,9 @@ public class FittedBitmapDrawable extends FittedDrawable {
 	public void draw(@NonNull Canvas canvas) {
 		super.draw(canvas);
 
+		int width = canvas.getWidth();
+		int heigth = canvas.getHeight();
+
 		int radius = getInnerCircleRadius();
 		int cx = getCenterX();
 		int cy = getCenterY();
@@ -103,10 +106,10 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				break;
 			case ROUND_RECTANGLE:
 			case RECTANGLE:
-				if (getWidth() > getHeight()) {
-					scaledBitmap = fitBitmapInRectangle(getWidth() - (2 * getAdditionalPaddingPX()), getHeight());
+				if (width > heigth) {
+					scaledBitmap = fitBitmapInRectangle(width - (2 * getAdditionalPaddingPX()), heigth);
 				} else {
-					scaledBitmap = fitBitmapInRectangle(getWidth(), getHeight() - (2 * getAdditionalPaddingPX()));
+					scaledBitmap = fitBitmapInRectangle(width, heigth - (2 * getAdditionalPaddingPX()));
 				}
 				break;
 			default:
@@ -231,6 +234,9 @@ public class FittedBitmapDrawable extends FittedDrawable {
 	}
 
 	private Bitmap fitBitmapInRectangle(int width, int height) {
+		if (width <= 0 || height <= 0) {
+			throw new IllegalArgumentException("width(" + width + ") and height(" + height + ") must be > 0");
+		}
 		if (debug) {
 			Log.d(TAG, "Rectangle width: " + width);
 			Log.d(TAG, "Rectangle height: " + height);

@@ -29,7 +29,8 @@
                     android:id="@+id/image_rect_bitmap"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#050"/>
+                    android:background="#050"
+                    android:scaleType="center"/>
 
             </LinearLayout>
         </LinearLayout>

@@ -1,5 +1,7 @@
 package com.tobiasschuerg.fitted.sample;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Shader;
 import android.os.Bundle;
@@ -36,7 +38,16 @@ public class MainActivity extends AppCompatActivity {
 		bitmapDrawable.setBorderRadiusDp(16);
 		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
 		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
+
+
+		// Draw the drawable on a bitmap first and then attach that bitmap to the ImageView
+//		Bitmap bitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
+//		Canvas canvas = new Canvas(bitmap);
+//		bitmapDrawable.draw(canvas);
+//		imageR.setImageBitmap(bitmap);
+
 		imageR.setImageDrawable(bitmapDrawable);
+
 
 		ImageView imageRT = (ImageView) findViewById(R.id.image_rect_text);
 		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);

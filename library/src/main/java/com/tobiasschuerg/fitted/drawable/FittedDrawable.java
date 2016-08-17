@@ -80,7 +80,7 @@ public abstract class FittedDrawable extends Drawable {
 
 	public int getAdditionalPaddingPX() {
 		if (debug) {
-			Log.d("FittedDrawable", "Padding is " + additionalPaddingPX);
+			Log.d("FittedDrawable", "InnerPadding is " + additionalPaddingPX);
 		}
 		return additionalPaddingPX;
 	}
@@ -117,10 +117,13 @@ public abstract class FittedDrawable extends Drawable {
 
 	@Override
 	public void draw(@NonNull Canvas canvas) {
-		if (debug) {
-			Log.d(LOG_TAG, "canvas width: " + getWidth() + " height: " + getHeight());
-		}
 		clipBounds = canvas.getClipBounds();
+
+		if (debug) {
+			Log.d(LOG_TAG, "canvas width: " + canvas.getWidth() + " height: " + canvas.getHeight());
+			Log.d(LOG_TAG, "canvas clip bounds width: " + clipBounds.width() + " height: " + clipBounds.height());
+			Log.d(LOG_TAG, "bounds width: " + getBounds().width() + " height: " + getBounds().height());
+		}
 
 		// draw the background for the selected shape
 		switch (getShape()) {
@@ -174,10 +177,12 @@ public abstract class FittedDrawable extends Drawable {
 		return getBounds().centerY();
 	}
 
+	@Deprecated
 	int getWidth() {
 		return getBounds().width();
 	}
 
+	@Deprecated
 	int getHeight() {
 		return getBounds().height();
 
