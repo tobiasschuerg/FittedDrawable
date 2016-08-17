@@ -31,9 +31,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 	private final Bitmap bitmap;
 	private final float aspectRatio;
 
-
-	@Nullable
-	private Shader.TileMode tileMode;
+	@NonNull
+	private Shader.TileMode tileMode = Shader.TileMode.CLAMP;
 
 	public FittedBitmapDrawable(Context context, int resource, SHAPE SHAPE) {
 		this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE);
@@ -144,8 +143,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				break;
 
 			case ROUND_RECTANGLE:
-			case RECTANGLE:
-
 				if (tileMode != null) {
 					RectF sourceRect = new RectF(0f, 0f, scaledBitmap.getWidth(), scaledBitmap.getHeight());
 					targetRect = new RectF(
@@ -165,8 +162,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 						canvas.drawRect(sourceRect, sp);
 					}
 				} else {
-					canvas.drawColor(getFillColor());
-					canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
+					throw new IllegalArgumentException("Tile mode not set");
 				}
 
 				if (drawBorder) {
@@ -176,6 +172,15 @@ public class FittedBitmapDrawable extends FittedDrawable {
 					} else {
 						canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, borderPaint);
 					}
+				}
+				break;
+
+			case RECTANGLE:
+				// Simple, should result in the same as #ROUND_RECTANGLE with #setBorderRadius(0)
+				canvas.drawColor(getFillColor());
+				canvas.drawBitmap(scaledBitmap, hOff, vOff, foregroundPaint());
+				if (drawBorder) {
+					canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, borderPaint);
 				}
 				break;
 		}
@@ -287,7 +292,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		}
 	}
 
-	public void setTileMode(@Nullable Shader.TileMode tileMode) {
+	public void setTileMode(@NonNull Shader.TileMode tileMode) {
 		this.tileMode = tileMode;
 	}
 }
