@@ -70,8 +70,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 	public void draw(@NonNull Canvas canvas) {
 		super.draw(canvas);
 
-		int radius = getInnerCircleRadius();
-
 		if (debug) {
 			drawBorder = true;
 			foregroundPaint().setColor(Color.RED);
@@ -81,7 +79,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			switch (getShape()) {
 				case ROUND:
 					getFillPaint().setColor(Color.LTGRAY);
-					canvas.drawCircle(getCenterX(), getCenterY(), radius, getFillPaint());
+					canvas.drawCircle(getCenterX(), getCenterY(), getInnerCircleRadius(), getFillPaint());
 					getFillPaint().setColor(getFillColor());
 					break;
 				case RECTANGLE:
@@ -92,40 +90,23 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			}
 		}
 
-		Bitmap scaledBitmap;
-		switch (getShape()) {
-			case ROUND:
-				canvas.drawCircle(getCenterX(), getCenterY(), --radius, getFillPaint());
-				scaledBitmap = fitBitmapInCircle(radius - getAdditionalPaddingPX());
-				break;
-			case ROUND_RECTANGLE:
-			case RECTANGLE:
-				if (getWidth() > getHeight()) {
-					scaledBitmap = fitBitmapInRectangle(getWidth() - (2 * getAdditionalPaddingPX()), getHeight());
-				} else {
-					scaledBitmap = fitBitmapInRectangle(getWidth(), getHeight() - (2 * getAdditionalPaddingPX()));
-				}
-				break;
-			default:
-				// must not happen
-				return;
-		}
-
-		float hOff = getCenterX() - scaledBitmap.getWidth() / 2;
-		float vOff = getCenterY() - scaledBitmap.getHeight() / 2;
-
-		if (isAlphaEnabled) {
-			// clear background behind image
-			Paint clearPaint = new Paint();
-			clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
-		}
+		
+//		if (isAlphaEnabled) {
+//			// clear background behind image
+//			Paint clearPaint = new Paint();
+//			clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+//			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
+//		}
 
 		RectF targetRect = null;
+		Bitmap scaledBitmap = getScaledBitmap(canvas);
+		float hOff = getCenterX() - scaledBitmap.getWidth() / 2;
+		float vOff = getCenterY() - scaledBitmap.getHeight() / 2;
 		switch (getShape()) {
 
 			case ROUND:
 				if (tileMode != null) {
+					int radius = getInnerCircleRadius() - 1;
 					int offLeft = radius - (scaledBitmap.getWidth() / 2) + getAdditionalPaddingPX();
 					int offTop = radius - (scaledBitmap.getHeight() / 2) + getAdditionalPaddingPX();
 
@@ -144,14 +125,14 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			case ROUND_RECTANGLE:
 				if (tileMode != null) {
-					RectF sourceRect = new RectF(0f, 0f, scaledBitmap.getWidth(), scaledBitmap.getHeight());
+					RectF sourceRect = new RectF(0f, 0f, bitmap.getWidth(), bitmap.getHeight());
 					targetRect = new RectF(
 							getClipBounds().left + getAdditionalPaddingPX(),
 							getClipBounds().top + getAdditionalPaddingPX(),
 							getClipBounds().right - getAdditionalPaddingPX(),
 							getClipBounds().bottom - getAdditionalPaddingPX());
 
-					Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
+					Paint sp = getShaderPaint(bitmap, sourceRect, targetRect);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 						if (drawBorder) {
 							canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, getBorderRadiusPx(), getBorderRadiusPx(), sp);
@@ -213,6 +194,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 		Paint p = new Paint();
 		p.setAntiAlias(true);
+		p.setDither(true);
 		p.setShader(shader);
 
 		return p;
@@ -294,5 +276,31 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 	public void setTileMode(@NonNull Shader.TileMode tileMode) {
 		this.tileMode = tileMode;
+	}
+
+	private Bitmap getScaledBitmap(Canvas canvas) {
+		Bitmap scaledBitmap;
+		switch (getShape()) {
+
+			case ROUND:
+				int radius = getIntrinsicWidth();
+				canvas.drawCircle(getCenterX(), getCenterY(), --radius, getFillPaint());
+				scaledBitmap = fitBitmapInCircle(radius - getAdditionalPaddingPX());
+				break;
+
+			case RECTANGLE:
+				if (getWidth() > getHeight()) {
+					scaledBitmap = fitBitmapInRectangle(getWidth() - (2 * getAdditionalPaddingPX()), getHeight());
+				} else {
+					scaledBitmap = fitBitmapInRectangle(getWidth(), getHeight() - (2 * getAdditionalPaddingPX()));
+				}
+				break;
+
+			case ROUND_RECTANGLE:
+				// we don't scale now, this will be done by the shader paint.
+			default:
+				throw new IllegalStateException("Scaling not necessary");
+		}
+		return scaledBitmap;
 	}
 }
