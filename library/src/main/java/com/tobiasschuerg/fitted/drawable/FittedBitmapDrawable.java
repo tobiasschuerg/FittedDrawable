@@ -90,7 +90,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			}
 		}
 
-		
+
 //		if (isAlphaEnabled) {
 //			// clear background behind image
 //			Paint clearPaint = new Paint();
@@ -102,6 +102,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		Bitmap scaledBitmap = getScaledBitmap(canvas);
 		float hOff = getCenterX() - scaledBitmap.getWidth() / 2;
 		float vOff = getCenterY() - scaledBitmap.getHeight() / 2;
+
 		switch (getShape()) {
 
 			case ROUND:
@@ -298,8 +299,9 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			case ROUND_RECTANGLE:
 				// we don't scale now, this will be done by the shader paint.
+				return bitmap;
 			default:
-				throw new IllegalStateException("Scaling not necessary");
+				throw new IllegalStateException();
 		}
 		return scaledBitmap;
 	}
