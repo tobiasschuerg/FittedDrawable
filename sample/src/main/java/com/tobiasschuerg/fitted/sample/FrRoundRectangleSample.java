@@ -1,5 +1,8 @@
 package com.tobiasschuerg.fitted.sample;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Shader;
 import android.os.Bundle;
@@ -12,8 +15,10 @@ import android.widget.ImageView;
 
 import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
+import com.tobiasschuerg.fitted.drawable.FittedDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
+import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTANGLE;
 
 public class FrRoundRectangleSample extends Fragment {
@@ -44,13 +49,25 @@ public class FrRoundRectangleSample extends Fragment {
 		int padding = 16;
 
 		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
-		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
-		bitmapDrawable.debug = true;
-		bitmapDrawable.setAdditionalPaddingDp(padding);
-		bitmapDrawable.setBorderRadiusDp(radius);
-		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
-		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
-		imageR.setImageDrawable(bitmapDrawable);
+		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, RECTANGLE);
+		//bitmapDrawable.debug = true;
+		//bitmapDrawable.setAdditionalPaddingDp(padding);
+		//bitmapDrawable.setBorderRadiusDp(radius);
+		//bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
+		//bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
+		// imageR.setImageDrawable(bitmapDrawable);
+
+
+		bitmapDrawable.setBorderRadiusDp(8);
+		bitmapDrawable.setDrawBorder(false);
+		bitmapDrawable.setAdditionalPaddingDp(8);
+		int iconSize = 126;
+		Bitmap launcherIcon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(launcherIcon);
+		bitmapDrawable.draw(canvas);
+		imageR.setImageBitmap(launcherIcon);
+
+
 
 		ImageView imageRT = (ImageView) view.findViewById(R.id.iv_bottom);
 		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);

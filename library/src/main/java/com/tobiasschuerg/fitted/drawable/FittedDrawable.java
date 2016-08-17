@@ -159,7 +159,10 @@ public abstract class FittedDrawable extends Drawable {
 
 	public void setBorderRadiusDp(float radius) {
 		borderRadiusPx = radius * displaymetrics.density;
-		setDrawBorder(true);
+	}
+
+	public void setBorderRadiusPx(float radius) {
+		borderRadiusPx = radius;
 	}
 
 	int getInnerCircleRadius() {
@@ -174,11 +177,11 @@ public abstract class FittedDrawable extends Drawable {
 	}
 
 	int getCenterX() {
-		return getBounds().centerX();
+		return getWidth() / 2;
 	}
 
 	int getCenterY() {
-		return getBounds().centerY();
+		return getHeight() / 2;
 	}
 
 	protected int getWidth() {
