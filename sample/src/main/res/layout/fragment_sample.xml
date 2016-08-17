@@ -2,10 +2,10 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tobiasschuerg.fitted.sample.MainActivity">
+    android:orientation="vertical"
+    tools:context="com.tobiasschuerg.fitted.sample.SampleFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:background="#0b0">
 
                 <ImageView
-                    android:id="@+id/image_rect_bitmap"
+                    android:id="@+id/iv_top"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
@@ -47,7 +47,7 @@
                 android:background="#b00">
 
                 <ImageView
-                    android:id="@+id/image_rect_text"
+                    android:id="@+id/iv_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"

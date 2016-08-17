@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.1"
     defaultConfig {
         applicationId "com.tobiasschuerg.roundimagedrawable"
-        minSdkVersion 9
+        minSdkVersion 13
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -23,10 +23,11 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
-    testCompile 'junit:junit:4.12'
 
     compile project(':library')
     // compile 'com.github.tobiasschuerg:FittedDrawable:v1.+'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
+    compile 'com.android.support:design:24.1.1'
+    testCompile 'junit:junit:4.12'
 }
