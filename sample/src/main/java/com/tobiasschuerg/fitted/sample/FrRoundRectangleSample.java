@@ -1,11 +1,8 @@
 package com.tobiasschuerg.fitted.sample;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,11 +13,8 @@ import android.widget.ImageView;
 
 import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
-import com.tobiasschuerg.fitted.drawable.FittedDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
-import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
-import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND;
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTANGLE;
 
 public class FrRoundRectangleSample extends Fragment {
@@ -54,13 +48,13 @@ public class FrRoundRectangleSample extends Fragment {
 		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
 		// bitmapDrawable.debug = true;
 		//bitmapDrawable.setAdditionalPaddingDp(padding);
-		//bitmapDrawable.setBorderRadiusDp(radius);
+		//bitmapDrawable.setCornerRadiusDp(radius);
 		//bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
 		//bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
 		// imageR.setImageDrawable(bitmapDrawable);
 
 
-		bitmapDrawable.setBorderRadiusDp(8);
+		bitmapDrawable.setCornerRadiusDp(8);
 		bitmapDrawable.setDrawBorder(false);
 		bitmapDrawable.setAdditionalPaddingDp(padding);
 		int iconSize = 126;
@@ -77,7 +71,7 @@ public class FrRoundRectangleSample extends Fragment {
 		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
 		// textDrawable.debug = true;
 		textDrawable.setAdditionalPaddingDp(padding);
-		textDrawable.setBorderRadiusDp(radius);
+		textDrawable.setCornerRadiusDp(radius);
 		imageRT.setImageDrawable(textDrawable);
 	}
 }

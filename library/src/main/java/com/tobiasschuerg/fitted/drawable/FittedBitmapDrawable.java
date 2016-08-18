@@ -8,13 +8,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 /**
@@ -136,9 +133,9 @@ public class FittedBitmapDrawable extends FittedDrawable {
                     Paint sp = getShaderPaint(scaledBitmap, sourceRect, targetRect);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         if (drawBorder) {
-                            canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, getBorderRadiusPx(), getBorderRadiusPx(), sp);
+                            canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, getCornerRadiusPx(), getCornerRadiusPx(), sp);
                         } else {
-                            canvas.drawRoundRect(new RectF(canvas.getClipBounds()), getBorderRadiusPx(), getBorderRadiusPx(), sp);
+                            canvas.drawRoundRect(new RectF(canvas.getClipBounds()), getCornerRadiusPx(), getCornerRadiusPx(), sp);
                         }
                     } else {
                         canvas.drawRect(sourceRect, sp);
@@ -150,7 +147,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
                 if (drawBorder) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1,
-                                getBorderRadiusPx(), getBorderRadiusPx(), borderPaint);
+                                getCornerRadiusPx(), getCornerRadiusPx(), borderPaint);
                     } else {
                         canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, borderPaint);
                     }

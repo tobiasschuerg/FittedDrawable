@@ -15,7 +15,6 @@ import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
-import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTANGLE;
 
 public class FrRectangleSample extends Fragment {
 
@@ -44,7 +43,7 @@ public class FrRectangleSample extends Fragment {
 		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
 		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, RECTANGLE);
 		bitmapDrawable.setAdditionalPaddingDp(16);
-		bitmapDrawable.setBorderRadiusDp(16);
+		bitmapDrawable.setCornerRadiusDp(16);
 		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
 		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
 		imageR.setImageDrawable(bitmapDrawable);

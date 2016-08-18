@@ -1,6 +1,5 @@
 package com.tobiasschuerg.fitted.drawable;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -68,7 +67,7 @@ public class FittedTextDrawable extends FittedDrawable {
         if (drawBorder) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1,
-                        getBorderRadiusPx(), getBorderRadiusPx(), borderPaint);
+                        getCornerRadiusPx(), getCornerRadiusPx(), borderPaint);
             } else {
                 canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, borderPaint);
             }
