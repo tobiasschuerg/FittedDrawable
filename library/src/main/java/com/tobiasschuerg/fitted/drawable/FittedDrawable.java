@@ -142,10 +142,6 @@ public abstract class FittedDrawable extends Drawable {
 					canvas.drawRect(getClipBounds(), getFillPaint());
 				}
 				break;
-			case ROUND:
-				int radius = getInnerCircleRadius();
-				canvas.drawCircle(getCenterX(), getCenterY(), radius, fillPaint);
-				break;
 		}
 	}
 

@@ -44,8 +44,8 @@ public class FrRoundSample extends Fragment {
 		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
 		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND);
 		bitmapDrawable.debug = true;
-		bitmapDrawable.setAdditionalPaddingDp(16);
-		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
+		// bitmapDrawable.setAdditionalPaddingDp(16);
+		// bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
 		imageR.setImageDrawable(bitmapDrawable);
 
 		ImageView imageRT = (ImageView) view.findViewById(R.id.iv_bottom);

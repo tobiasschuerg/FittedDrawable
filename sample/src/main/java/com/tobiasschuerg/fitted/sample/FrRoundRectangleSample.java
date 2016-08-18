@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.tobiasschuerg.fitted.drawable.FittedDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
+import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND;
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTANGLE;
 
 public class FrRoundRectangleSample extends Fragment {
@@ -46,11 +48,11 @@ public class FrRoundRectangleSample extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		float radius = 25f;
-		int padding = 16;
+		int padding = 4;
 
 		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
-		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, RECTANGLE);
-		//bitmapDrawable.debug = true;
+		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
+		// bitmapDrawable.debug = true;
 		//bitmapDrawable.setAdditionalPaddingDp(padding);
 		//bitmapDrawable.setBorderRadiusDp(radius);
 		//bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
@@ -60,18 +62,20 @@ public class FrRoundRectangleSample extends Fragment {
 
 		bitmapDrawable.setBorderRadiusDp(8);
 		bitmapDrawable.setDrawBorder(false);
-		bitmapDrawable.setAdditionalPaddingDp(8);
+		bitmapDrawable.setAdditionalPaddingDp(padding);
 		int iconSize = 126;
 		Bitmap launcherIcon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(launcherIcon);
 		bitmapDrawable.draw(canvas);
+
+
 		imageR.setImageBitmap(launcherIcon);
 
 
 
 		ImageView imageRT = (ImageView) view.findViewById(R.id.iv_bottom);
 		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
-		textDrawable.debug = true;
+		// textDrawable.debug = true;
 		textDrawable.setAdditionalPaddingDp(padding);
 		textDrawable.setBorderRadiusDp(radius);
 		imageRT.setImageDrawable(textDrawable);
