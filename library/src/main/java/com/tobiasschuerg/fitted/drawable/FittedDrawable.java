@@ -13,6 +13,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 
 /**
  * Super class for fitted drawables which fit their content into a predefined shape.
@@ -22,224 +23,237 @@ import android.util.Log;
 
 public abstract class FittedDrawable extends Drawable {
 
-    final static String LOG_TAG = FittedDrawable.class.getSimpleName();
-    final Paint debugPaint;
-    protected final Paint borderPaint;
-    private final DisplayMetrics displaymetrics;
-    public boolean debug = false;
-    private final SHAPE shape;
-    private final int fillColor;
-    private final Paint fillPaint;
-    private final Paint foregroundPaint;
-    boolean isAlphaEnabled;
-    private int additionalPaddingPX = 0;
-    private float cornerRadiusPx = 0;
-    private Rect clipBounds;
-    private int width = Integer.MIN_VALUE;
-    private int heigth = Integer.MIN_VALUE;
+	private static String LOG_TAG = FittedDrawable.class.getSimpleName();
+	final Paint debugPaint;
+	protected final Paint borderPaint;
+	private final DisplayMetrics displaymetrics;
+	public boolean debug = false;
+	private final SHAPE shape;
+	private final int fillColor;
+	private final Paint fillPaint;
+	private final Paint foregroundPaint;
+	boolean isAlphaEnabled;
+	private float additionalPaddingPX = 0;
+	private float cornerRadiusPx = 0;
+	private Rect clipBounds;
 
-    FittedDrawable(SHAPE shape, int backgroundColor) {
-        displaymetrics = Resources.getSystem().getDisplayMetrics();
-        this.shape = shape;
-        this.fillColor = backgroundColor;
+	public void setBorderWidthPx(int borderWidth) {
+		borderPaint.setStrokeWidth(borderWidth);
+	}
 
-        fillPaint = new Paint();
-        fillPaint.setColor(fillColor);
-        fillPaint.setStyle(Paint.Style.FILL);
-        fillPaint.setAntiAlias(true);
-        fillPaint.setDither(true);
+	public void setBorderWidthDp(int dp) {
+		setBorderWidthPx((int) (dp * Resources.getSystem().getDisplayMetrics().density));
+	}
 
-        foregroundPaint = new Paint();
-        foregroundPaint.setAntiAlias(true);
-        foregroundPaint.setTextAlign(Paint.Align.CENTER);
-        foregroundPaint.setFilterBitmap(true);
-        foregroundPaint.setDither(true);
-        foregroundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+	FittedDrawable(SHAPE shape, int backgroundColor) {
+		displaymetrics = Resources.getSystem().getDisplayMetrics();
+		this.shape = shape;
+		this.fillColor = backgroundColor;
 
-        debugPaint = new Paint();
-        debugPaint.setColor(Color.CYAN);
-        debugPaint.setStyle(Paint.Style.STROKE);
-        debugPaint.setAntiAlias(true);
-        debugPaint.setStrokeWidth(8);
+		fillPaint = new Paint();
+		fillPaint.setColor(fillColor);
+		fillPaint.setStyle(Paint.Style.FILL);
+		fillPaint.setAntiAlias(true);
+		fillPaint.setDither(true);
 
-        // TODO: set when border is actually set as enabled
-        borderPaint = new Paint();
-        setBorderColor(Color.LTGRAY);
-        borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setAntiAlias(true);
-        borderPaint.setDither(true);
-        borderPaint.setStrokeWidth(1);
-    }
+		foregroundPaint = new Paint();
+		foregroundPaint.setAntiAlias(true);
+		foregroundPaint.setTextAlign(Paint.Align.CENTER);
+		foregroundPaint.setFilterBitmap(true);
+		foregroundPaint.setDither(true);
+		foregroundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-    public void setBorderColor(int color) {
-        borderPaint.setColor(color);
-        setDrawBorder(true);
-    }
+		debugPaint = new Paint();
+		debugPaint.setColor(Color.CYAN);
+		debugPaint.setStyle(Paint.Style.STROKE);
+		debugPaint.setAntiAlias(true);
+		debugPaint.setStrokeWidth(8);
 
-    public void setDebug(boolean debug) {
-        this.debug = debug;
-    }
+		// TODO: set when border is actually set as enabled
+		borderPaint = new Paint();
+		setBorderColor(Color.LTGRAY);
+		borderPaint.setStyle(Paint.Style.STROKE);
+		borderPaint.setAntiAlias(true);
+		borderPaint.setDither(true);
+	}
 
-    public int getAdditionalPaddingPX() {
-        if (debug) {
-            Log.d("FittedDrawable", "InnerPadding is " + additionalPaddingPX);
-        }
-        return additionalPaddingPX;
-    }
+	public void setBorderColor(int color) {
+		borderPaint.setColor(color);
+		setDrawBorder(true);
+	}
 
-    /**
-     * Expects dp!
-     *
-     * @param padding padding in dp
-     */
-    public void setAdditionalPaddingDp(int padding) {
-        Log.d("FittedDrawable", "Setting additionalPaddingPX " + padding);
-        this.additionalPaddingPX = (int) (padding * displaymetrics.density);
-    }
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
 
-    /**
-     * Shortcut for {@link #toBitmap(int, int)} with intrinsic parameters.
-     */
-    public Bitmap toBitmap() {
-        return toBitmap(getIntrinsicWidth(), getIntrinsicHeight());
-    }
+	public float getAdditionalPaddingPX() {
+		if (debug) {
+			Log.d("FittedDrawable", "InnerPadding is " + additionalPaddingPX);
+		}
+		return additionalPaddingPX + borderPaint.getStrokeWidth();
+	}
 
-    /**
-     * Based on http://stackoverflow.com/a/10600736
-     *
-     * @return bitmap from this drawable.
-     */
-    public Bitmap toBitmap(int width, int height) {
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        draw(canvas);
-        return bitmap;
-    }
+	/**
+	 * Expects dp!
+	 *
+	 * @param padding padding in dp
+	 */
+	public void setAdditionalPaddingDp(int padding) {
+		additionalPaddingPX = padding * Resources.getSystem().getDisplayMetrics().density;
+		if (debug) {
+			Log.d("FittedDrawable", "Set additionalPadding " + padding + "dp -> " + additionalPaddingPX + "px");
+		}
+	}
 
-    @Override
-    public void draw(@NonNull Canvas canvas) {
-        width = canvas.getWidth();
-        heigth = canvas.getHeight();
-        clipBounds = canvas.getClipBounds();
+	/**
+	 * Shortcut for {@link #toBitmap(int, int)} with intrinsic parameters.
+	 */
+	public Bitmap toBitmap() {
+		return toBitmap(getIntrinsicWidth(), getIntrinsicHeight());
+	}
 
-        if (debug) {
-            Log.d(LOG_TAG, "canvas width: " + canvas.getWidth() + " height: " + canvas.getHeight());
-            Log.d(LOG_TAG, "canvas clip bounds width: " + clipBounds.width() + " height: " + clipBounds.height());
-            Log.d(LOG_TAG, "bounds width: " + getBounds().width() + " height: " + getBounds().height());
-        }
+	/**
+	 * Based on http://stackoverflow.com/a/10600736
+	 *
+	 * @return bitmap from this drawable.
+	 */
+	public Bitmap toBitmap(int width, int height) {
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+		draw(canvas);
+		return bitmap;
+	}
 
-        // draw the background for the selected shape
-        switch (getShape()) {
-            case RECTANGLE:
-                canvas.drawColor(getFillColor());
-                break;
-            case ROUND_RECTANGLE:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1,
-                            cornerRadiusPx, cornerRadiusPx, getFillPaint());
-                } else {
-                    canvas.drawRect(getClipBounds(), getFillPaint());
-                }
-                break;
-        }
-    }
+	@Override
+	public void draw(@NonNull Canvas canvas) {
 
-    public SHAPE getShape() {
-        return shape;
-    }
+		// FIXME TEMP:
+		//clipBounds = new Rect(0,0,100,100);
+		clipBounds = canvas.getClipBounds();
 
-    public int getFillColor() {
-        return fillColor;
-    }
 
-    public void setCornerRadiusDp(float radius) {
-        cornerRadiusPx = radius * displaymetrics.density;
-    }
+		if (debug) {
+			Log.d(LOG_TAG, "Going to draw " + getShape().name());
+			Log.d(LOG_TAG, "-- INITIAL canvas width: " + canvas.getWidth() + " height: " + canvas.getHeight());
+			Log.d(LOG_TAG, "-- INITIAL canvas clip bounds width: " + clipBounds.width() + " height: " + clipBounds.height());
+			// Log.d(LOG_TAG, "-- INITIAL bounds width: " + getBounds().width() + " height: " + getBounds().height());
+		}
 
-    public void setCornerRadiusPx(float radius) {
-        cornerRadiusPx = radius;
-    }
+		// draw the background for the selected shape
+		switch (getShape()) {
+			case RECTANGLE:
+				canvas.drawColor(getFillColor());
+				break;
+			case ROUND_RECTANGLE:
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+					canvas.drawRoundRect(clipBounds.left + 1, clipBounds.top + 1, clipBounds.right - 1, clipBounds.bottom - 1,
+							cornerRadiusPx, cornerRadiusPx, getFillPaint());
+				} else {
+					canvas.drawRect(clipBounds, getFillPaint());
+				}
+				break;
+		}
+	}
 
-    int getInnerCircleRadius() {
-        int w = getWidth();
-        int h = getHeight();
-        int radius = Math.min(w, h) / 2;
-        if (debug) {
-            Log.d(LOG_TAG, "Width: " + w + ", height: " + h);
-            Log.d(LOG_TAG, "Radius: " + radius);
-        }
-        return radius;
-    }
+	public SHAPE getShape() {
+		return shape;
+	}
 
-    int getCenterX() {
-        return getWidth() / 2;
-    }
+	public int getFillColor() {
+		return fillColor;
+	}
 
-    int getCenterY() {
-        return getHeight() / 2;
-    }
+	public void setCornerRadiusDp(float radius) {
+		cornerRadiusPx = radius * displaymetrics.density;
+	}
 
-    protected int getWidth() {
-        if (width < 0) {
-            throw new IllegalStateException("width is " + width);
-        }
-        return width;
-    }
+	public void setCornerRadiusPx(float radius) {
+		cornerRadiusPx = radius;
+	}
 
-    protected int getHeight() {
-        if (heigth < 0) {
-            throw new IllegalStateException("width is " + heigth);
-        }
-        return heigth;
+	int getInnerCircleRadius() {
+		int w = getBounds().width();
+		int h = getBounds().height();
+		int radius = Math.min(w, h) / 2;
+		if (debug) {
+			Log.d(LOG_TAG, "Radius is " + radius + " for width: " + w + " and height: " + h);
+		}
+		return radius;
+	}
 
-    }
+	int getCenterX() {
+		// return getWidth() / 2;
+		return getBounds().centerX();
+	}
 
-    @Override
-    public void setAlpha(int alpha) {
-        Log.d(LOG_TAG, "setAlpha(" + alpha + ")");
-        foregroundPaint.setAlpha(alpha);
-        fillPaint.setAlpha(alpha);
-        isAlphaEnabled = alpha != 255;
-    }
+	int getCenterY() {
+		// return getHeight() / 2;
+		return getBounds().centerY();
+	}
 
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-        Log.d(LOG_TAG, "color filter set");
-        foregroundPaint.setColorFilter(cf);
-        fillPaint.setColorFilter(cf);
-    }
+	protected int getWidth() {
+		int width = getBounds().width();
+		if (width <= 0) {
+			throw new IllegalStateException("width is " + width);
+		}
+		return width;
+	}
 
-    @Override
-    public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
-    }
+	protected int getHeight() {
+		int heigth = getBounds().height();
+		if (heigth <= 0) {
+			throw new IllegalStateException("width is " + heigth);
+		}
+		return heigth;
 
-    public Paint foregroundPaint() {
-        return foregroundPaint;
-    }
+	}
 
-    Paint getFillPaint() {
-        return fillPaint;
-    }
+	@Override
+	public void setAlpha(int alpha) {
+		Log.d(LOG_TAG, "setAlpha(" + alpha + ")");
+		foregroundPaint.setAlpha(alpha);
+		fillPaint.setAlpha(alpha);
+		isAlphaEnabled = alpha != 255;
+	}
 
-    public enum SHAPE {ROUND, ROUND_RECTANGLE, RECTANGLE}
+	@Override
+	public void setColorFilter(ColorFilter cf) {
+		Log.d(LOG_TAG, "color filter set");
+		foregroundPaint.setColorFilter(cf);
+		fillPaint.setColorFilter(cf);
+	}
 
-    protected boolean drawBorder = false;
+	@Override
+	public int getOpacity() {
+		return PixelFormat.TRANSLUCENT;
+	}
 
-    public void setDrawBorder(boolean drawBorder) {
-        this.drawBorder = drawBorder;
-    }
+	public Paint foregroundPaint() {
+		return foregroundPaint;
+	}
 
-    protected Rect getClipBounds() {
-        if (clipBounds == null) {
-            throw new IllegalStateException("getClipBounds must only be called in onDraw()");
-        }
-        return clipBounds;
-    }
+	Paint getFillPaint() {
+		return fillPaint;
+	}
 
-    public float getCornerRadiusPx() {
-        return cornerRadiusPx;
-    }
+	public enum SHAPE {ROUND, ROUND_RECTANGLE, RECTANGLE}
+
+	protected boolean drawBorder = false;
+
+	public void setDrawBorder(boolean drawBorder) {
+		this.drawBorder = drawBorder;
+	}
+
+	protected Rect getClipBounds() {
+		if (clipBounds == null) {
+			throw new IllegalStateException("getClipBounds must only be called in onDraw()");
+		}
+		return clipBounds;
+	}
+
+	public float getCornerRadiusPx() {
+		return cornerRadiusPx;
+	}
 
 }

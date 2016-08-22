@@ -13,7 +13,9 @@ import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
+import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND;
+import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTANGLE;
 
 public class FrRoundSample extends Fragment {
 
@@ -39,19 +41,31 @@ public class FrRoundSample extends Fragment {
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
-		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND);
-		bitmapDrawable.debug = true;
-		// bitmapDrawable.setAdditionalPaddingDp(16);
-		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
-		imageR.setImageDrawable(bitmapDrawable);
+		topBitmapView(view);
+		// bottomTextView(view);
+	}
 
+	private void topBitmapView(View view) {
+		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
+		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
+		// bitmapDrawable.setDebug(true);
+
+		bitmapDrawable.setBorderColor(Color.BLUE);
+		bitmapDrawable.setBorderWidthPx(2);
+
+		imageR.setImageDrawable(bitmapDrawable);
+	}
+
+
+	private void bottomTextView(View view) {
 		ImageView imageRT = (ImageView) view.findViewById(R.id.iv_bottom);
 		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND);
+
 		textDrawable.debug = true;
-		textDrawable.setAdditionalPaddingDp(16);
+		textDrawable.setAdditionalPaddingDp(1);
 		textDrawable.setCornerRadiusDp(8);
 		textDrawable.setDrawBorder(true);
 		imageRT.setImageDrawable(textDrawable);
 	}
 }
+
