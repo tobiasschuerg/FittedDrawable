@@ -60,7 +60,9 @@ public class FittedTextDrawable extends FittedDrawable {
         int yPos = (int) ((getHeight() / 2) - ((foregroundPaint().descent() + foregroundPaint().ascent()) / 2));
         //((textPaint.descent() + textPaint.ascent()) / 2) is the distance from the baseline to the center.
 
-        Log.d(TAG, "Drawing text at " + xPos + ", " + yPos);
+        if (debug) {
+            Log.d(TAG, "Drawing text at " + xPos + ", " + yPos);
+        }
         foregroundPaint().setColor(Color.WHITE);
         canvas.drawText(text, xPos, yPos, foregroundPaint());
 
@@ -89,7 +91,9 @@ public class FittedTextDrawable extends FittedDrawable {
         float textSizeHeight = DEFAULT_TEXT_SIZE * desiredHeight / bounds.height();
 
         float textSize = Math.min(textSizeWidth, textSizeHeight);
-        Log.d("Fitted text size", "size: " + textSize);
+        if (debug) {
+            Log.d("Fitted text size", "size: " + textSize);
+        }
 
         // Set the paint for that size.
         paint.setTextSize(textSize);
