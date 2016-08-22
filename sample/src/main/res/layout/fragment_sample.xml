@@ -25,7 +25,7 @@
 
                 <ImageView
                     android:id="@+id/iv_top"
-                    android:layout_width="150dp"
+                    android:layout_width="300dp"
                     android:layout_height="100dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"

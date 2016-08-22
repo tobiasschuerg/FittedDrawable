@@ -91,10 +91,10 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				scaledBitmap.getHeight());
 
 		RectF outRect = new RectF(
-				getBounds().centerX() - scaledBitmap.getWidth() / 2,
-				getBounds().centerY() - scaledBitmap.getHeight() / 2,
-				getBounds().centerX() + scaledBitmap.getWidth() / 2,
-				getBounds().centerY() + scaledBitmap.getHeight() / 2
+				getBounds().centerX() - scaledBitmap.getWidth() / 2f,
+				getBounds().centerY() - scaledBitmap.getHeight() / 2f,
+				getBounds().centerX() + scaledBitmap.getWidth() / 2f,
+				getBounds().centerY() + scaledBitmap.getHeight() / 2f
 		);
 
 		switch (getShape()) {
@@ -115,30 +115,38 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				break;
 
 			case ROUND_RECTANGLE:
-				if (tileMode != null) {
 
+				// Draw the bitmap with the right size
+				if (tileMode != null) {
 					Paint sp = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						if (drawBorder) {
-							canvas.drawRoundRect(outRect,
-									getCornerRadiusPx(),
-									getCornerRadiusPx(), sp);
-						} else {
-							canvas.drawRoundRect(outRect, getCornerRadiusPx(), getCornerRadiusPx(), sp);
-						}
+						canvas.drawRoundRect(outRect,
+								getCornerRadiusPx(),
+								getCornerRadiusPx(), sp);
 					} else {
-						canvas.drawRect(getBounds(), sp);
+						canvas.drawRect(outRect, sp);
 					}
 				} else {
 					throw new IllegalArgumentException("Tile mode not set");
 				}
 
+				// draw border if wanted
 				if (drawBorder) {
+					float halfBoderWidth = borderPaint.getStrokeWidth() / 2;
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1,
+						canvas.drawRoundRect(
+								getBounds().left + halfBoderWidth,
+								getBounds().top + halfBoderWidth,
+								getBounds().right - halfBoderWidth,
+								getBounds().bottom - halfBoderWidth,
 								getCornerRadiusPx(), getCornerRadiusPx(), borderPaint);
 					} else {
-						canvas.drawRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1, borderPaint);
+						canvas.drawRect(
+								getBounds().left + halfBoderWidth,
+								getBounds().top + halfBoderWidth,
+								getBounds().right - halfBoderWidth,
+								getBounds().bottom - halfBoderWidth,
+								borderPaint);
 					}
 				}
 				break;
@@ -216,32 +224,24 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		return Bitmap.createScaledBitmap(bitmap, bmWidth.intValue(), bmHeight.intValue(), true);
 	}
 
-	private Bitmap fitBitmapInRectangle(int width, int height) {
-		if (width <= 0 || height <= 0) {
-			throw new IllegalArgumentException("width(" + width + ") and height(" + height + ") must be > 0");
-		}
-		if (debug) {
-			Log.d(LOG_TAG, "Rectangle scale to width: " + width);
-			Log.d(LOG_TAG, "Rectangle scale to height: " + height);
-		}
-		Bitmap scaledBm;
-		int scaleWidth;
-		int scaleHeight;
-		float aspectRatioCanvas = (float) height / width;
-		if (aspectRatioCanvas > aspectRatio) {
-			scaleWidth = width;
-			scaleHeight = Math.round(width * aspectRatio);
-		} else {
-			scaleHeight = height;
-			scaleWidth = Math.round(height / aspectRatio);
+	private static Bitmap fitBitmapInRectangle(int destWidth, int destHeight, Bitmap bitmap, boolean debug) {
+
+		debug = true;
+
+		if (destWidth <= 0 || destHeight <= 0) {
+			throw new IllegalArgumentException("width(" + destWidth + ") and height(" + destHeight + ") must be > 0");
 		}
 
+
+		final float widthRatio = (float) destWidth / bitmap.getWidth();
+		final float heightRatio = (float) destHeight / bitmap.getHeight();
+		float scale = Math.min(widthRatio, heightRatio);
+
 		if (debug) {
-			Log.d(LOG_TAG, "Scaled rectangle width: " + scaleWidth);
-			Log.d(LOG_TAG, "Scaled rectangle height: " + scaleHeight);
+			Log.d(LOG_TAG, "Width ratio: " + widthRatio + ", height ratio: " + heightRatio + ", scale: " + scale);
 		}
 
-		scaledBm = Bitmap.createScaledBitmap(bitmap, scaleWidth, scaleHeight, true);
+		Bitmap scaledBm = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * scale), (int) (bitmap.getHeight() * scale), true);
 		return scaledBm;
 	}
 
@@ -291,13 +291,9 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			case ROUND_RECTANGLE:
 			case RECTANGLE:
 
-				if (getWidth() > getHeight()) {
-					final int adjustedWidth = (int) (getWidth() - (2 * getAdditionalPaddingPX()));
-					scaledBitmap = fitBitmapInRectangle(adjustedWidth, Math.min(getHeight(), adjustedWidth));
-				} else {
-					final int adjustedHeight = (int) (getHeight() - (2 * getAdditionalPaddingPX()));
-					scaledBitmap = fitBitmapInRectangle(Math.min(getWidth(), adjustedHeight), adjustedHeight);
-				}
+				final int adjustedWidth = (int) ((getWidth() - (2 * getAdditionalPaddingPX())));
+				final int adjustedHeight = (int) (getHeight() - (2 * getAdditionalPaddingPX()));
+				scaledBitmap = fitBitmapInRectangle(adjustedWidth, adjustedHeight, bitmap, debug);
 				break;
 
 			default:

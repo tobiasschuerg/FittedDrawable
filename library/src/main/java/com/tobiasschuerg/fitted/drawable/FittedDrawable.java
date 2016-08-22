@@ -140,8 +140,13 @@ public abstract class FittedDrawable extends Drawable {
 				break;
 			case ROUND_RECTANGLE:
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-					canvas.drawRoundRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1,
-							cornerRadiusPx, cornerRadiusPx, getFillPaint());
+					float borderWidth = borderPaint.getStrokeWidth() * 0.8f;
+					canvas.drawRoundRect(
+							getBounds().left + borderWidth,
+							getBounds().top + borderWidth,
+							getBounds().right - borderWidth,
+							getBounds().bottom - borderWidth,
+							getCornerRadiusPx(), getCornerRadiusPx(), getFillPaint());
 				} else {
 					canvas.drawRect(getBounds(), getFillPaint());
 				}

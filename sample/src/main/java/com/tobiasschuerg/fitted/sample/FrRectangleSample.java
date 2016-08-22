@@ -44,7 +44,6 @@ public class FrRectangleSample extends Fragment {
 		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, RECTANGLE);
 		bitmapDrawable.setAdditionalPaddingDp(16);
 		bitmapDrawable.setCornerRadiusDp(16);
-		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
 		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
 		imageR.setImageDrawable(bitmapDrawable);
 

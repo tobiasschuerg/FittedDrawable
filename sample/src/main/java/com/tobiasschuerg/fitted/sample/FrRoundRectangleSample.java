@@ -3,6 +3,7 @@ package com.tobiasschuerg.fitted.sample;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,29 +44,17 @@ public class FrRoundRectangleSample extends Fragment {
 
 		float radius = 25f;
 		int padding = 4;
+		int borderWidth = 4;
 
 		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
 		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
 		// bitmapDrawable.debug = true;
-		//bitmapDrawable.setAdditionalPaddingDp(padding);
-		//bitmapDrawable.setCornerRadiusDp(radius);
-		//bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
-		//bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
-		// imageR.setImageDrawable(bitmapDrawable);
-
-
-		bitmapDrawable.setCornerRadiusDp(8);
-		bitmapDrawable.setDrawBorder(false);
 		bitmapDrawable.setAdditionalPaddingDp(padding);
-		int iconSize = 250;
-		Bitmap launcherIcon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(launcherIcon);
-		bitmapDrawable.setBounds(0, 0, iconSize, iconSize);
-		bitmapDrawable.draw(canvas);
-
-
-		imageR.setImageBitmap(launcherIcon);
-
+		bitmapDrawable.setCornerRadiusDp(radius);
+		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
+		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
+		bitmapDrawable.setBorderWidthDp(borderWidth);
+		imageR.setImageDrawable(bitmapDrawable);
 
 
 		ImageView imageRT = (ImageView) view.findViewById(R.id.iv_bottom);
