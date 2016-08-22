@@ -66,10 +66,10 @@ public class FittedTextDrawable extends FittedDrawable {
 
         if (drawBorder) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1,
+                canvas.drawRoundRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1,
                         getCornerRadiusPx(), getCornerRadiusPx(), borderPaint);
             } else {
-                canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, borderPaint);
+                canvas.drawRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1, borderPaint);
             }
         }
     }

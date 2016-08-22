@@ -57,9 +57,10 @@ public class FrRoundRectangleSample extends Fragment {
 		bitmapDrawable.setCornerRadiusDp(8);
 		bitmapDrawable.setDrawBorder(false);
 		bitmapDrawable.setAdditionalPaddingDp(padding);
-		int iconSize = 126;
+		int iconSize = 250;
 		Bitmap launcherIcon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(launcherIcon);
+		bitmapDrawable.setBounds(0, 0, iconSize, iconSize);
 		bitmapDrawable.draw(canvas);
 
 

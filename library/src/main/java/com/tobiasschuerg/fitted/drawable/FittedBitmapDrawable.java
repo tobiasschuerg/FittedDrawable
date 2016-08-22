@@ -81,10 +81,22 @@ public class FittedBitmapDrawable extends FittedDrawable {
 //			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
 //		}
 
-		RectF targetRect = null;
 		Bitmap scaledBitmap = getScaledBitmap(canvas);
 		final float horizontalOffset = getCenterX() - scaledBitmap.getWidth() / 2 + getBounds().left;
 		final float verticalOffset = getCenterY() - scaledBitmap.getHeight() / 2 + getBounds().top;
+
+		RectF inRect = new RectF(
+				0,
+				0,
+				scaledBitmap.getWidth(),
+				scaledBitmap.getHeight());
+
+		RectF outRect = new RectF(
+				getBounds().left + getAdditionalPaddingPX(),
+				getBounds().top + getAdditionalPaddingPX(),
+				getBounds().right - getAdditionalPaddingPX(),
+				getBounds().bottom - getAdditionalPaddingPX()
+		);
 
 		switch (getShape()) {
 
@@ -93,20 +105,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 					double borderCenterRadius = Math.floor(getInnerCircleRadius() - 0.5 * borderPaint.getStrokeWidth());
 					canvas.drawCircle(getCenterX(), getCenterY(), (float) borderCenterRadius, borderPaint);
 					float radius = Math.nextUp(getInnerCircleRadius() - borderPaint.getStrokeWidth());
-
-					RectF inRect = new RectF(
-							0,
-							0,
-							scaledBitmap.getWidth(),
-							scaledBitmap.getHeight());
-
-					RectF outRect = new RectF(
-							getBounds().left + getAdditionalPaddingPX(),
-							getBounds().top + getAdditionalPaddingPX(),
-							getBounds().right - getAdditionalPaddingPX(),
-							getBounds().bottom - getAdditionalPaddingPX()
-					);
-
 
 					Paint shaderPaint = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
 
@@ -118,22 +116,18 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			case ROUND_RECTANGLE:
 				if (tileMode != null) {
-					RectF sourceRect = new RectF(0f, 0f, scaledBitmap.getWidth(), scaledBitmap.getHeight());
-					targetRect = new RectF(
-							getClipBounds().left + getAdditionalPaddingPX(),
-							getClipBounds().top + getAdditionalPaddingPX(),
-							getClipBounds().right - getAdditionalPaddingPX(),
-							getClipBounds().bottom - getAdditionalPaddingPX());
 
-					Paint sp = createShaderPaint(scaledBitmap, sourceRect, targetRect, tileMode);
+					Paint sp = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 						if (drawBorder) {
-							canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, getCornerRadiusPx(), getCornerRadiusPx(), sp);
+							canvas.drawRoundRect(outRect,
+									getCornerRadiusPx(),
+									getCornerRadiusPx(), sp);
 						} else {
-							canvas.drawRoundRect(new RectF(canvas.getClipBounds()), getCornerRadiusPx(), getCornerRadiusPx(), sp);
+							canvas.drawRoundRect(outRect, getCornerRadiusPx(), getCornerRadiusPx(), sp);
 						}
 					} else {
-						canvas.drawRect(sourceRect, sp);
+						canvas.drawRect(getBounds(), sp);
 					}
 				} else {
 					throw new IllegalArgumentException("Tile mode not set");
@@ -141,10 +135,10 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 				if (drawBorder) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1,
+						canvas.drawRoundRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1,
 								getCornerRadiusPx(), getCornerRadiusPx(), borderPaint);
 					} else {
-						canvas.drawRect(getClipBounds().left + 1, getClipBounds().top + 1, getClipBounds().right - 1, getClipBounds().bottom - 1, borderPaint);
+						canvas.drawRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1, borderPaint);
 					}
 				}
 				break;
@@ -167,20 +161,20 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 
 		if (debug) {
-			if (targetRect != null) {
+			if (outRect != null) {
 				Log.d(LOG_TAG, "Green: bitmap border");
 				debugPaint.setColor(Color.GREEN);
 				debugPaint.setStyle(Paint.Style.STROKE);
-				canvas.drawRect(targetRect, debugPaint);
+				canvas.drawRect(outRect, debugPaint);
 			}
 
 			Log.d(LOG_TAG, "Yellow: intrinsic border");
 			debugPaint.setColor(Color.YELLOW);
 			canvas.drawRect(0, 0, getIntrinsicWidth(), getIntrinsicHeight(), debugPaint);
 
-			Log.d(LOG_TAG, "RED: outer border");
-			debugPaint.setColor(Color.RED);
-			canvas.drawRect(getClipBounds(), debugPaint);
+			//Log.d(LOG_TAG, "RED: outer border");
+			//debugPaint.setColor(Color.RED);
+			//canvas.drawRect(getClipBounds(), debugPaint);
 
 			Log.d(LOG_TAG, "BLUE: bounds");
 			debugPaint.setColor(Color.BLUE);

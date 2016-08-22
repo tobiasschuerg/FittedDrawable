@@ -35,7 +35,6 @@ public abstract class FittedDrawable extends Drawable {
 	boolean isAlphaEnabled;
 	private float additionalPaddingPX = 0;
 	private float cornerRadiusPx = 0;
-	private Rect clipBounds;
 
 	public void setBorderWidthPx(int borderWidth) {
 		borderPaint.setStrokeWidth(borderWidth);
@@ -128,15 +127,9 @@ public abstract class FittedDrawable extends Drawable {
 	@Override
 	public void draw(@NonNull Canvas canvas) {
 
-		// FIXME TEMP:
-		//clipBounds = new Rect(0,0,100,100);
-		clipBounds = canvas.getClipBounds();
-
-
 		if (debug) {
 			Log.d(LOG_TAG, "Going to draw " + getShape().name());
 			Log.d(LOG_TAG, "-- INITIAL canvas width: " + canvas.getWidth() + " height: " + canvas.getHeight());
-			Log.d(LOG_TAG, "-- INITIAL canvas clip bounds width: " + clipBounds.width() + " height: " + clipBounds.height());
 			// Log.d(LOG_TAG, "-- INITIAL bounds width: " + getBounds().width() + " height: " + getBounds().height());
 		}
 
@@ -147,10 +140,10 @@ public abstract class FittedDrawable extends Drawable {
 				break;
 			case ROUND_RECTANGLE:
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-					canvas.drawRoundRect(clipBounds.left + 1, clipBounds.top + 1, clipBounds.right - 1, clipBounds.bottom - 1,
+					canvas.drawRoundRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1,
 							cornerRadiusPx, cornerRadiusPx, getFillPaint());
 				} else {
-					canvas.drawRect(clipBounds, getFillPaint());
+					canvas.drawRect(getBounds(), getFillPaint());
 				}
 				break;
 		}
@@ -195,7 +188,7 @@ public abstract class FittedDrawable extends Drawable {
 	protected int getWidth() {
 		int width = getBounds().width();
 		if (width <= 0) {
-			throw new IllegalStateException("width is " + width);
+			throw new IllegalStateException("width is " + width + ". Call setBounds() first!");
 		}
 		return width;
 	}
@@ -203,7 +196,7 @@ public abstract class FittedDrawable extends Drawable {
 	protected int getHeight() {
 		int heigth = getBounds().height();
 		if (heigth <= 0) {
-			throw new IllegalStateException("width is " + heigth);
+			throw new IllegalStateException("width is " + heigth + ". Call setBounds() first!");
 		}
 		return heigth;
 
@@ -243,13 +236,6 @@ public abstract class FittedDrawable extends Drawable {
 
 	public void setDrawBorder(boolean drawBorder) {
 		this.drawBorder = drawBorder;
-	}
-
-	protected Rect getClipBounds() {
-		if (clipBounds == null) {
-			throw new IllegalStateException("getClipBounds must only be called in onDraw()");
-		}
-		return clipBounds;
 	}
 
 	public float getCornerRadiusPx() {
