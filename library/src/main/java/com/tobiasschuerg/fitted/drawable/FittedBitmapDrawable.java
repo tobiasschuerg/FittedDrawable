@@ -92,10 +92,10 @@ public class FittedBitmapDrawable extends FittedDrawable {
 				scaledBitmap.getHeight());
 
 		RectF outRect = new RectF(
-				getBounds().left + getAdditionalPaddingPX(),
-				getBounds().top + getAdditionalPaddingPX(),
-				getBounds().right - getAdditionalPaddingPX(),
-				getBounds().bottom - getAdditionalPaddingPX()
+				getBounds().centerX() - scaledBitmap.getWidth() / 2,
+				getBounds().centerY() - scaledBitmap.getHeight() / 2,
+				getBounds().centerX() + scaledBitmap.getWidth() / 2,
+				getBounds().centerY() + scaledBitmap.getHeight() / 2
 		);
 
 		switch (getShape()) {
