@@ -73,7 +73,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
 			foregroundPaint().setColor(Color.RED);
 		}
 
-
 //		if (isAlphaEnabled) {
 //			// clear background behind image
 //			Paint clearPaint = new Paint();
@@ -108,6 +107,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 					Paint shaderPaint = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
 
+					canvas.drawCircle(getCenterX(), getCenterY(), radius, getFillPaint()); // needed if bitmap has alpha
 					canvas.drawCircle(getCenterX(), getCenterY(), radius, shaderPaint);
 				} else {
 					canvas.drawBitmap(scaledBitmap, horizontalOffset, verticalOffset, foregroundPaint());
