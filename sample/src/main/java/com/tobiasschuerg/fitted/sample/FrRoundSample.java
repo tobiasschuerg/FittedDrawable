@@ -52,6 +52,7 @@ public class FrRoundSample extends Fragment {
 
 		bitmapDrawable.setBorderColor(Color.BLUE);
 		bitmapDrawable.setBorderWidthPx(2);
+		bitmapDrawable.setDrawBorder(true);
 
 		imageR.setImageDrawable(bitmapDrawable);
 	}

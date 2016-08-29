@@ -24,25 +24,18 @@ import android.util.TypedValue;
 public abstract class FittedDrawable extends Drawable {
 
 	private static String LOG_TAG = FittedDrawable.class.getSimpleName();
-	final Paint debugPaint;
 	protected final Paint borderPaint;
+	final Paint debugPaint;
 	private final DisplayMetrics displaymetrics;
-	public boolean debug = false;
 	private final SHAPE shape;
 	private final int fillColor;
 	private final Paint fillPaint;
 	private final Paint foregroundPaint;
+	public boolean debug = false;
+	protected boolean drawBorder = false;
 	boolean isAlphaEnabled;
 	private float additionalPaddingPX = 0;
 	private float cornerRadiusPx = 0;
-
-	public void setBorderWidthPx(int borderWidth) {
-		borderPaint.setStrokeWidth(borderWidth);
-	}
-
-	public void setBorderWidthDp(int dp) {
-		setBorderWidthPx((int) (dp * Resources.getSystem().getDisplayMetrics().density));
-	}
 
 	FittedDrawable(SHAPE shape, int backgroundColor) {
 		displaymetrics = Resources.getSystem().getDisplayMetrics();
@@ -78,7 +71,18 @@ public abstract class FittedDrawable extends Drawable {
 
 	public void setBorderColor(int color) {
 		borderPaint.setColor(color);
-		setDrawBorder(true);
+	}
+
+	public void setDrawBorder(boolean drawBorder) {
+		this.drawBorder = drawBorder;
+	}
+
+	public void setBorderWidthDp(int dp) {
+		setBorderWidthPx((int) (dp * Resources.getSystem().getDisplayMetrics().density));
+	}
+
+	public void setBorderWidthPx(int borderWidth) {
+		borderPaint.setStrokeWidth(borderWidth);
 	}
 
 	public void setDebug(boolean debug) {
@@ -162,49 +166,16 @@ public abstract class FittedDrawable extends Drawable {
 		return fillColor;
 	}
 
-	public void setCornerRadiusDp(float radius) {
-		cornerRadiusPx = radius * displaymetrics.density;
+	public float getCornerRadiusPx() {
+		return cornerRadiusPx;
 	}
 
 	public void setCornerRadiusPx(float radius) {
 		cornerRadiusPx = radius;
 	}
 
-	int getInnerCircleRadius() {
-		int w = getBounds().width();
-		int h = getBounds().height();
-		int radius = Math.min(w, h) / 2;
-		if (debug) {
-			Log.d(LOG_TAG, "Radius is " + radius + " for width: " + w + " and height: " + h);
-		}
-		return radius;
-	}
-
-	int getCenterX() {
-		// return getWidth() / 2;
-		return getBounds().centerX();
-	}
-
-	int getCenterY() {
-		// return getHeight() / 2;
-		return getBounds().centerY();
-	}
-
-	protected int getWidth() {
-		int width = getBounds().width();
-		if (width <= 0) {
-			throw new IllegalStateException("width is " + width + ". Call setBounds() first!");
-		}
-		return width;
-	}
-
-	protected int getHeight() {
-		int heigth = getBounds().height();
-		if (heigth <= 0) {
-			throw new IllegalStateException("width is " + heigth + ". Call setBounds() first!");
-		}
-		return heigth;
-
+	Paint getFillPaint() {
+		return fillPaint;
 	}
 
 	@Override
@@ -227,24 +198,51 @@ public abstract class FittedDrawable extends Drawable {
 		return PixelFormat.TRANSLUCENT;
 	}
 
+	public void setCornerRadiusDp(float radius) {
+		cornerRadiusPx = radius * displaymetrics.density;
+	}
+
+	protected int getWidth() {
+		int width = getBounds().width();
+		if (width <= 0) {
+			throw new IllegalStateException("width is " + width + ". Call setBounds() first!");
+		}
+		return width;
+	}
+
+	protected int getHeight() {
+		int heigth = getBounds().height();
+		if (heigth <= 0) {
+			throw new IllegalStateException("width is " + heigth + ". Call setBounds() first!");
+		}
+		return heigth;
+
+	}
+
 	public Paint foregroundPaint() {
 		return foregroundPaint;
 	}
 
-	Paint getFillPaint() {
-		return fillPaint;
+	int getCenterX() {
+		// return getWidth() / 2;
+		return getBounds().centerX();
+	}
+
+	int getCenterY() {
+		// return getHeight() / 2;
+		return getBounds().centerY();
+	}
+
+	int getInnerCircleRadius() {
+		int w = getBounds().width();
+		int h = getBounds().height();
+		int radius = Math.min(w, h) / 2;
+		if (debug) {
+			Log.d(LOG_TAG, "Radius is " + radius + " for width: " + w + " and height: " + h);
+		}
+		return radius;
 	}
 
 	public enum SHAPE {ROUND, ROUND_RECTANGLE, RECTANGLE}
-
-	protected boolean drawBorder = false;
-
-	public void setDrawBorder(boolean drawBorder) {
-		this.drawBorder = drawBorder;
-	}
-
-	public float getCornerRadiusPx() {
-		return cornerRadiusPx;
-	}
 
 }
