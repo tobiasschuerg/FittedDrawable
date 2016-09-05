@@ -204,6 +204,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 		p.setAntiAlias(true);
 		p.setDither(true);
 		p.setShader(shader);
+		p.setFilterBitmap(true);
 		return p;
 	}
 
