@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
@@ -46,13 +47,13 @@ public class FrRoundSample extends Fragment {
 	}
 
 	private void topBitmapView(View view) {
+		RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.layout_top);
 		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
 		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND);
 		// bitmapDrawable.setDebug(true);
 
 		bitmapDrawable.setBorderColor(Color.BLUE);
-		bitmapDrawable.setBorderWidthPx(2);
-		bitmapDrawable.setDrawBorder(true);
+		bitmapDrawable.setBorderWidthDp(5);
 
 		imageR.setImageDrawable(bitmapDrawable);
 	}

@@ -101,9 +101,12 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
 			case ROUND:
 				if (tileMode != null) {
-					double borderCenterRadius = Math.floor(getInnerCircleRadius() - 0.5 * borderPaint.getStrokeWidth());
-					canvas.drawCircle(getCenterX(), getCenterY(), (float) borderCenterRadius, borderPaint);
-					float radius = Math.nextUp(getInnerCircleRadius() - borderPaint.getStrokeWidth());
+					float radius = Math.nextUp(getInnerCircleRadius());
+					if (drawBorder) {
+						radius -= borderPaint.getStrokeWidth();
+						double borderCenterRadius = Math.floor(getInnerCircleRadius() - 0.5 * borderPaint.getStrokeWidth());
+						canvas.drawCircle(getCenterX(), getCenterY(), (float) borderCenterRadius, borderPaint);
+					}
 
 					Paint shaderPaint = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
 

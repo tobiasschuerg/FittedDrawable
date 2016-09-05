@@ -83,6 +83,7 @@ public abstract class FittedDrawable extends Drawable {
 
 	public void setBorderWidthPx(int borderWidth) {
 		borderPaint.setStrokeWidth(borderWidth);
+		drawBorder = borderWidth > 0;
 	}
 
 	public void setDebug(boolean debug) {
@@ -236,7 +237,7 @@ public abstract class FittedDrawable extends Drawable {
 	int getInnerCircleRadius() {
 		int w = getBounds().width();
 		int h = getBounds().height();
-		int radius = Math.min(w, h) / 2;
+		int radius = (Math.min(w, h) + 1) / 2; // +1 to make sure we round up, not down!
 		if (debug) {
 			Log.d(LOG_TAG, "Radius is " + radius + " for width: " + w + " and height: " + h);
 		}
