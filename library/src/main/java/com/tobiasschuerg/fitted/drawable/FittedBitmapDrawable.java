@@ -12,6 +12,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 /**
@@ -23,286 +24,291 @@ import android.util.Log;
 
 public class FittedBitmapDrawable extends FittedDrawable {
 
-	private static String LOG_TAG = FittedBitmapDrawable.class.getSimpleName();
-	private final Bitmap bitmap;
-	private final float aspectRatio;
+    private static final String LOG_TAG = FittedBitmapDrawable.class.getSimpleName();
 
-	@NonNull
-	private Shader.TileMode tileMode = Shader.TileMode.CLAMP;
+    @NonNull private final Bitmap bitmap;
+    @Nullable private Shader.TileMode tileMode = Shader.TileMode.CLAMP;
 
-	public FittedBitmapDrawable(Context context, int resource, SHAPE SHAPE) {
-		this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE);
-	}
-
-	public FittedBitmapDrawable(Bitmap bitmap, SHAPE SHAPE) {
-		this(bitmap, SHAPE, getFillColorFromBitmap(bitmap));
-	}
-
-	public FittedBitmapDrawable(Bitmap bitmap, SHAPE shape, int color) {
-		super(shape, color);
-		this.bitmap = bitmap;
-		aspectRatio = (float) bitmap.getHeight() / bitmap.getWidth();
-		if (debug) {
-			Log.d(LOG_TAG, "Ratio: " + aspectRatio);
-		}
-	}
-
-	public FittedBitmapDrawable(Context context, int resource, SHAPE SHAPE, int color) {
-		this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE, color);
-	}
-
-	private static int getFillColorFromBitmap(Bitmap bitmap) {
-		int tl = bitmap.getPixel(1, 1);
-		int tr = bitmap.getPixel(1, bitmap.getHeight() - 1);
-		int bl = bitmap.getPixel(bitmap.getWidth() - 1, 1);
-		int br = bitmap.getPixel(bitmap.getWidth() - 1, bitmap.getHeight() - 1);
-		if (tl == tr && tl == bl && tl == br) {
-			return tl;
-		} else {
-			Log.w("FillColor", "Bitmap has no monochrome border! Taking (1, 1)");
-			return tl; // (tl + tr + bl + br) / 4;
-		}
-	}
-
-	@Override
-	public void draw(@NonNull Canvas canvas) {
-		super.draw(canvas);
-
-		if (debug) {
-			drawBorder = true;
-			foregroundPaint().setColor(Color.RED);
-		}
-
-//		if (isAlphaEnabled) {
-//			// clear background behind image
-//			Paint clearPaint = new Paint();
-//			clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-//			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
-//		}
-
-		Bitmap scaledBitmap = getScaledBitmap(canvas);
-		final float horizontalOffset = getCenterX() - scaledBitmap.getWidth() / 2 + getBounds().left;
-		final float verticalOffset = getCenterY() - scaledBitmap.getHeight() / 2 + getBounds().top;
-
-		RectF inRect = new RectF(
-				0,
-				0,
-				scaledBitmap.getWidth(),
-				scaledBitmap.getHeight());
-
-		RectF outRect = new RectF(
-				getBounds().centerX() - scaledBitmap.getWidth() / 2f,
-				getBounds().centerY() - scaledBitmap.getHeight() / 2f,
-				getBounds().centerX() + scaledBitmap.getWidth() / 2f,
-				getBounds().centerY() + scaledBitmap.getHeight() / 2f
-		);
-
-		switch (getShape()) {
-
-			case ROUND:
-				if (tileMode != null) {
-					float radius = Math.nextUp(getInnerCircleRadius());
-					if (drawBorder) {
-						radius -= borderPaint.getStrokeWidth();
-						double borderCenterRadius = Math.floor(getInnerCircleRadius() - 0.5 * borderPaint.getStrokeWidth());
-						canvas.drawCircle(getCenterX(), getCenterY(), (float) borderCenterRadius, borderPaint);
-					}
-
-					Paint shaderPaint = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
-
-					canvas.drawCircle(getCenterX(), getCenterY(), radius, getFillPaint()); // needed if bitmap has alpha
-					canvas.drawCircle(getCenterX(), getCenterY(), radius, shaderPaint);
-				} else {
-					canvas.drawBitmap(scaledBitmap, horizontalOffset, verticalOffset, foregroundPaint());
-				}
-				break;
-
-			case ROUND_RECTANGLE:
-
-				// Draw the bitmap with the right size
-				if (tileMode != null) {
-					Paint sp = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(outRect,
-								getCornerRadiusPx(),
-								getCornerRadiusPx(), sp);
-					} else {
-						canvas.drawRect(outRect, sp);
-					}
-				} else {
-					throw new IllegalArgumentException("Tile mode not set");
-				}
-
-				// draw border if wanted
-				if (drawBorder) {
-					float halfBoderWidth = borderPaint.getStrokeWidth() / 2;
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-						canvas.drawRoundRect(
-								getBounds().left + halfBoderWidth,
-								getBounds().top + halfBoderWidth,
-								getBounds().right - halfBoderWidth,
-								getBounds().bottom - halfBoderWidth,
-								getCornerRadiusPx(), getCornerRadiusPx(), borderPaint);
-					} else {
-						canvas.drawRect(
-								getBounds().left + halfBoderWidth,
-								getBounds().top + halfBoderWidth,
-								getBounds().right - halfBoderWidth,
-								getBounds().bottom - halfBoderWidth,
-								borderPaint);
-					}
-				}
-				break;
-
-			case RECTANGLE:
-				// Simple, should result in the same as #ROUND_RECTANGLE with #setBorderRadius(0)
-				canvas.drawColor(getFillColor());
-				canvas.drawBitmap(scaledBitmap, horizontalOffset, verticalOffset, foregroundPaint());
-				if (drawBorder) {
-					float borderWidth = borderPaint.getStrokeWidth();
-					canvas.drawRect(
-							getBounds().left + borderWidth,
-							getBounds().top + borderWidth,
-							getBounds().right - borderWidth,
-							getBounds().bottom - borderWidth,
-							borderPaint);
-				}
-				break;
-		}
+    private final float aspectRatio;
 
 
-		if (debug) {
-			if (outRect != null) {
-				Log.d(LOG_TAG, "Green: bitmap border");
-				debugPaint.setColor(Color.GREEN);
-				debugPaint.setStyle(Paint.Style.STROKE);
-				canvas.drawRect(outRect, debugPaint);
-			}
+    public FittedBitmapDrawable(Context context, int resource, @NonNull SHAPE SHAPE) {
+        this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE);
+    }
 
-			Log.d(LOG_TAG, "Yellow: intrinsic border");
-			debugPaint.setColor(Color.YELLOW);
-			canvas.drawRect(0, 0, getIntrinsicWidth(), getIntrinsicHeight(), debugPaint);
+    public FittedBitmapDrawable(@NonNull Bitmap bitmap, @NonNull SHAPE SHAPE) {
+        this(bitmap, SHAPE, getFillColorFromBitmap(bitmap));
+    }
 
-			//Log.d(LOG_TAG, "RED: outer border");
-			//debugPaint.setColor(Color.RED);
-			//canvas.drawRect(getClipBounds(), debugPaint);
+    public FittedBitmapDrawable(@NonNull Bitmap bitmap, @NonNull SHAPE shape, int color) {
+        super(shape, color);
+        this.bitmap = bitmap;
+        if (bitmap.getHeight() < 1 || bitmap.getWidth() < 1) {
+            throw new IllegalArgumentException("Bitmap has no width/height");
+        }
+        aspectRatio = (float) bitmap.getHeight() / bitmap.getWidth();
 
-			Log.d(LOG_TAG, "BLUE: bounds");
-			debugPaint.setColor(Color.BLUE);
-			canvas.drawRect(getBounds(), debugPaint);
-		}
-	}
+        if (debug) {
+            Log.d(LOG_TAG, "Ratio: " + aspectRatio);
+        }
+    }
 
-	private static Paint createShaderPaint(Bitmap bm, RectF bitmapBoudns, RectF targetBounds, Shader.TileMode tileMode) {
-		Matrix shaderMatrix = new Matrix();
-		shaderMatrix.setRectToRect(bitmapBoudns, targetBounds, Matrix.ScaleToFit.CENTER);
+    public FittedBitmapDrawable(Context context, int resource, SHAPE SHAPE, int color) {
+        this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE, color);
+    }
 
-		BitmapShader shader = new BitmapShader(bm, tileMode, tileMode);
-		shader.setLocalMatrix(shaderMatrix);
+    private static int getFillColorFromBitmap(Bitmap bitmap) {
+        int tl = bitmap.getPixel(1, 1);
+        int tr = bitmap.getPixel(1, bitmap.getHeight() - 1);
+        int bl = bitmap.getPixel(bitmap.getWidth() - 1, 1);
+        int br = bitmap.getPixel(bitmap.getWidth() - 1, bitmap.getHeight() - 1);
+        if (tl == tr && tl == bl && tl == br) {
+            return tl;
+        } else {
+            Log.w("FillColor", "Bitmap has no monochrome border! Taking (1, 1)");
+            return tl; // (tl + tr + bl + br) / 4;
+        }
+    }
 
-		Paint p = new Paint();
-		p.setAntiAlias(true);
-		p.setDither(true);
-		p.setShader(shader);
-		p.setFilterBitmap(true);
-		return p;
-	}
+    @Override
+    public void draw(@NonNull Canvas canvas) {
+        super.draw(canvas);
 
-	/**
-	 * Looks like magic but is only pythagoras.
-	 *
-	 * @param radius radius of the circle.
-	 * @return fitted bitmap
-	 */
-	private Bitmap fitBitmapInCircle(float radius) {
-		Double root = Math.sqrt(aspectRatio * aspectRatio + 1f);
+        if (debug) {
+            drawBorder = true;
+            foregroundPaint().setColor(Color.RED);
+        }
 
-		Float bmWidth = (2 * radius) / root.floatValue();
-		Float bmHeight = bmWidth * aspectRatio;
+        //		if (isAlphaEnabled) {
+        //			// clear background behind image
+        //			Paint clearPaint = new Paint();
+        //			clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        //			canvas.drawRect(hOff, vOff, hOff + scaledBitmap.getWidth(), vOff + scaledBitmap.getHeight(), clearPaint);
+        //		}
 
-		if (debug) {
-			Log.d(LOG_TAG, "Scaled round width: " + bmWidth);
-			Log.d(LOG_TAG, "Scaled round height: " + bmHeight);
-		}
+        Bitmap scaledBitmap = getScaledBitmap(canvas);
+        final float horizontalOffset = getCenterX() - scaledBitmap.getWidth() / 2 + getBounds().left;
+        final float verticalOffset = getCenterY() - scaledBitmap.getHeight() / 2 + getBounds().top;
 
-		return Bitmap.createScaledBitmap(bitmap, bmWidth.intValue(), bmHeight.intValue(), true);
-	}
+        final RectF inRect = new RectF(
+                0,
+                0,
+                scaledBitmap.getWidth(),
+                scaledBitmap.getHeight());
 
-	private static Bitmap fitBitmapInRectangle(int destWidth, int destHeight, Bitmap bitmap, boolean debug) {
+        final RectF outRect = new RectF(
+                getBounds().centerX() - scaledBitmap.getWidth() / 2f,
+                getBounds().centerY() - scaledBitmap.getHeight() / 2f,
+                getBounds().centerX() + scaledBitmap.getWidth() / 2f,
+                getBounds().centerY() + scaledBitmap.getHeight() / 2f
+        );
 
-		debug = true;
+        switch (getShape()) {
 
-		if (destWidth <= 0 || destHeight <= 0) {
-			throw new IllegalArgumentException("width(" + destWidth + ") and height(" + destHeight + ") must be > 0");
-		}
+            case ROUND:
+                if (tileMode != null) {
+                    float radius = Math.nextUp(getInnerCircleRadius());
+                    if (drawBorder) {
+                        radius -= borderPaint.getStrokeWidth();
+                        double borderCenterRadius = Math.floor(getInnerCircleRadius() - 0.5 * borderPaint.getStrokeWidth());
+                        canvas.drawCircle(getCenterX(), getCenterY(), (float) borderCenterRadius, borderPaint);
+                    }
+
+                    Paint shaderPaint = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
+
+                    canvas.drawCircle(getCenterX(), getCenterY(), radius, getFillPaint()); // needed if bitmap has alpha
+                    canvas.drawCircle(getCenterX(), getCenterY(), radius, shaderPaint);
+                } else {
+                    canvas.drawBitmap(scaledBitmap, horizontalOffset, verticalOffset, foregroundPaint());
+                }
+                break;
+
+            case ROUND_RECTANGLE:
+
+                // Draw the bitmap with the right size
+                if (tileMode != null) {
+                    Paint sp = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        canvas.drawRoundRect(outRect,
+                                             getCornerRadiusPx(),
+                                             getCornerRadiusPx(), sp);
+                    } else {
+                        canvas.drawRect(outRect, sp);
+                    }
+                } else {
+                    throw new IllegalArgumentException("Tile mode not set");
+                }
+
+                // draw border if wanted
+                if (drawBorder) {
+                    float halfBoderWidth = borderPaint.getStrokeWidth() / 2;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        canvas.drawRoundRect(
+                                getBounds().left + halfBoderWidth,
+                                getBounds().top + halfBoderWidth,
+                                getBounds().right - halfBoderWidth,
+                                getBounds().bottom - halfBoderWidth,
+                                getCornerRadiusPx(), getCornerRadiusPx(), borderPaint);
+                    } else {
+                        canvas.drawRect(
+                                getBounds().left + halfBoderWidth,
+                                getBounds().top + halfBoderWidth,
+                                getBounds().right - halfBoderWidth,
+                                getBounds().bottom - halfBoderWidth,
+                                borderPaint);
+                    }
+                }
+                break;
+
+            case RECTANGLE:
+                // Simple, should result in the same as #ROUND_RECTANGLE with #setBorderRadius(0)
+                canvas.drawColor(getFillColor());
+                canvas.drawBitmap(scaledBitmap, horizontalOffset, verticalOffset, foregroundPaint());
+                if (drawBorder) {
+                    float borderWidth = borderPaint.getStrokeWidth();
+                    canvas.drawRect(
+                            getBounds().left + borderWidth,
+                            getBounds().top + borderWidth,
+                            getBounds().right - borderWidth,
+                            getBounds().bottom - borderWidth,
+                            borderPaint);
+                }
+                break;
+        }
 
 
-		final float widthRatio = (float) destWidth / bitmap.getWidth();
-		final float heightRatio = (float) destHeight / bitmap.getHeight();
-		float scale = Math.min(widthRatio, heightRatio);
+        if (debug) {
+            Log.d(LOG_TAG, "Green: bitmap border");
+            debugPaint.setColor(Color.GREEN);
+            debugPaint.setStyle(Paint.Style.STROKE);
+            canvas.drawRect(outRect, debugPaint);
 
-		if (debug) {
-			Log.d(LOG_TAG, "Width ratio: " + widthRatio + ", height ratio: " + heightRatio + ", scale: " + scale);
-		}
+            Log.d(LOG_TAG, "Yellow: intrinsic border");
+            debugPaint.setColor(Color.YELLOW);
+            canvas.drawRect(0, 0, getIntrinsicWidth(), getIntrinsicHeight(), debugPaint);
 
-		Bitmap scaledBm = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * scale), (int) (bitmap.getHeight() * scale), true);
-		return scaledBm;
-	}
+            //Log.d(LOG_TAG, "RED: outer border");
+            //debugPaint.setColor(Color.RED);
+            //canvas.drawRect(getClipBounds(), debugPaint);
 
-	@Override
-	public int getIntrinsicHeight() {
-		switch (getShape()) {
-			case ROUND:
-				return Math.max(bitmap.getHeight(), bitmap.getWidth());
+            Log.d(LOG_TAG, "BLUE: bounds");
+            debugPaint.setColor(Color.BLUE);
+            canvas.drawRect(getBounds(), debugPaint);
+        }
+    }
 
-			case ROUND_RECTANGLE:
-			case RECTANGLE:
-				return bitmap.getHeight();
+    private static Paint createShaderPaint(Bitmap bm, RectF bitmapBoudns, RectF targetBounds, Shader.TileMode tileMode) {
+        Matrix shaderMatrix = new Matrix();
+        shaderMatrix.setRectToRect(bitmapBoudns, targetBounds, Matrix.ScaleToFit.CENTER);
 
-			default:
-				throw new IllegalStateException();
-		}
-	}
+        BitmapShader shader = new BitmapShader(bm, tileMode, tileMode);
+        shader.setLocalMatrix(shaderMatrix);
 
-	@Override
-	public int getIntrinsicWidth() {
-		switch (getShape()) {
-			case ROUND:
-				return Math.max(bitmap.getHeight(), bitmap.getWidth());
+        Paint p = new Paint();
+        p.setAntiAlias(true);
+        p.setDither(true);
+        p.setShader(shader);
+        p.setFilterBitmap(true);
+        return p;
+    }
 
-			case ROUND_RECTANGLE:
-			case RECTANGLE:
-				return bitmap.getWidth();
+    /**
+     * Looks like magic but is only pythagoras.
+     *
+     * @param radius radius of the circle.
+     * @return fitted bitmap
+     */
+    private Bitmap fitBitmapInCircle(float radius) {
+        Double root = Math.sqrt(aspectRatio * aspectRatio + 1f);
 
-			default:
-				throw new IllegalStateException();
-		}
-	}
+        Float bmWidth = (2 * radius) / root.floatValue();
+        Float bmHeight = bmWidth * aspectRatio;
 
-	public void setTileMode(@NonNull Shader.TileMode tileMode) {
-		this.tileMode = tileMode;
-	}
+        if (debug) {
+            Log.d(LOG_TAG, "Scaled round width: " + bmWidth);
+            Log.d(LOG_TAG, "Scaled round height: " + bmHeight);
+        }
 
-	private Bitmap getScaledBitmap(Canvas canvas) {
-		Bitmap scaledBitmap;
-		switch (getShape()) {
+        return Bitmap.createScaledBitmap(bitmap, bmWidth.intValue(), bmHeight.intValue(), true);
+    }
 
-			case ROUND:
-				float radius = getInnerCircleRadius() - borderPaint.getStrokeWidth();
-				scaledBitmap = fitBitmapInCircle(radius - getAdditionalPaddingPX());
-				break;
+    private static Bitmap fitBitmapInRectangle(int destWidth, int destHeight, Bitmap bitmap, boolean debug) {
 
-			case ROUND_RECTANGLE:
-			case RECTANGLE:
+        if (destWidth <= 0 || destHeight <= 0) {
+            throw new IllegalArgumentException("width(" + destWidth + ") and height(" + destHeight + ") must be > 0");
+        }
 
-				final int adjustedWidth = (int) ((getWidth() - (2 * getAdditionalPaddingPX())));
-				final int adjustedHeight = (int) (getHeight() - (2 * getAdditionalPaddingPX()));
-				scaledBitmap = fitBitmapInRectangle(adjustedWidth, adjustedHeight, bitmap, debug);
-				break;
 
-			default:
-				throw new IllegalStateException();
-		}
-		return scaledBitmap;
-	}
+        final float widthRatio = (float) destWidth / bitmap.getWidth();
+        final float heightRatio = (float) destHeight / bitmap.getHeight();
+        float scale = Math.min(widthRatio, heightRatio);
+
+        if (debug) {
+            Log.d(LOG_TAG, "Width ratio: " + widthRatio + ", height ratio: " + heightRatio + ", scale: " + scale);
+        }
+
+        final int scaledWidth = (int) (bitmap.getWidth() * scale);
+        final int scaledHeight = (int) (bitmap.getHeight() * scale);
+        return Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true);
+    }
+
+    @Override
+    public int getIntrinsicHeight() {
+        switch (getShape()) {
+            case ROUND:
+                return Math.max(bitmap.getHeight(), bitmap.getWidth());
+
+            case ROUND_RECTANGLE:
+            case RECTANGLE:
+                return bitmap.getHeight();
+
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    @Override
+    public int getIntrinsicWidth() {
+        switch (getShape()) {
+            case ROUND:
+                return Math.max(bitmap.getHeight(), bitmap.getWidth());
+
+            case ROUND_RECTANGLE:
+            case RECTANGLE:
+                return bitmap.getWidth();
+
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    /**
+     * The tile mode. May be set to null to disable tiling.
+     */
+    public void setTileMode(@Nullable Shader.TileMode tileMode) {
+        this.tileMode = tileMode;
+    }
+
+    private Bitmap getScaledBitmap(Canvas canvas) {
+        Bitmap scaledBitmap;
+        switch (getShape()) {
+
+            case ROUND:
+                float radius = getInnerCircleRadius() - borderPaint.getStrokeWidth();
+                scaledBitmap = fitBitmapInCircle(radius - getAdditionalPaddingPX());
+                break;
+
+            case ROUND_RECTANGLE:
+            case RECTANGLE:
+
+                final int adjustedWidth = (int) ((getWidth() - (2 * getAdditionalPaddingPX())));
+                final int adjustedHeight = (int) (getHeight() - (2 * getAdditionalPaddingPX()));
+                scaledBitmap = fitBitmapInRectangle(adjustedWidth, adjustedHeight, bitmap, debug);
+                break;
+
+            default:
+                throw new IllegalStateException();
+        }
+        return scaledBitmap;
+    }
 }

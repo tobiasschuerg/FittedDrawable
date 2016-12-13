@@ -7,13 +7,11 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 
 /**
  * Super class for fitted drawables which fit their content into a predefined shape.
@@ -37,7 +35,7 @@ public abstract class FittedDrawable extends Drawable {
 	private float additionalPaddingPX = 0;
 	private float cornerRadiusPx = 0;
 
-	FittedDrawable(SHAPE shape, int backgroundColor) {
+	FittedDrawable(@NonNull SHAPE shape, int backgroundColor) {
 		displaymetrics = Resources.getSystem().getDisplayMetrics();
 		this.shape = shape;
 		this.fillColor = backgroundColor;
