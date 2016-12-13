@@ -284,6 +284,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
     /**
      * The tile mode. May be set to null to disable tiling.
+     *
+     * @param tileMode to be used.
      */
     public void setTileMode(@Nullable Shader.TileMode tileMode) {
         this.tileMode = tileMode;
