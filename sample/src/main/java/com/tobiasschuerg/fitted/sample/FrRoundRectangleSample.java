@@ -47,7 +47,7 @@ public class FrRoundRectangleSample extends Fragment {
 		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
 		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
 		// bitmapDrawable.debug = true;
-		bitmapDrawable.setLongSizePaddingDp(padding);
+		bitmapDrawable.setLongSidePaddingDp(padding);
 		bitmapDrawable.setCornerRadiusDp(radius);
 		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
 		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
@@ -58,7 +58,7 @@ public class FrRoundRectangleSample extends Fragment {
 		ImageView imageRT = (ImageView) view.findViewById(R.id.iv_bottom);
 		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
 		// textDrawable.debug = true;
-		textDrawable.setLongSizePaddingDp(padding);
+		textDrawable.setLongSidePaddingDp(padding);
 		textDrawable.setCornerRadiusDp(radius);
 		imageRT.setImageDrawable(textDrawable);
 	}

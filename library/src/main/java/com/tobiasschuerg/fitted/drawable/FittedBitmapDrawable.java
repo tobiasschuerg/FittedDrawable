@@ -297,7 +297,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
             case ROUND:
                 float radius = getInnerCircleRadius() - borderPaint.getStrokeWidth();
-                scaledBitmap = fitBitmapInCircle(radius - getLongSizePadding());
+                scaledBitmap = fitBitmapInCircle(radius - getLongSidePaddingPx());
                 break;
 
             case ROUND_RECTANGLE:
@@ -306,11 +306,11 @@ public class FittedBitmapDrawable extends FittedDrawable {
                 int adjustedWidth;
                 int adjustedHeight;
                 if (getWidth() > getHeight()) {
-                    adjustedWidth = (int) ((getWidth() - (2 * getLongSizePadding())));
+                    adjustedWidth = (int) ((getWidth() - (2 * getLongSidePaddingPx())));
                     adjustedHeight = getHeight();
                 } else {
                     adjustedWidth = getWidth();
-                    adjustedHeight = (int) (getHeight() - (2 * getLongSizePadding()));
+                    adjustedHeight = (int) (getHeight() - (2 * getLongSidePaddingPx()));
                 }
 
                 scaledBitmap = fitBitmapInRectangle(adjustedWidth, adjustedHeight, bitmap, debug);

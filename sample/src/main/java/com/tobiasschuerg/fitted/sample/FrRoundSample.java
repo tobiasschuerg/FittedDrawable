@@ -62,7 +62,7 @@ public class FrRoundSample extends Fragment {
 		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND);
 
 		textDrawable.debug = true;
-		textDrawable.setLongSizePaddingDp(1);
+		textDrawable.setLongSidePaddingDp(1);
 		textDrawable.setCornerRadiusDp(8);
 		textDrawable.setDrawBorder(true);
 		imageRT.setImageDrawable(textDrawable);

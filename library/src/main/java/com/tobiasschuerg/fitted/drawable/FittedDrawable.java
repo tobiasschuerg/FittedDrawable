@@ -32,7 +32,7 @@ public abstract class FittedDrawable extends Drawable {
     public    boolean debug      = false;
     protected boolean drawBorder = false;
     boolean isAlphaEnabled;
-    private float longSizePaddingPx = 0;
+    private float longSidePaddingPx = 0;
     private float cornerRadiusPx    = 0;
 
     FittedDrawable(@NonNull SHAPE shape, int backgroundColor) {
@@ -88,11 +88,11 @@ public abstract class FittedDrawable extends Drawable {
         this.debug = debug;
     }
 
-    public float getLongSizePadding() {
+    public float getLongSidePaddingPx() {
         if (debug) {
-            Log.d("FittedDrawable", "InnerPadding is " + longSizePaddingPx);
+            Log.d("FittedDrawable", "InnerPadding is " + longSidePaddingPx);
         }
-        return longSizePaddingPx + borderPaint.getStrokeWidth();
+        return longSidePaddingPx + borderPaint.getStrokeWidth();
     }
 
     /**
@@ -102,10 +102,10 @@ public abstract class FittedDrawable extends Drawable {
      *
      * @param padding padding in DP(!)
      */
-    public void setLongSizePaddingDp(int padding) {
-        longSizePaddingPx = padding * Resources.getSystem().getDisplayMetrics().density;
+    public void setLongSidePaddingDp(int padding) {
+        longSidePaddingPx = padding * Resources.getSystem().getDisplayMetrics().density;
         if (debug) {
-            Log.d("FittedDrawable", "Set additionalPadding " + padding + "dp -> " + longSizePaddingPx + "px");
+            Log.d("FittedDrawable", "Set additionalPadding " + padding + "dp -> " + longSidePaddingPx + "px");
         }
     }
 
