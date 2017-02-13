@@ -1,7 +1,6 @@
 package com.tobiasschuerg.fitted.sample;
 
 import android.graphics.Color;
-import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,7 +41,7 @@ public class FrRectangleSample extends Fragment {
 
 		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
 		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, RECTANGLE);
-//		bitmapDrawable.setAdditionalPaddingDp(16);
+//		bitmapDrawable.setLongSizePaddingDp(16);
 //		bitmapDrawable.setCornerRadiusDp(16);
 //		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
 		// bitmapDrawable.setDrawBorder(false);

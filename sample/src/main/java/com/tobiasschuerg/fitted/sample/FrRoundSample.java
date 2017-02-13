@@ -14,9 +14,7 @@ import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
-import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
 import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND;
-import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTANGLE;
 
 public class FrRoundSample extends Fragment {
 
@@ -64,7 +62,7 @@ public class FrRoundSample extends Fragment {
 		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND);
 
 		textDrawable.debug = true;
-		textDrawable.setAdditionalPaddingDp(1);
+		textDrawable.setLongSizePaddingDp(1);
 		textDrawable.setCornerRadiusDp(8);
 		textDrawable.setDrawBorder(true);
 		imageRT.setImageDrawable(textDrawable);
