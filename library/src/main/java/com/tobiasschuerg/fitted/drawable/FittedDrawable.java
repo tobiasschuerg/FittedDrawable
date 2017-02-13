@@ -98,7 +98,7 @@ public abstract class FittedDrawable extends Drawable {
     /**
      * Padding to apply to both sides of the longer side.
      * <p>
-     * Mst not be > 2 * height.
+     * Mst not be greater 2 * height.
      *
      * @param padding padding in DP(!)
      */

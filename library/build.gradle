@@ -11,7 +11,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 25
         versionCode 10
-        versionName "1.1.12"
+        versionName "1.1.13"
 
         consumerProguardFiles 'proguard-rules.pro'
 
