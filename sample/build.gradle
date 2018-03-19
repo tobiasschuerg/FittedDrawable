@@ -20,15 +20,17 @@ android {
 }
 
 dependencies {
+
+    implementation project(':library')
+    
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta5'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:support-annotations:27.1.0'
+
+    testCompile 'junit:junit:4.12'
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-    compile project(':library')
-    // compile 'com.github.tobiasschuerg:FittedDrawable:v1.+'
-
-    compile 'com.android.support:appcompat-v7:27.1.0'
-    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta5'
-    compile 'com.android.support:design:27.1.0'
-    testCompile 'junit:junit:4.12'
 }
