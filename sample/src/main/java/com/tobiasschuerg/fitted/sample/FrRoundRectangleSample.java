@@ -3,6 +3,7 @@ package com.tobiasschuerg.fitted.sample;
 import android.graphics.Color;
 import android.graphics.Shader;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,48 +19,48 @@ import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTA
 
 public class FrRoundRectangleSample extends Fragment {
 
-	private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_SECTION_NUMBER = "section_number";
 
-	public FrRoundRectangleSample() {
-	}
+    public FrRoundRectangleSample() {
+    }
 
-	public static FrRoundRectangleSample newInstance(int sectionNumber) {
-		FrRoundRectangleSample fragment = new FrRoundRectangleSample();
-		Bundle args = new Bundle();
-		args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-		fragment.setArguments(args);
-		return fragment;
-	}
+    public static FrRoundRectangleSample newInstance(int sectionNumber) {
+        FrRoundRectangleSample fragment = new FrRoundRectangleSample();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_sample, container, false);
-	}
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_sample, container, false);
+    }
 
-	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-		float radius = 25f;
-		int padding = 4;
-		int borderWidth = 4;
+        float radius = 25f;
+        int padding = 4;
+        int borderWidth = 4;
 
-		ImageView imageR = (ImageView) view.findViewById(R.id.iv_top);
-		FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
-		// bitmapDrawable.debug = true;
-		bitmapDrawable.setLongSidePaddingDp(padding);
-		bitmapDrawable.setCornerRadiusDp(radius);
-		bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
-		bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
-		bitmapDrawable.setBorderWidthDp(borderWidth);
-		imageR.setImageDrawable(bitmapDrawable);
+        ImageView imageR = view.findViewById(R.id.iv_top);
+        FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
+
+        bitmapDrawable.setLongSidePaddingDp(padding);
+        bitmapDrawable.setCornerRadiusDp(radius);
+        bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
+        bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
+        bitmapDrawable.setBorderWidthDp(borderWidth);
+        imageR.setImageDrawable(bitmapDrawable);
 
 
-		ImageView imageRT = (ImageView) view.findViewById(R.id.iv_bottom);
-		FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
-		// textDrawable.debug = true;
-		textDrawable.setLongSidePaddingDp(padding);
-		textDrawable.setCornerRadiusDp(radius);
-		imageRT.setImageDrawable(textDrawable);
-	}
+        ImageView imageRT = view.findViewById(R.id.iv_bottom);
+        FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
+
+        textDrawable.setLongSidePaddingDp(padding);
+        textDrawable.setCornerRadiusDp(radius);
+        imageRT.setImageDrawable(textDrawable);
+    }
 }
