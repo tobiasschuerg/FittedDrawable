@@ -17,6 +17,6 @@ fail("fdescribe left in tests") if `grep -r fdescribe specs/ `.length > 1
 fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 
 android_lint.report_file = "file:///bitrise/src/library/build/reports/lint-results.xml"
-android_lint.lint(inline_mode: true)
+# android_lint.lint(inline_mode: true)
 android_lint.lint
 
