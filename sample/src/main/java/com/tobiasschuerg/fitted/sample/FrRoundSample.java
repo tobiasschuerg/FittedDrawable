@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
 
-import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND;
+import static com.tobiasschuerg.fitted.drawable.DrawableShape.ROUND;
 
 public class FrRoundSample extends Fragment {
 

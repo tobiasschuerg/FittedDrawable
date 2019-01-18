@@ -15,7 +15,7 @@ import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
-import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.ROUND_RECTANGLE;
+import static com.tobiasschuerg.fitted.drawable.DrawableShape.ROUND_RECTANGLE;
 
 public class FrRoundRectangleSample extends Fragment {
 
