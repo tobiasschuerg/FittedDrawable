@@ -5,8 +5,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Tobias Schürg on 09.05.2016.
@@ -36,6 +37,11 @@ public class FittedTextDrawable extends FittedDrawable {
     public void draw(@NonNull Canvas canvas) {
         super.draw(canvas);
 
+        // As long as the drawable is not drawn, getBounds of this drawable might be 0.
+        // Using the canvas sizes as fallback
+        int canvasWidth = canvas.getClipBounds().width();
+        int canvasHeight = canvas.getClipBounds().height();
+
         float textWidth = 0;
         float textHeight = 0;
 
@@ -43,21 +49,22 @@ public class FittedTextDrawable extends FittedDrawable {
             case ROUND_RECTANGLE:
             case RECTANGLE:
                 float textPercentage = 0.75f;
-                textWidth = getWidth() * textPercentage;
-                textHeight = getHeight() * textPercentage;
+                textWidth = getWidth(canvasWidth) * textPercentage;
+                textHeight = getHeight(canvasHeight) * textPercentage;
                 break;
             case ROUND:
                 int radius = getInnerCircleRadius();
-                textWidth = (float) (Math.sqrt(2 * radius * radius));
-                textHeight = textWidth;
+                float sqrt = (float) (Math.sqrt(2 * radius * radius));
+                textWidth = sqrt;
+                textHeight = sqrt;
                 canvas.drawCircle(getCenterX(), getCenterY(), radius, getFillPaint());
                 break;
         }
 
         setTextSizeForWidthHeight(foregroundPaint(), textWidth, textHeight);
 
-        int xPos = getWidth() / 2;
-        int yPos = (int) ((getHeight() / 2) - ((foregroundPaint().descent() + foregroundPaint().ascent()) / 2));
+        int xPos = getWidth(canvasWidth) / 2;
+        int yPos = (int) ((getHeight(canvasHeight) / 2) - ((foregroundPaint().descent() + foregroundPaint().ascent()) / 2));
         //((textPaint.descent() + textPaint.ascent()) / 2) is the distance from the baseline to the center.
 
         if (debug) {

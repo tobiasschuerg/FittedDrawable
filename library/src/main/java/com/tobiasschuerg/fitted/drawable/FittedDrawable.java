@@ -22,19 +22,19 @@ import androidx.annotation.NonNull;
 
 public abstract class FittedDrawable extends Drawable {
 
-    private static  String         LOG_TAG    = FittedDrawable.class.getSimpleName();
-    protected final Paint          borderPaint;
-    final           Paint          debugPaint;
-    private final   DisplayMetrics displaymetrics;
-    private final   SHAPE          shape;
-    private final   int            fillColor;
-    private final   Paint          fillPaint;
-    private final   Paint          foregroundPaint;
-    public          boolean        debug      = false;
-    protected       boolean        drawBorder = false;
+    private static String LOG_TAG = FittedDrawable.class.getSimpleName();
+    protected final Paint borderPaint;
+    final Paint debugPaint;
+    private final DisplayMetrics displaymetrics;
+    private final SHAPE shape;
+    private final int fillColor;
+    private final Paint fillPaint;
+    private final Paint foregroundPaint;
+    public boolean debug = false;
+    protected boolean drawBorder = false;
     boolean isAlphaEnabled;
     private float longSidePaddingPx = 0;
-    private float cornerRadiusPx    = 0;
+    private float cornerRadiusPx = 0;
 
     FittedDrawable(@NonNull SHAPE shape, int backgroundColor) {
         displaymetrics = Resources.getSystem().getDisplayMetrics();
@@ -207,24 +207,30 @@ public abstract class FittedDrawable extends Drawable {
         cornerRadiusPx = radius * displaymetrics.density;
     }
 
-    protected int getWidth() {
+    int getWidth(Integer fallback) {
         int width = getBounds().width();
         if (width <= 0) {
+            if (fallback != null) {
+                return fallback;
+            }
             throw new IllegalStateException("width is " + width + ". Call setBounds() first!");
         }
         return width;
     }
 
-    protected int getHeight() {
-        int heigth = getBounds().height();
-        if (heigth <= 0) {
-            throw new IllegalStateException("width is " + heigth + ". Call setBounds() first!");
+    int getHeight(Integer fallback) {
+        int height = getBounds().height();
+        if (height <= 0) {
+            if (fallback != null) {
+                return fallback;
+            }
+            throw new IllegalStateException("width is " + height + ". Call setBounds() first!");
         }
-        return heigth;
+        return height;
 
     }
 
-    public Paint foregroundPaint() {
+    Paint foregroundPaint() {
         return foregroundPaint;
     }
 

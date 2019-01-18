@@ -305,12 +305,12 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
                 int adjustedWidth;
                 int adjustedHeight;
-                if (getWidth() > getHeight()) {
-                    adjustedWidth = (int) ((getWidth() - (2 * getLongSidePaddingPx())));
-                    adjustedHeight = getHeight();
+                if (getWidth(canvas.getWidth()) > getHeight(canvas.getHeight())) {
+                    adjustedWidth = (int) ((getWidth(canvas.getWidth()) - (2 * getLongSidePaddingPx())));
+                    adjustedHeight = getHeight(canvas.getHeight());
                 } else {
-                    adjustedWidth = getWidth();
-                    adjustedHeight = (int) (getHeight() - (2 * getLongSidePaddingPx()));
+                    adjustedWidth = getWidth(canvas.getWidth());
+                    adjustedHeight = (int) (getHeight(canvas.getHeight()) - (2 * getLongSidePaddingPx()));
                 }
 
                 scaledBitmap = fitBitmapInRectangle(adjustedWidth, adjustedHeight, bitmap, debug);
