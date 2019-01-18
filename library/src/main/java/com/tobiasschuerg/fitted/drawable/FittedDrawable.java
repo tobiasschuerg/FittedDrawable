@@ -9,9 +9,10 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 /**
  * Super class for fitted drawables which fit their content into a predefined shape.
@@ -21,7 +22,7 @@ import android.util.Log;
 
 public abstract class FittedDrawable extends Drawable {
 
-    private static String LOG_TAG = FittedDrawable.class.getSimpleName();
+    private static  String         LOG_TAG    = FittedDrawable.class.getSimpleName();
     protected final Paint          borderPaint;
     final           Paint          debugPaint;
     private final   DisplayMetrics displaymetrics;
@@ -29,8 +30,8 @@ public abstract class FittedDrawable extends Drawable {
     private final   int            fillColor;
     private final   Paint          fillPaint;
     private final   Paint          foregroundPaint;
-    public    boolean debug      = false;
-    protected boolean drawBorder = false;
+    public          boolean        debug      = false;
+    protected       boolean        drawBorder = false;
     boolean isAlphaEnabled;
     private float longSidePaddingPx = 0;
     private float cornerRadiusPx    = 0;
@@ -138,8 +139,7 @@ public abstract class FittedDrawable extends Drawable {
 
         if (debug) {
             Log.d(LOG_TAG, "Going to draw " + getShape().name());
-            Log.d(LOG_TAG, "-- INITIAL canvas width: " + canvas.getWidth() + " height: " + canvas.getHeight());
-            // Log.d(LOG_TAG, "-- INITIAL bounds width: " + getBounds().width() + " height: " + getBounds().height());
+            Log.d(LOG_TAG, "-- INITIAL bounds width: " + getBounds().width() + " height: " + getBounds().height());
         }
 
         // draw the background for the selected shape
