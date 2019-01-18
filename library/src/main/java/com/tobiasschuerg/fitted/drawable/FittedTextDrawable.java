@@ -24,7 +24,7 @@ public class FittedTextDrawable extends FittedDrawable {
     @NonNull
     private final String text;
 
-    public FittedTextDrawable(@NonNull String text, int textColor, int backgroundColor, SHAPE shape) {
+    public FittedTextDrawable(@NonNull String text, int textColor, int backgroundColor, DrawableShape shape) {
         super(shape, backgroundColor);
         if (text.isEmpty()) {
             throw new IllegalArgumentException("Text must not be empty");

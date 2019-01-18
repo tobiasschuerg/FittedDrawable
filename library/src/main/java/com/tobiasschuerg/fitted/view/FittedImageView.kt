@@ -3,6 +3,7 @@ package com.tobiasschuerg.fitted.view
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
+import com.tobiasschuerg.fitted.drawable.DrawableShape
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable
 import com.tobiasschuerg.fitted.drawable.FittedDrawable
 
@@ -18,7 +19,7 @@ class FittedImageView @JvmOverloads constructor(
     // TODO, add attributes for setting the shape in xml
 
     override fun setImageResource(resId: Int) {
-        val drawable = FittedBitmapDrawable(context, resId, FittedDrawable.SHAPE.RECTANGLE)
+        val drawable = FittedBitmapDrawable(context, resId, DrawableShape.RECTANGLE)
         super.setImageDrawable(drawable)
     }
 }

@@ -32,15 +32,15 @@ public class FittedBitmapDrawable extends FittedDrawable {
     private final float aspectRatio;
 
 
-    public FittedBitmapDrawable(Context context, int resource, @NonNull SHAPE SHAPE) {
+    public FittedBitmapDrawable(Context context, int resource, @NonNull DrawableShape SHAPE) {
         this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE);
     }
 
-    public FittedBitmapDrawable(@NonNull Bitmap bitmap, @NonNull SHAPE SHAPE) {
+    public FittedBitmapDrawable(@NonNull Bitmap bitmap, @NonNull DrawableShape SHAPE) {
         this(bitmap, SHAPE, getFillColorFromBitmap(bitmap));
     }
 
-    public FittedBitmapDrawable(@NonNull Bitmap bitmap, @NonNull SHAPE shape, int color) {
+    public FittedBitmapDrawable(@NonNull Bitmap bitmap, @NonNull DrawableShape shape, int color) {
         super(shape, color);
         this.bitmap = bitmap;
         if (bitmap.getHeight() < 1 || bitmap.getWidth() < 1) {
@@ -53,7 +53,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
         }
     }
 
-    public FittedBitmapDrawable(Context context, int resource, SHAPE SHAPE, int color) {
+    public FittedBitmapDrawable(Context context, int resource, DrawableShape SHAPE, int color) {
         this(BitmapFactory.decodeResource(context.getResources(), resource), SHAPE, color);
     }
 

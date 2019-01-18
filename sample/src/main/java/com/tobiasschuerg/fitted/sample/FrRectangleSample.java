@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import static com.tobiasschuerg.fitted.drawable.FittedDrawable.SHAPE.RECTANGLE;
+import static com.tobiasschuerg.fitted.drawable.DrawableShape.RECTANGLE;
 
 public class FrRectangleSample extends Fragment {
 

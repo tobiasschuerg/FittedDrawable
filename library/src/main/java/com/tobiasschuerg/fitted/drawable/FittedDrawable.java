@@ -26,17 +26,16 @@ public abstract class FittedDrawable extends Drawable {
     protected final Paint borderPaint;
     final Paint debugPaint;
     private final DisplayMetrics displaymetrics;
-    private final SHAPE shape;
+    private final DrawableShape shape;
     private final int fillColor;
     private final Paint fillPaint;
     private final Paint foregroundPaint;
     public boolean debug = false;
-    protected boolean drawBorder = false;
-    boolean isAlphaEnabled;
+    boolean drawBorder = false;
     private float longSidePaddingPx = 0;
     private float cornerRadiusPx = 0;
 
-    FittedDrawable(@NonNull SHAPE shape, int backgroundColor) {
+    FittedDrawable(@NonNull DrawableShape shape, int backgroundColor) {
         displaymetrics = Resources.getSystem().getDisplayMetrics();
         this.shape = shape;
         this.fillColor = backgroundColor;
@@ -163,7 +162,7 @@ public abstract class FittedDrawable extends Drawable {
         }
     }
 
-    public SHAPE getShape() {
+    public DrawableShape getShape() {
         return shape;
     }
 
@@ -188,7 +187,7 @@ public abstract class FittedDrawable extends Drawable {
         Log.d(LOG_TAG, "setAlpha(" + alpha + ")");
         foregroundPaint.setAlpha(alpha);
         fillPaint.setAlpha(alpha);
-        isAlphaEnabled = alpha != 255;
+        boolean isAlphaEnabled = alpha != 255;
     }
 
     @Override
@@ -252,12 +251,6 @@ public abstract class FittedDrawable extends Drawable {
             Log.d(LOG_TAG, "Radius is " + radius + " for width: " + w + " and height: " + h);
         }
         return radius;
-    }
-
-    public enum SHAPE {
-        ROUND,
-        ROUND_RECTANGLE,
-        RECTANGLE
     }
 
 }
