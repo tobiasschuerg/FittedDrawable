@@ -1,45 +1,47 @@
 [![](https://jitpack.io/v/tobiasschuerg/FittedDrawable.svg)](https://jitpack.io/#tobiasschuerg/FittedDrawable)
 
 # FittedDrawable
-Drawable that perfectly fits its content - text or an image - into a rectangle or circle and automatically sets the backgroudn color. This library was created to serve our needs at [Stocard](http://stocard.de) in the first place but pull requests are welcome ;-)
+This is a library which creates Drawables for Android that perfectly fits its content - text or an image - into a rectangle, rounded rectangle or circle. For image the background gets cleverly continued (for details see `android.graphics.Shader.TileMode`). 
+This library was created to serve our needs at [Stocard](http://stocard.de) in the first place but pull requests are welcome ;-)
 
 ### Source image:
-![source image1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/sample/src/main/res/drawable/andfoo2.png)
+![source image1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/sample/src/main/res/drawable/android.png)
+
+### Outcome
+![result1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/round.png)
+![result1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/rect_border.png)
+![result1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/42.png)
+
 
 #### Simple usage:
 
 Rectangle
-```java
-FittedBitmapDrawable fbd = new FittedBitmapDrawable(getApplicationContext(), R.drawable.logo, RECTANGLE);
-imageView.setImageDrawable(fbd);
+```kotlin
+    FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND_RECTANGLE)
+    imageView.setImageDrawable(bitmapDrawable)
 ```
 or circle
-```java
-FittedBitmapDrawable fbd = new FittedBitmapDrawable(getApplicationContext(), R.drawable.logo, ROUND);
-imageView.setImageDrawable(fbd);
+```kotlin
+    FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND)
+    imageView.setImageDrawable(bitmapDrawable)
 ```
-
-![result1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/sample1.png)
-
 
 #### For fancier results set the tile mode `.setTileMode(Shader.TileMode.CLAMP);` 
 Source image:
 ![source image2](https://github.com/tobiasschuerg/FittedDrawable/raw/master/sample/src/main/res/drawable/andfoo.png)
 
-```java
-ImageView image14 = (ImageView) findViewById(R.id.image_l4);
-		final FittedBitmapDrawable fd4 = new FittedBitmapDrawable(this, src, ROUND);
-		fd4.setTileMode(Shader.TileMode.CLAMP);
-		fd4.setAdditionalPadding(2);
-		image14.setImageDrawable(fd4);
+```kotlin
+    FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND_RECTANGLE)
+	bitmapDrawable.setTileMode(Shader.TileMode.CLAMP)
+    imageView.setImageDrawable(bitmapDrawable)
+
 ```
 
-![result1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/sample2.png)
 
 
 
 ```
-Copyright [yyyy] [name of copyright owner]
+Copyright [2015-2019] [Tobias Schürg]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
