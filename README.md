@@ -5,25 +5,25 @@ This is a library which creates Drawables for Android that perfectly fits its co
 This library was created to serve our needs at [Stocard](http://stocard.de) in the first place but pull requests are welcome ;-)
 
 ### Source image:
-![source image1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/sample/src/main/res/drawable/android.png)
+<img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/sample/src/main/res/drawable/android.png" width="200">
 
 ### Outcome
-![result1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/round.png)
-![result1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/rect_border.png)
-![result1](https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/42.png)
+<img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/round.png" width="300">
+<img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/rect_border.png" width="300">
+<img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/42.png" width="300">
 
 
 #### Simple usage:
 
 Rectangle
 ```kotlin
-    FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND_RECTANGLE)
-    imageView.setImageDrawable(bitmapDrawable)
+FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND_RECTANGLE)
+imageView.setImageDrawable(bitmapDrawable)
 ```
 or circle
 ```kotlin
-    FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND)
-    imageView.setImageDrawable(bitmapDrawable)
+FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND)
+imageView.setImageDrawable(bitmapDrawable)
 ```
 
 #### For fancier results set the tile mode `.setTileMode(Shader.TileMode.CLAMP);` 
@@ -31,9 +31,9 @@ Source image:
 ![source image2](https://github.com/tobiasschuerg/FittedDrawable/raw/master/sample/src/main/res/drawable/andfoo.png)
 
 ```kotlin
-    FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND_RECTANGLE)
-	bitmapDrawable.setTileMode(Shader.TileMode.CLAMP)
-    imageView.setImageDrawable(bitmapDrawable)
+FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND_RECTANGLE)
+bitmapDrawable.setTileMode(Shader.TileMode.CLAMP)
+imageView.setImageDrawable(bitmapDrawable)
 
 ```
 
