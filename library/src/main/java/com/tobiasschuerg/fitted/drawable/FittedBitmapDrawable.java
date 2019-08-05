@@ -11,8 +11,10 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 
 /**
@@ -26,8 +28,10 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
     private static final String LOG_TAG = FittedBitmapDrawable.class.getSimpleName();
 
-    @NonNull private final Bitmap bitmap;
-    @Nullable private Shader.TileMode tileMode = Shader.TileMode.CLAMP;
+    @NonNull
+    private final Bitmap bitmap;
+    @Nullable
+    private Shader.TileMode tileMode = Shader.TileMode.CLAMP;
 
     private final float aspectRatio;
 
@@ -130,8 +134,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
                     Paint sp = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         canvas.drawRoundRect(outRect,
-                                             getCornerRadiusPx(),
-                                             getCornerRadiusPx(), sp);
+                                getCornerRadiusPx(),
+                                getCornerRadiusPx(), sp);
                     } else {
                         canvas.drawRect(outRect, sp);
                     }
@@ -141,20 +145,20 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
                 // draw border if wanted
                 if (drawBorder) {
-                    float halfBoderWidth = borderPaint.getStrokeWidth() / 2;
+                    float halfBorderWidth = borderPaint.getStrokeWidth() / 2;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         canvas.drawRoundRect(
-                                getBounds().left + halfBoderWidth,
-                                getBounds().top + halfBoderWidth,
-                                getBounds().right - halfBoderWidth,
-                                getBounds().bottom - halfBoderWidth,
+                                getBounds().left + halfBorderWidth,
+                                getBounds().top + halfBorderWidth,
+                                getBounds().right - halfBorderWidth,
+                                getBounds().bottom - halfBorderWidth,
                                 getCornerRadiusPx(), getCornerRadiusPx(), borderPaint);
                     } else {
                         canvas.drawRect(
-                                getBounds().left + halfBoderWidth,
-                                getBounds().top + halfBoderWidth,
-                                getBounds().right - halfBoderWidth,
-                                getBounds().bottom - halfBoderWidth,
+                                getBounds().left + halfBorderWidth,
+                                getBounds().top + halfBorderWidth,
+                                getBounds().right - halfBorderWidth,
+                                getBounds().bottom - halfBorderWidth,
                                 borderPaint);
                     }
                 }

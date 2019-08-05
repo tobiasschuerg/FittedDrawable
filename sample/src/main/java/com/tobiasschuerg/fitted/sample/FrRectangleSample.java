@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.tobiasschuerg.fitted.R;
-import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
-import com.tobiasschuerg.fitted.view.FittedImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.tobiasschuerg.fitted.R;
+import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
+import com.tobiasschuerg.fitted.view.FittedImageView;
 
 import static com.tobiasschuerg.fitted.drawable.DrawableShape.RECTANGLE;
 
@@ -42,7 +42,7 @@ public class FrRectangleSample extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FittedImageView imageR = view.findViewById(R.id.iv_top);
-        imageR.setImageResource(R.drawable.andfoo2);
+        imageR.setImageResource(R.drawable.android);
 
         ImageView imageRT = view.findViewById(R.id.iv_bottom);
         FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, RECTANGLE);

@@ -3,13 +3,14 @@ package com.tobiasschuerg.fitted.sample;
 import android.graphics.Color;
 import android.graphics.Shader;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
@@ -46,7 +47,7 @@ public class FrRoundRectangleSample extends Fragment {
         int borderWidth = 4;
 
         ImageView imageR = view.findViewById(R.id.iv_top);
-        FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.andfoo2, ROUND_RECTANGLE);
+        FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.android, ROUND_RECTANGLE);
 
         bitmapDrawable.setLongSidePaddingDp(padding);
         bitmapDrawable.setCornerRadiusDp(radius);
