@@ -2,7 +2,9 @@
 
 # FittedDrawable
 This is a library which creates Drawables for Android that perfectly fits its content - text or an image - into a rectangle, rounded rectangle or circle. For image the background gets cleverly continued (for details see `android.graphics.Shader.TileMode`). 
-This library was created to serve our needs at [Stocard](http://stocard.de) in the first place but pull requests are welcome ;-)
+This library was first created to serve our needs at [Stocard](http://stocard.de) but in the meantime also found its way into other project.
+ 
+ There is still a lot room for improvements, PRs are welcome ;-)
 
 ### Source image:
 <img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/sample/src/main/res/drawable/android.png" width="200">
@@ -10,7 +12,7 @@ This library was created to serve our needs at [Stocard](http://stocard.de) in t
 ### Outcome
 |  round, no border  |  rounded rect with border  |  round with border  |
 |-----|-----|-----|
-|<img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/round.png" width="300"> | <img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/rect_border.png" width="300"> | <img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/42.png" width="300">
+|<img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/round.png"> | <img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/rect_border.png"> | <img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/42.png">
 
 
 #### Simple usage:
@@ -27,8 +29,6 @@ imageView.setImageDrawable(bitmapDrawable)
 ```
 
 #### For fancier results set the tile mode `.setTileMode(Shader.TileMode.CLAMP);` 
-Source image:
-![source image2](https://github.com/tobiasschuerg/FittedDrawable/raw/master/sample/src/main/res/drawable/andfoo.png)
 
 ```kotlin
 FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(context, R.drawable.android, ROUND_RECTANGLE)
@@ -57,6 +57,8 @@ dependencies {
 
 For details see: https://jitpack.io/#tobiasschuerg/FittedDrawable
 
+
+### license
 
 ```
 Copyright [2015-2019] [Tobias Schürg]
