@@ -1,6 +1,7 @@
 package com.tobiasschuerg.fitted.sample;
 
 import android.graphics.Color;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.view.View;
 

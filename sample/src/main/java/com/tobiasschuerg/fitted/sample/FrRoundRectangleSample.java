@@ -33,23 +33,21 @@ public class FrRoundRectangleSample extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        float radius = 25f;
-        int padding = 4;
+        float radius = 32;
 
         FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.android, ROUND_RECTANGLE);
 
-        bitmapDrawable.setLongSidePaddingDp(padding);
         bitmapDrawable.setCornerRadiusDp(radius);
-        bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
+        bitmapDrawable.setTileMode(Shader.TileMode.REPEAT);
         bitmapDrawable.setBorderColor(getBorderColor());
         bitmapDrawable.setBorderWidthDp(getBorderWidth());
+
         getFittedImageView().setImageDrawable(bitmapDrawable);
 
 
         FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
         textDrawable.setBorderColor(getBorderColor());
         textDrawable.setBorderWidthDp(getBorderWidth());
-        textDrawable.setLongSidePaddingDp(padding);
         textDrawable.setCornerRadiusDp(radius);
         getFittedTextView().setImageDrawable(textDrawable);
     }

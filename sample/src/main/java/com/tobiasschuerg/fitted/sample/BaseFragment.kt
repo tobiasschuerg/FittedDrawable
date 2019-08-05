@@ -19,6 +19,6 @@ abstract class BaseFragment : Fragment(R.layout.fragment_sample) {
     val borderColor by lazy { ContextCompat.getColor(context!!, R.color.colorPrimary) }
 
     // set border with to 0 to remove border
-    val borderWidth = 4
+    val borderWidth = 0
 
 }
