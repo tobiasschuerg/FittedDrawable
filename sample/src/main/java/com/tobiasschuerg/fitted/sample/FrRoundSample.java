@@ -47,7 +47,7 @@ public class FrRoundSample extends BaseFragment {
     }
 
     private void bottomSample() {
-        FittedTextDrawable textDrawable = new FittedTextDrawable("Android", Color.WHITE, getPrimaryColor(), ROUND);
+        FittedTextDrawable textDrawable = new FittedTextDrawable("42", Color.WHITE, getPrimaryColor(), ROUND);
 
         textDrawable.setBorderColor(getBorderColor());
         textDrawable.setBorderWidthDp(getBorderWidth());
