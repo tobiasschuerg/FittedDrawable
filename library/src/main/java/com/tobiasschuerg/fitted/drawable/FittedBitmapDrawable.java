@@ -11,11 +11,10 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.util.Log;
 
 /**
  * Fits a bitmap inside a drawable which can bei either a circle or a rectangle and fills the background.
@@ -91,8 +90,8 @@ public class FittedBitmapDrawable extends FittedDrawable {
         //		}
 
         Bitmap scaledBitmap = getScaledBitmap(canvas);
-        final float horizontalOffset = getCenterX() - scaledBitmap.getWidth() / 2 + getBounds().left;
-        final float verticalOffset = getCenterY() - scaledBitmap.getHeight() / 2 + getBounds().top;
+        final float horizontalOffset = getCenterX() - scaledBitmap.getWidth() / 2f + getBounds().left;
+        final float verticalOffset = getCenterY() - scaledBitmap.getHeight() / 2f + getBounds().top;
 
         final RectF inRect = new RectF(
                 0,
@@ -297,7 +296,12 @@ public class FittedBitmapDrawable extends FittedDrawable {
 
     private Bitmap getScaledBitmap(Canvas canvas) {
         Bitmap scaledBitmap;
-        switch (getShape()) {
+
+        int adjustedWidth;
+        int adjustedHeight;
+
+        DrawableShape shape = getShape();
+        switch (shape) {
 
             case ROUND:
                 float radius = getInnerCircleRadius() - borderPaint.getStrokeWidth();
@@ -305,10 +309,21 @@ public class FittedBitmapDrawable extends FittedDrawable {
                 break;
 
             case ROUND_RECTANGLE:
-            case RECTANGLE:
+                if (getWidth(canvas.getWidth()) > getHeight(canvas.getHeight())) {
+                    adjustedWidth = (int) ((getWidth(canvas.getWidth()) - (2 * getLongSidePaddingPx())));
+                    adjustedHeight = getHeight(canvas.getHeight());
+                } else {
+                    adjustedWidth = getWidth(canvas.getWidth());
+                    adjustedHeight = (int) (getHeight(canvas.getHeight()) - (2 * getLongSidePaddingPx()));
+                }
 
-                int adjustedWidth;
-                int adjustedHeight;
+                adjustedWidth -= 2 * borderPaint.getStrokeWidth();
+                adjustedHeight -= 2 * borderPaint.getStrokeWidth();
+
+                scaledBitmap = fitBitmapInRectangle(adjustedWidth, adjustedHeight, bitmap, debug);
+                break;
+
+            case RECTANGLE:
                 if (getWidth(canvas.getWidth()) > getHeight(canvas.getHeight())) {
                     adjustedWidth = (int) ((getWidth(canvas.getWidth()) - (2 * getLongSidePaddingPx())));
                     adjustedHeight = getHeight(canvas.getHeight());
@@ -321,7 +336,7 @@ public class FittedBitmapDrawable extends FittedDrawable {
                 break;
 
             default:
-                throw new IllegalStateException();
+                throw new IllegalStateException("Unknown shape " + shape);
         }
         return scaledBitmap;
     }
