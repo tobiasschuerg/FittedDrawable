@@ -30,7 +30,7 @@ public class FittedTextDrawable extends FittedDrawable {
             throw new IllegalArgumentException("Text must not be empty");
         }
         this.text = text;
-        foregroundPaint().setColor(textColor);
+        getForegroundPaint().setColor(textColor);
     }
 
     @Override
@@ -61,24 +61,24 @@ public class FittedTextDrawable extends FittedDrawable {
                 break;
         }
 
-        setTextSizeForWidthHeight(foregroundPaint(), textWidth, textHeight);
+        setTextSizeForWidthHeight(getForegroundPaint(), textWidth, textHeight);
 
         int xPos = getWidth(canvasWidth) / 2;
-        int yPos = (int) ((getHeight(canvasHeight) / 2) - ((foregroundPaint().descent() + foregroundPaint().ascent()) / 2));
+        int yPos = (int) ((getHeight(canvasHeight) / 2) - ((getForegroundPaint().descent() + getForegroundPaint().ascent()) / 2));
         //((textPaint.descent() + textPaint.ascent()) / 2) is the distance from the baseline to the center.
 
-        if (debug) {
+        if (getDebug()) {
             Log.d(TAG, "Drawing text at " + xPos + ", " + yPos);
         }
-        foregroundPaint().setColor(Color.WHITE);
-        canvas.drawText(text, xPos, yPos, foregroundPaint());
+        getForegroundPaint().setColor(Color.WHITE);
+        canvas.drawText(text, xPos, yPos, getForegroundPaint());
 
-        if (drawBorder) {
+        if (getDrawBorder()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 canvas.drawRoundRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1,
-                        getCornerRadiusPx(), getCornerRadiusPx(), borderPaint);
+                        getCornerRadiusPx(), getCornerRadiusPx(), getBorderPaint());
             } else {
-                canvas.drawRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1, borderPaint);
+                canvas.drawRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1, getBorderPaint());
             }
         }
     }
@@ -98,7 +98,7 @@ public class FittedTextDrawable extends FittedDrawable {
         float textSizeHeight = DEFAULT_TEXT_SIZE * desiredHeight / bounds.height();
 
         float textSize = Math.min(textSizeWidth, textSizeHeight);
-        if (debug) {
+        if (getDebug()) {
             Log.d("Fitted text size", "size: " + textSize);
         }
 

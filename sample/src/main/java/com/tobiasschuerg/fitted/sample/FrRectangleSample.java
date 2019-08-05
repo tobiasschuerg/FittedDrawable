@@ -46,7 +46,7 @@ public class FrRectangleSample extends Fragment {
 
         ImageView imageRT = view.findViewById(R.id.iv_bottom);
         FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, RECTANGLE);
-        textDrawable.debug = true;
+        textDrawable.setDebug(true);
         imageRT.setImageDrawable(textDrawable);
     }
 }
