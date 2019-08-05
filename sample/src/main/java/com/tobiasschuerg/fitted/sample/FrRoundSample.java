@@ -13,8 +13,10 @@ import androidx.fragment.app.Fragment;
 
 import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
+import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
 import static com.tobiasschuerg.fitted.drawable.DrawableShape.ROUND;
+import static com.tobiasschuerg.fitted.drawable.DrawableShape.ROUND_RECTANGLE;
 
 public class FrRoundSample extends Fragment {
 
@@ -40,6 +42,7 @@ public class FrRoundSample extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         topBitmapView(view);
+        bottomSample(view);
     }
 
     private void topBitmapView(View view) {
@@ -50,6 +53,18 @@ public class FrRoundSample extends Fragment {
         bitmapDrawable.setBorderWidthDp(5);
 
         imageR.setImageDrawable(bitmapDrawable);
+    }
+
+    private void bottomSample(View view) {
+        ImageView imageRT = view.findViewById(R.id.iv_bottom);
+        FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND);
+
+        textDrawable.setCornerRadiusDp(4);
+
+        textDrawable.setBorderColor(Color.BLUE);
+        textDrawable.setBorderWidthDp(5);
+
+        imageRT.setImageDrawable(textDrawable);
     }
 
 }
