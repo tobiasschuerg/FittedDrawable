@@ -24,7 +24,7 @@ public class FrRectangleSample extends Fragment {
     public FrRectangleSample() {
     }
 
-    public static FrRectangleSample newInstance(int sectionNumber) {
+    static FrRectangleSample newInstance(int sectionNumber) {
         FrRectangleSample fragment = new FrRectangleSample();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
