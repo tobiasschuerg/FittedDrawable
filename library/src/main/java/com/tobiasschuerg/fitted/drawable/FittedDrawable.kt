@@ -11,7 +11,9 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
+import kotlin.math.ceil
 import kotlin.math.min
+import kotlin.math.nextUp
 
 /**
  * Super class for fitted drawables which fit their content into a predefined shape.
@@ -50,12 +52,12 @@ internal abstract class FittedDrawable internal constructor(
     val centerY: Int
         get() = bounds.centerY()
 
-    // +1 to make sure we round up, not down!
-    val innerCircleRadius: Int
+    val innerCircleRadius: Float
         get() {
             val w = bounds.width()
             val h = bounds.height()
-            val radius = (min(w, h) + 1) / 2
+            // +1 to make sure we round up, not down!
+            val radius = ((min(w, h)) / 2f)
             if (debug) {
                 Log.d(LOG_TAG, "Radius is $radius for width: $w and height: $h")
             }
@@ -159,6 +161,46 @@ internal abstract class FittedDrawable internal constructor(
             }
             DrawableShape.ROUND -> {
                 // TODO
+            }
+        }
+    }
+
+    fun drawBorder(canvas: Canvas) {
+        if (!drawBorder) return
+
+        val halfBorderWidth = 0.5f * borderPaint.strokeWidth
+
+        when (shape) {
+            DrawableShape.ROUND -> {
+                val radius = innerCircleRadius.nextUp()
+                val borderCenterRadius = ceil(radius - halfBorderWidth)
+                canvas.drawCircle(centerX.toFloat(), centerY.toFloat(), borderCenterRadius, borderPaint)
+            }
+            DrawableShape.ROUND_RECTANGLE -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    canvas.drawRoundRect(
+                            bounds.left + halfBorderWidth,
+                            bounds.top + halfBorderWidth,
+                            bounds.right - halfBorderWidth,
+                            bounds.bottom - halfBorderWidth,
+                            cornerRadiusPx, cornerRadiusPx, borderPaint)
+                } else {
+                    canvas.drawRect(
+                            bounds.left + halfBorderWidth,
+                            bounds.top + halfBorderWidth,
+                            bounds.right - halfBorderWidth,
+                            bounds.bottom - halfBorderWidth,
+                            borderPaint)
+                }
+            }
+            DrawableShape.RECTANGLE -> {
+                canvas.drawRect(
+                        bounds.left + halfBorderWidth,
+                        bounds.top + halfBorderWidth,
+                        bounds.right - halfBorderWidth,
+                        bounds.bottom - halfBorderWidth,
+                        borderPaint
+                )
             }
         }
     }

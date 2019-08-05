@@ -3,14 +3,10 @@ package com.tobiasschuerg.fitted.sample;
 import android.graphics.Color;
 import android.graphics.Shader;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
@@ -18,7 +14,7 @@ import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
 
 import static com.tobiasschuerg.fitted.drawable.DrawableShape.ROUND_RECTANGLE;
 
-public class FrRoundRectangleSample extends Fragment {
+public class FrRoundRectangleSample extends BaseFragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -34,34 +30,27 @@ public class FrRoundRectangleSample extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_sample, container, false);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         float radius = 25f;
         int padding = 4;
-        int borderWidth = 4;
 
-        ImageView imageR = view.findViewById(R.id.iv_top);
         FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getActivity(), R.drawable.android, ROUND_RECTANGLE);
 
         bitmapDrawable.setLongSidePaddingDp(padding);
         bitmapDrawable.setCornerRadiusDp(radius);
         bitmapDrawable.setTileMode(Shader.TileMode.CLAMP);
-        bitmapDrawable.setBorderColor(Color.parseColor("#cccccc"));
-        bitmapDrawable.setBorderWidthDp(borderWidth);
-        imageR.setImageDrawable(bitmapDrawable);
+        bitmapDrawable.setBorderColor(getBorderColor());
+        bitmapDrawable.setBorderWidthDp(getBorderWidth());
+        getFittedImageView().setImageDrawable(bitmapDrawable);
 
 
-        ImageView imageRT = view.findViewById(R.id.iv_bottom);
         FittedTextDrawable textDrawable = new FittedTextDrawable("I'm a text", Color.WHITE, Color.RED, ROUND_RECTANGLE);
-
+        textDrawable.setBorderColor(getBorderColor());
+        textDrawable.setBorderWidthDp(getBorderWidth());
         textDrawable.setLongSidePaddingDp(padding);
         textDrawable.setCornerRadiusDp(radius);
-        imageRT.setImageDrawable(textDrawable);
+        getFittedTextView().setImageDrawable(textDrawable);
     }
 }

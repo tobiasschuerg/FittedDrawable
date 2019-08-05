@@ -17,9 +17,10 @@ class FittedImageView @JvmOverloads constructor(
 ) : AppCompatImageView(context, attrs, defStyleAttr) {
 
     // TODO, add attributes for setting the shape in xml
+    lateinit var drawable: FittedBitmapDrawable
 
     override fun setImageResource(resId: Int) {
-        val drawable = FittedBitmapDrawable(context, resId, DrawableShape.RECTANGLE)
+        drawable = FittedBitmapDrawable(context, resId, DrawableShape.RECTANGLE)
         super.setImageDrawable(drawable)
     }
 }

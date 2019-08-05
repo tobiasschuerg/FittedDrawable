@@ -53,8 +53,8 @@ public class FittedTextDrawable extends FittedDrawable {
                 textHeight = getHeight(canvasHeight) * textPercentage;
                 break;
             case ROUND:
-                int radius = getInnerCircleRadius();
-                float sqrt = (float) (Math.sqrt(2 * radius * radius));
+                float radius = getInnerCircleRadius();
+                float sqrt = (float) (Math.sqrt(2f * radius * radius));
                 textWidth = sqrt;
                 textHeight = sqrt;
                 canvas.drawCircle(getCenterX(), getCenterY(), radius, getFillPaint());
@@ -70,17 +70,9 @@ public class FittedTextDrawable extends FittedDrawable {
         if (getDebug()) {
             Log.d(TAG, "Drawing text at " + xPos + ", " + yPos);
         }
-        getForegroundPaint().setColor(Color.WHITE);
         canvas.drawText(text, xPos, yPos, getForegroundPaint());
 
-        if (getDrawBorder()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                canvas.drawRoundRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1,
-                        getCornerRadiusPx(), getCornerRadiusPx(), getBorderPaint());
-            } else {
-                canvas.drawRect(getBounds().left + 1, getBounds().top + 1, getBounds().right - 1, getBounds().bottom - 1, getBorderPaint());
-            }
-        }
+        drawBorder(canvas);
     }
 
     /**

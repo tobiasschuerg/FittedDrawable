@@ -107,15 +107,9 @@ public class FittedBitmapDrawable extends FittedDrawable {
         );
 
         switch (getShape()) {
-
             case ROUND:
                 if (tileMode != null) {
-                    float radius = Math.nextUp(getInnerCircleRadius());
-                    if (getDrawBorder()) {
-                        radius -= getBorderPaint().getStrokeWidth();
-                        double borderCenterRadius = Math.floor(getInnerCircleRadius() - 0.5 * getBorderPaint().getStrokeWidth());
-                        canvas.drawCircle(getCenterX(), getCenterY(), (float) borderCenterRadius, getBorderPaint());
-                    }
+                    float radius = getInnerCircleRadius();
 
                     Paint shaderPaint = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
 
@@ -127,7 +121,6 @@ public class FittedBitmapDrawable extends FittedDrawable {
                 break;
 
             case ROUND_RECTANGLE:
-
                 // Draw the bitmap with the right size
                 if (tileMode != null) {
                     Paint sp = createShaderPaint(scaledBitmap, inRect, outRect, tileMode);
@@ -141,44 +134,16 @@ public class FittedBitmapDrawable extends FittedDrawable {
                 } else {
                     throw new IllegalArgumentException("Tile mode not set");
                 }
-
-                // draw border if wanted
-                if (getDrawBorder()) {
-                    float halfBorderWidth = getBorderPaint().getStrokeWidth() / 2;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        canvas.drawRoundRect(
-                                getBounds().left + halfBorderWidth,
-                                getBounds().top + halfBorderWidth,
-                                getBounds().right - halfBorderWidth,
-                                getBounds().bottom - halfBorderWidth,
-                                getCornerRadiusPx(), getCornerRadiusPx(), getBorderPaint());
-                    } else {
-                        canvas.drawRect(
-                                getBounds().left + halfBorderWidth,
-                                getBounds().top + halfBorderWidth,
-                                getBounds().right - halfBorderWidth,
-                                getBounds().bottom - halfBorderWidth,
-                                getBorderPaint());
-                    }
-                }
                 break;
 
             case RECTANGLE:
                 // Simple, should result in the same as #ROUND_RECTANGLE with #setBorderRadius(0)
                 canvas.drawColor(getFillColor());
                 canvas.drawBitmap(scaledBitmap, horizontalOffset, verticalOffset, getForegroundPaint());
-                if (getDrawBorder()) {
-                    float borderWidth = getBorderPaint().getStrokeWidth();
-                    canvas.drawRect(
-                            getBounds().left + borderWidth,
-                            getBounds().top + borderWidth,
-                            getBounds().right - borderWidth,
-                            getBounds().bottom - borderWidth,
-                            getBorderPaint());
-                }
                 break;
         }
 
+        drawBorder(canvas);
 
         if (getDebug()) {
             Log.d(LOG_TAG, "Green: bitmap border");
@@ -331,6 +296,9 @@ public class FittedBitmapDrawable extends FittedDrawable {
                     adjustedWidth = getWidth(canvas.getWidth());
                     adjustedHeight = (int) (getHeight(canvas.getHeight()) - (2 * getLongSidePaddingPx()));
                 }
+
+                adjustedWidth -= 2 * getBorderPaint().getStrokeWidth();
+                adjustedHeight -= 2 * getBorderPaint().getStrokeWidth();
 
                 scaledBitmap = fitBitmapInRectangle(adjustedWidth, adjustedHeight, bitmap, getDebug());
                 break;
