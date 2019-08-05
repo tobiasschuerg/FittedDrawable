@@ -8,7 +8,7 @@ This library was created to serve our needs at [Stocard](http://stocard.de) in t
 <img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/sample/src/main/res/drawable/android.png" width="200">
 
 ### Outcome
-|  A  |  B  |  C  |
+|  round, no border  |  rounded rect with border  |  round with border  |
 |-----|-----|-----|
 |<img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/round.png" width="300"> | <img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/rect_border.png" width="300"> | <img src="https://github.com/tobiasschuerg/FittedDrawable/raw/master/previews/42.png" width="300">
 
@@ -37,7 +37,25 @@ imageView.setImageDrawable(bitmapDrawable)
 
 ```
 
+### Get it via Jitpack
+Add it in your root build.gradle at the end of repositories:
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
+Step 2. Add the dependency
+```groovy
+dependencies {
+        implementation 'com.github.tobiasschuerg:FittedDrawable:Tag'
+}
+```
+
+For details see: https://jitpack.io/#tobiasschuerg/FittedDrawable
 
 
 ```
