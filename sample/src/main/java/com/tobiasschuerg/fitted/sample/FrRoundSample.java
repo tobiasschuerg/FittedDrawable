@@ -1,5 +1,7 @@
 package com.tobiasschuerg.fitted.sample;
 
+import static com.tobiasschuerg.fitted.drawable.DrawableShape.ROUND;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +12,6 @@ import androidx.annotation.Nullable;
 import com.tobiasschuerg.fitted.R;
 import com.tobiasschuerg.fitted.drawable.FittedBitmapDrawable;
 import com.tobiasschuerg.fitted.drawable.FittedTextDrawable;
-
-import static com.tobiasschuerg.fitted.drawable.DrawableShape.ROUND;
 
 public class FrRoundSample extends BaseFragment {
 
@@ -38,7 +38,7 @@ public class FrRoundSample extends BaseFragment {
 
     private void topBitmapView() {
 
-        FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(getContext(), R.drawable.android, ROUND);
+        FittedBitmapDrawable bitmapDrawable = new FittedBitmapDrawable(requireContext(), R.drawable.android, ROUND);
 
         bitmapDrawable.setBorderColor(getBorderColor());
         bitmapDrawable.setBorderWidthDp(getBorderWidth());

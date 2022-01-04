@@ -2,6 +2,8 @@ package com.tobiasschuerg.fitted.sample;
 
 import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -84,6 +86,7 @@ public class SampleActivity extends AppCompatActivity {
             super(fm);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             switch (position) {
